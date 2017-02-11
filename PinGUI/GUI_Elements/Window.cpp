@@ -570,7 +570,7 @@ void Window::onEndAim(){
 
 bool Window::listenForClick(GUI_Element** manipulatingElement){
 
-    if (isScrollerActive(_verticalScroller)){
+    if (isScrollerActive(_verticalScroller)  && !Input_Manager::hasTMPWheeledInfo()){
 
         if (!Input_Manager::getAllowWheel()) Input_Manager::setAllowWheel(true);
     }
