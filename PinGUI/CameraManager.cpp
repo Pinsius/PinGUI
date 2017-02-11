@@ -28,8 +28,6 @@ float* CameraManager::_staticCamera = nullptr;
 
 GLint CameraManager::_matrixLocation;
 
-
-
 void CameraManager::setCamera (float* cam){
 
     _staticCamera = cam;
