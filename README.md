@@ -9,8 +9,10 @@ C++/SDL2/OpenGL created by Lubomir "Pinsius" Barantal
  From SDL it uses extensions:
   SDL_TTF
   SDL_Image
- 
  https://www.libsdl.org/
+ 
+ GLM library for matrix operations
+ http://glm.g-truc.net/0.9.8/index.html
  
 Some of its features are :
 - Text creation (using SDL_TTF extension)
