@@ -32,6 +32,7 @@ std::vector<SDL_Surface*> SheetManager::_SURFACES;
 **/
 
 void SheetManager::loadAllTextures(){
+    
     //First i load whole image into 1 surface
     SDL_Surface* wholeSurface = nullptr;
     wholeSurface = IMG_Load("PinGUI/TextManager/Images/TextManagerSheet.png");
@@ -67,6 +68,7 @@ void SheetManager::loadAllTextures(){
 }
 
 GLuint SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface){
+    
     //Rect to store the cropped area pos and dimensions
     SDL_Rect tmp;
 
@@ -92,6 +94,7 @@ GLuint SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface
 }
 
 void SheetManager::manageCroppedRect(SDL_Rect* rect,surfaceType* type){
+    
     switch(*type){
         case BOARD : {
             rect->x = clipboardFx;
@@ -215,6 +218,7 @@ SDL_Surface* SheetManager::getSurface(enum surfaceType type){
 }
 
 SDL_Surface* SheetManager::cloneSurface(enum surfaceType type){
+    
     SDL_Surface* tmpSurface = createCloneSurface(_SURFACES[type]->w,_SURFACES[type]->h,type);
 
     SDL_Rect tmpRect;
@@ -247,6 +251,7 @@ void SheetManager::loadWindowTextures(){
 }
 
 SDL_Surface* SheetManager::createClipBoard(int w, int h){
+    
     SDL_Surface* final_Surface = createCloneSurface(w+2,h+2,BOARD);
 
     //First i link the clipboard surface
@@ -264,6 +269,7 @@ SDL_Surface* SheetManager::createClipBoard(int w, int h){
 }
 
 void SheetManager::addClipboard(SDL_Surface*& target){
+    
     SDL_Rect tmpRect;
     tmpRect.x = 1;
     tmpRect.y = 1;
@@ -275,6 +281,7 @@ void SheetManager::addClipboard(SDL_Surface*& target){
 }
 
 void SheetManager::addLineBorders(SDL_Surface*& target, lineType type){
+    
     surfaceType mainType;
     surfaceType lineType;
     switch(type){
@@ -422,6 +429,7 @@ void SheetManager::loadWindowTab(SDL_Surface*& sourceSurface){
 }
 
 void SheetManager::loadWindowExitButton(SDL_Surface*& sourceSurface){
+    
     SDL_Rect tmpRect;
     tmpRect.x = PINGUI_WINDOW_EXITBUTTON_X;
     tmpRect.y = PINGUI_WINDOW_EXITBUTTON_Y;
@@ -487,6 +495,7 @@ void SheetManager::addTabLines(SDL_Surface*& target){
 }
 
 void SheetManager::loadWindow(SDL_Surface*& sourceSurface){
+    
     SDL_Rect tmpRect;
 
     tmpRect.x = PINGUI_WINDOW_X;
@@ -530,6 +539,7 @@ void SheetManager::loadWindowBorders(SDL_Surface*& sourceSurface){
 }
 
 void SheetManager::addBackground(SDL_Surface*& target){
+    
     SDL_Rect tmpRect;
     tmpRect.x = 1;
     tmpRect.y = 1;
@@ -555,6 +565,7 @@ SDL_Surface* SheetManager::createWindow(int w, int h){
 }
 
 void SheetManager::loadWindowScroller(SDL_Surface*& sourceSurface){
+    
     SDL_Rect tmpRect;
 
     tmpRect.w = PINGUI_WINDOW_SCROLLER_W;
@@ -573,6 +584,7 @@ void SheetManager::loadWindowScroller(SDL_Surface*& sourceSurface){
 }
 
 SDL_Surface* SheetManager::createWindowScroller(int value, manipulationState state){
+    
     switch(state){
         case VERTICAL : {
 
@@ -614,6 +626,7 @@ SDL_Surface* SheetManager::createHorizontalScroller(const int& w){
 }
 
 SDL_Surface* SheetManager::createCloneSurface(int w, int h, surfaceType source){
+    
     SDL_Surface* final_Surface = SDL_CreateRGBSurface(0,w, h,
                                     _SURFACES[source]->format->BitsPerPixel,
                                     _SURFACES[source]->format->Rmask,
@@ -624,6 +637,7 @@ SDL_Surface* SheetManager::createCloneSurface(int w, int h, surfaceType source){
 }
 
 void SheetManager::blitSurface(int x, int y, int w, int h, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode){
+    
     SDL_Rect tmpRect;
     tmpRect.x = x;
     tmpRect.y = y;
@@ -636,6 +650,7 @@ void SheetManager::blitSurface(int x, int y, int w, int h, surfaceType source, S
 }
 
 void SheetManager::blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode){
+    
     SDL_Rect TmpRect;
     TmpRect.x = tmpRect.x;
     TmpRect.y = tmpRect.y;
@@ -648,6 +663,7 @@ void SheetManager::blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Sur
 }
 
 void SheetManager::loadWindowScrollerArrows(SDL_Surface*& sourceSurface){
+    
     SDL_Rect tmpRect;
     tmpRect.w = PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_W;
     tmpRect.h = PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_H;
@@ -673,6 +689,7 @@ void SheetManager::loadWindowScrollerArrows(SDL_Surface*& sourceSurface){
 }
 
 void SheetManager::loadWindowScrollerFill(SDL_Surface*& sourceSurface){
+    
     SDL_Rect tmpRect;
 
     tmpRect.x = PINGUI_WINDOW_SCROLLER_FILL_X;
