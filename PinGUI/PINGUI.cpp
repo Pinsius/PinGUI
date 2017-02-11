@@ -178,3 +178,8 @@ void PINGUI::initLibrary(float* staticCamera, int screenWidth, int screenHeight)
 
     Input_Manager::setClickFunction(PINGUI::getFunctionPointer());
 }
+
+void PINGUI::processInput(){
+
+    Input_Manager::processInput();
+}
