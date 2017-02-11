@@ -1,20 +1,17 @@
 # PinGUI
 
- Simple C++/SDL2/OpenGL created by Lubomir "Pinsius" Barantal
+C++/SDL2/OpenGL created by Lubomir "Pinsius" Barantal
  
- This library also uses glew for OpenGL functions.
+ Extensions: 
+ Glew for OpenGL functions.
+ http://glew.sourceforge.net/ 
  
  From SDL it uses extensions:
   SDL_TTF
   SDL_Image
  
- Link to other extensions: 
- 
  https://www.libsdl.org/
  
- http://glew.sourceforge.net/
- 
-
 Some of its features are :
 - Text creation (using SDL_TTF extension)
 - Dynamic text handling(if you write a variable, library will automatically update the text if the variable changes)
