@@ -25,8 +25,12 @@
 
 **/
 
-#include <GL/glew.h>
+/**
+    GLM is included in here
+**/
+#include <glm/glm/gtc/matrix_transform.hpp>
 
+#include "PinGUI/GUI_Sprite.h"
 
 class CameraManager
 {
@@ -34,11 +38,27 @@ class CameraManager
         static float* _staticCamera;
 
         static GLint _matrixLocation;
+    
+        static int _screenWidth;
+        static int _screenHeight;
+
+        /**
+        For GUI elements
+        static and dynamic matrices.
+        **/
+        static glm::mat4 _staticCameraMatrix;
+
+        //Orthomatrix
+        static glm::mat4 _orthoMatrix;
 
     public:
-
-        static void setCamera (float* cam);
+    
+        //sets up the orthographic matrix and screen dimensions
+        static void init(int screenWidth, int screenHeight);
+    
         static float* getCamera();
+    
+        static glm::mat4 getCameraMatrix();
 
         static void setMatrixLocation(GLint location);
         static GLint getMatrixLocation();
