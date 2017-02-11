@@ -56,6 +56,8 @@ class PINGUI
 
         static void initLibrary(float* staticCamera, int screenWidth, int screenHeight);
     
+        static void processInput();
+    
         static void destroy();
 
         static void addWindow(Window* win);
