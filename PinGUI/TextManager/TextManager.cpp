@@ -107,8 +107,6 @@ void TextManager::renderText(){
     }
 
     glBindVertexArray(0);
-
-
 }
 
 void TextManager::updateText(){
@@ -152,10 +150,13 @@ void TextManager::setColor(GLubyte R, GLubyte G, GLubyte B, GLubyte A){
 }
 
 void TextManager::loadVBO(){
-    _textVBOManager->bufferData(0,_mainDataStorage);
+    
+    if (_textVBOManager->bufferData(0,_mainDataStorage))
+        _needUpdate = true;
 }
 
 void TextManager::loadTextInfo(){
+    
     SDL_Color tmp;
 
     //Default color
@@ -177,6 +178,7 @@ void TextManager::removeData(std::size_t& position){
 }
 
 void TextManager::manageCamera(){
+    
     glUniformMatrix4fv(CameraManager::getMatrixLocation(), 1, GL_FALSE, CameraManager::getCamera());
 }
 
@@ -220,7 +222,9 @@ Text* TextManager::getLastText(){
 }
 
 void TextManager::moveTextManager(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement){
+    
     for (std::size_t i = 0; i < _TEXTS.size(); i++){
+        
         if (!_TEXTS[i]->isNetworked())
             _TEXTS[i]->moveText(vect,croppedMovement);
     }
@@ -247,10 +251,7 @@ void TextManager::cropText(PinGUI::Rect& cropRect){
 
         if (!_TEXTS[i]->isNetworked())
             CropManager::cropSprite(_TEXTS[i]->getSprite(),cropRect);
-
     }
-
-
 }
 
 void TextManager::setFunction(PinGUI::basicPointer f){
