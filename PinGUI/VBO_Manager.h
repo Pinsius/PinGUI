@@ -25,7 +25,6 @@
 
 **/
 
-#include <GL/glew.h>
 #include <vector>
 #include <iostream>
 
