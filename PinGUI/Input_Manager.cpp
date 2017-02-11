@@ -49,6 +49,8 @@ bool Input_Manager::_allowWheel = false;
 
 bool Input_Manager::_haveTarget = false;
 
+bool Input_Manager::_tmpWheelInfo = false;
+
 manipulatingModInfo Input_Manager::_manipulatingModInfo;
 
 int Input_Manager::_screenWidth;
@@ -417,11 +419,14 @@ void Input_Manager::setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::
 
     if (!_allowWheel)
         _allowWheel = true;
+    
+    _tmpWheelInfo = true;
 }
 
 void Input_Manager::cancelTMPWheeledInfo(){
 
     _wheelingInfo = infoStorage;
+    _tmpWheelInfo = false;
 }
 
 void Input_Manager::doWheelMovement(){
@@ -487,4 +492,8 @@ void Input_Manager::checkTarget(){
 void Input_Manager::setClickFunction(PinGUI::basicPointer f){
 
     _clickFunction = f;
+}
+
+bool Input_Manager::hasTMPWheeledInfo(){
+    return _tmpWheelInfo;
 }
