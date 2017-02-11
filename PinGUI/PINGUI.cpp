@@ -163,3 +163,18 @@ PinGUI::basicPointer PINGUI::getFunctionPointer(){
 
     return f;
 }
+
+void PINGUI::initLibrary(float* staticCamera, int screenWidth, int screenHeight){
+
+    SheetManager::loadAllTextures();
+
+    GUI_CollisionManager::colliding = false;
+
+    Input_Manager::setScreenSize(screenWidth,screenHeight);
+
+    GUI_ColorManager::initColors();
+
+    CameraManager::setCamera(staticCamera);
+
+    Input_Manager::setClickFunction(PINGUI::getFunctionPointer());
+}
