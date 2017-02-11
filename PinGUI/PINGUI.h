@@ -26,6 +26,7 @@
 **/
 
 #include "PinGUI/GUI_Elements/Window.h"
+#include "PinGUI/Shader_Program.h"
 
 /**
     The main singleton for whole library
