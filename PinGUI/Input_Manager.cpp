@@ -138,7 +138,7 @@ void Input_Manager::process(){
     }
 }
 
-void Input_Manager::proccessInput(){
+void Input_Manager::processInput(){
     
     while (SDL_PollEvent(&_mainEvent)) {
         
