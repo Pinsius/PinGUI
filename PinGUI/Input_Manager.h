@@ -127,7 +127,7 @@ class Input_Manager
         static void process();
 
         //Normal input
-        static void proccessInput();
+        static void processInput();
 
         //Writing mod
         static void writingMod();
