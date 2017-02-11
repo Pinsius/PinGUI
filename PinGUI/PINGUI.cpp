@@ -174,9 +174,11 @@ void PINGUI::initLibrary(float* staticCamera, int screenWidth, int screenHeight)
 
     GUI_ColorManager::initColors();
 
-    CameraManager::setCamera(staticCamera);
+    CameraManager::init(screenWidth,screenHeight);
 
     Input_Manager::setClickFunction(PINGUI::getFunctionPointer());
+    
+    Shader_Program::initShaders();
 }
 
 void PINGUI::processInput(){
