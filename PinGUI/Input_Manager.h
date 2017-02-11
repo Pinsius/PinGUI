@@ -112,9 +112,10 @@ class Input_Manager
         static PinGUI::Vector2<GUIPos> _lastVector;
 
         static wheelingInfo _wheelingInfo;
+    
+        static bool _tmpWheelInfo;
 
         static PinGUI::basicPointer _clFunction;
-
 
         //These two variables do something else!!
         static PinGUI::basicPointer _clickFunction;
@@ -152,6 +153,8 @@ class Input_Manager
         static SDL_Event* getEvent_P();
 
         static void setWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
+    
+        static bool hasTMPWheeledInfo();
 
         static void setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
 
