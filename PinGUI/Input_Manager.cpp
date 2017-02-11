@@ -117,6 +117,9 @@ gameState Input_Manager::getState(){
 }
 
 void Input_Manager::process(){
+    
+    GUI_Cursor::updateCursor();
+    
     switch(_mainInputState){
         case GAMEINPUT: {
             proccessInput();
@@ -134,7 +137,9 @@ void Input_Manager::process(){
 }
 
 void Input_Manager::proccessInput(){
+    
     while (SDL_PollEvent(&_mainEvent)) {
+        
         switch (_mainEvent.type) {
             case SDL_QUIT : {
                 Input_Manager::pressKey(SDL_QUIT);
@@ -184,7 +189,9 @@ void Input_Manager::proccessInput(){
 }
 
 void Input_Manager::writingMod(){
+    
     while (SDL_PollEvent(&_mainEvent)) {
+        
         if(_mainEvent.type==SDL_QUIT){
             Input_Manager::pressKey(SDL_QUIT);
             break;
@@ -224,7 +231,9 @@ void Input_Manager::writingMod(){
 }
 
 void Input_Manager::manipulatingMod(){
+    
     while (SDL_PollEvent(&_mainEvent)) {
+        
         switch(_mainEvent.type){
             case SDL_KEYDOWN:{
                 Input_Manager::pressKey(_mainEvent.key.keysym.sym);
@@ -245,6 +254,7 @@ void Input_Manager::manipulatingMod(){
 }
 
 void Input_Manager::singleClickTracker(){
+    
     //Single click tracker function
     if (isKeyPressed(SDL_BUTTON_LEFT))
         _alreadyClicked = true;
@@ -252,6 +262,7 @@ void Input_Manager::singleClickTracker(){
 
 
 void Input_Manager::manipulate(){
+    
     int tmpX;
     int tmpY;
     SDL_GetMouseState(&tmpX,&tmpY);
@@ -271,6 +282,7 @@ void Input_Manager::manipulate(){
 }
 
 void Input_Manager::moveHorizontal(const int& tmpX, const int& tmpY){
+    
     int diff = tmpX - GUI_Cursor::getX();
 
     _lastVector.x = diff;
@@ -280,6 +292,7 @@ void Input_Manager::moveHorizontal(const int& tmpX, const int& tmpY){
 }
 
 void Input_Manager::moveVertical(const int& tmpX, const int& tmpY){
+    
     int diff = tmpY - GUI_Cursor::getY();
 
     _lastVector.y = diff;
@@ -316,6 +329,7 @@ void Input_Manager::setManipulatedText(TextStorage* text){
 }
 
 bool Input_Manager::canWrite(char* ch){
+    
     if (_writingModInfo.intOnly){
 
         if (isdigit(*ch)&&chooseText()->getTextSize()+1<=_writingModInfo.max&&((*ch - 48)+(chooseText()->getNumericalText()*10)<=_writingModInfo.maxValue)){
@@ -344,6 +358,7 @@ void Input_Manager::initManipulation(GUI_Sprite* manip, bool* needUpdate){
 }
 
 void Input_Manager::createManipulatingModInfo(int x, int y, manipulationState state){
+    
     _manipulatingModInfo.lastX = x;
     _manipulatingModInfo.lastY = y;
     _manipulatingModInfo.manipState = state;
