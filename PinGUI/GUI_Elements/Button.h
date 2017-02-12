@@ -5,7 +5,7 @@
 
     PinGUI
 
-    Copyright (c) 2017 ¼ubomír Barantal <l.pinsius@gmail.com>
+    Copyright (c) 2017 Â¼ubomÃ­r Barantal <l.pinsius@gmail.com>
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the authors be held liable for any damages
@@ -40,6 +40,7 @@ class Button: public ClipBoard
         void initSprites(std::string name, clipboardData& data);
 
     public:
+        Button(int x, int y, std::string name, clipboardData data);
         Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboardData data);
         Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize);
         ~Button();
