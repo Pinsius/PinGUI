@@ -595,7 +595,7 @@ void Window::adjustHorizontalScrollerWidth(){
 void Window::normalize(){
 
     float x = _TABS[0]->windowTab->getSprite()->getX();
-    float y = _TABS[0]->windowTab->getSprite()->getY() - _TABS[0]->windowTab->getSprite()->getH();
+    float y = _TABS[0]->windowTab->getSprite()->getY();
 
     for (std::size_t i = 0; i < _TABS.size(); i++){
 
