@@ -64,9 +64,9 @@ void Scroller::loadScrollMover(int value, int totalValue){
      // In case the realSize was not big enough to load the scroller
     if (_ratio<=0){
 
+        ErrorManager::infoLog("PINGUI err.1","Scroller was unable to be loaded due to a incorrect ratio");
         _show = false;
         _collidable = false;
-        ErrorManager::systemError("Scroller was unable to be loaded due to a incorrect ratio");
     }
 }
 
