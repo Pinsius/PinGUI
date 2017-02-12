@@ -49,6 +49,16 @@ Button::Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboard
     initSprites(name,data);
 }
 
+Button::Button(int x, int y, std::string name, clipboardData data)
+{
+    _maxSize = maxSize;
+
+    _position.x = x;
+    _position.y = y;
+
+    initSprites(name,data);
+}
+
 Button::~Button()
 {
     //dtor
