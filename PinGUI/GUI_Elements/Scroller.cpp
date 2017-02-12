@@ -60,6 +60,14 @@ void Scroller::loadScrollMover(int value, int totalValue){
     _oldDiff = 0;
 
     calculateRatio(totalValue - value);
+    
+     // In case the realSize was not big enough to load the scroller
+    if (_ratio<=0){
+
+        _show = false;
+        _collidable = false;
+        ErrorManager::systemError("Scroller was unable to be loaded due to a incorrect ratio");
+    }
 }
 
 void Scroller::hideScroller(){
