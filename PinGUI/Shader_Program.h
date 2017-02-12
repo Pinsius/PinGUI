@@ -32,6 +32,7 @@
 
 #include "PinGUI/ErrorManager.h"
 #include "PinGUI/stuff.h"
+#include "PinGUI/CameraManager.h"
 
 class Shader_Program
 {
@@ -43,6 +44,10 @@ class Shader_Program
 
         static GLuint _vertexShaderID;
         static GLuint _fragmentShaderID;
+    
+        static GLint _samplerLocation;
+        static GLint _cameraMatrixLocation;
+
 
         /**
             Private methods
