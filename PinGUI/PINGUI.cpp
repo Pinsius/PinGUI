@@ -164,7 +164,7 @@ PinGUI::basicPointer PINGUI::getFunctionPointer(){
     return f;
 }
 
-void PINGUI::initLibrary(float* staticCamera, int screenWidth, int screenHeight){
+void PINGUI::initLibrary(int screenWidth, int screenHeight){
 
     SheetManager::loadAllTextures();
 
