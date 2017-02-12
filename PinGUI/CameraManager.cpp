@@ -48,6 +48,8 @@ void CameraManager::init(int screenWidth, int screenHeight){
     glm::vec3 translate(-_position.x + _screenWidth / 2, -_position.y + _screenHeight / 2, 0.0f);
 
     _staticCameraMatrix = glm::translate(_orthoMatrix,translate);
+    
+    _staticCamera = &(_staticCameraMatrix[0][0]);
 }
 
 glm::mat4 CameraManager::getCameraMatrix(){
