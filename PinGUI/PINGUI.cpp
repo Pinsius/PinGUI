@@ -54,6 +54,8 @@ void PINGUI::addWindow(Window* win){
 }
 
 void PINGUI::render(){
+    
+    Shader_Program::use();
 
     if (_mainGUIManager)
         _mainGUIManager->render();
@@ -70,6 +72,8 @@ void PINGUI::render(){
 
         _mainWindow->render();
     }
+    
+    Shader_Program::unuse();
 }
 
 void PINGUI::update(){
