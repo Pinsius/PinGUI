@@ -124,7 +124,7 @@ void Input_Manager::process(){
     
     switch(_mainInputState){
         case GAMEINPUT: {
-            proccessInput();
+            processInput();
             break;
         }
         case WRITINGMOD: {
