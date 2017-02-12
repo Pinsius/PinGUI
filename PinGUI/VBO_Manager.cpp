@@ -125,15 +125,15 @@ void VBO_Manager::createVAO()
 
     //This is the position
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,position));
+    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,sizeof(PinGUI::Vertex),(void*)offsetof((PinGUI::Vertex,position));
 
     //Color attrib pointer
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,color));
+    glVertexAttribPointer(1,4,GL_UNSIGNED_BYTE,GL_TRUE,sizeof((PinGUI::Vertex),(void*)offsetof((PinGUI::Vertex,color));
 
     //UV
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2,2,GL_FLOAT,GL_TRUE,sizeof(Vertex),(void*)offsetof(Vertex,uv));
+    glVertexAttribPointer(2,2,GL_FLOAT,GL_TRUE,sizeof((PinGUI::Vertex),(void*)offsetof((PinGUI::Vertex,uv));
 
     glDisableVertexAttribArray(3);
 
