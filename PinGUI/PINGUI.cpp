@@ -169,6 +169,8 @@ PinGUI::basicPointer PINGUI::getFunctionPointer(){
 }
 
 void PINGUI::initLibrary(int screenWidth, int screenHeight){
+    
+    _mainGUIManager = new GUIManager();
 
     SheetManager::loadAllTextures();
 
@@ -188,4 +190,9 @@ void PINGUI::initLibrary(int screenWidth, int screenHeight){
 void PINGUI::processInput(){
 
     Input_Manager::process();
+}
+
+GUIManager* PINGUI::getGUI(){
+    
+    return _mainGUIManager;
 }
