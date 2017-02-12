@@ -37,7 +37,7 @@ ComboBoxItem::ComboBoxItem(PinGUI::Vector2<GUIPos> position,
     _option(0)
 {
 
-    init(position,maxSize,data);
+    init(position,maxSize,data,NORMAL,RECTANGLED);
 
     _maxSize = maxSize;
     _position = position;
