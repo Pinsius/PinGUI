@@ -218,7 +218,10 @@ void VolumeBoard::calculateFill(int& distance){
     if (_SPRITES[VOL_FILL]->getX() != (_SPRITES[VOL_BACKGROUND]->getGUIRect().realRect.x+1))
         _SPRITES[VOL_FILL]->setX(_SPRITES[VOL_BACKGROUND]->getGUIRect().realRect.x+1);
 
+    if (_SPRITES[VOL_FILL]->getW() > (VOLUMEBOARD_BAR_LENGTH - VOLUME_MOVER_W)){
 
+        _SPRITES[VOL_FILL]->setW(VOLUMEBOARD_BAR_LENGTH-2);
+    }
 
     _SPRITES[VOL_FILL]->getGUIRect_P()->realRect.w = _SPRITES[VOL_FILL]->getGUIRect_P()->rect.w;
 }
