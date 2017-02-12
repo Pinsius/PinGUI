@@ -51,7 +51,7 @@ Button::Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboard
 
 Button::Button(int x, int y, std::string name, clipboardData data)
 {
-    _maxSize = maxSize;
+    _maxSize = name.size();
 
     _position.x = x;
     _position.y = y;
