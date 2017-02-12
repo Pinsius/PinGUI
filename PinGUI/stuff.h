@@ -49,11 +49,11 @@ public:
 };
 
 struct vboData{
-    Vertex vertices[6];
+    PinGUI::Vertex vertices[6];
 };
 
 /**
-    Class for storing data for VBO´s (normal VBO and instances)
+    Class for storing data for VBOÂ´s (normal VBO and instances)
 **/
 class BufferData{
 public:
