@@ -36,7 +36,6 @@
 #include "PinGUI/PinGUI_Rect.hpp"
 #include "PinGUI/GUI_Elements/WindowMover.h"
 #include "PinGUI/GUI_Elements/WindowExit.h"
-#include "PinGUI/GUI_Elements/WindowScroller.h"
 #include "PinGUI/GUI_Elements/Window_Arrow.h"
 #include "PinGUI/GUI_Elements/HorizontalScroller.h"
 #include "PinGUI/GUI_Elements/VerticalScroller.h"
@@ -205,7 +204,7 @@ class Window: public GUI_Element
         Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape = ROUNDED);
         ~Window();
 
-        //It return nullptr if the tab doesn´t exist
+        //It return nullptr if the tab doesnÂ´t exist
         WindowTab* getTab(std::string tabName);
         void normalizeTab(WindowTab* tab, const float& x, const float& y);
 
