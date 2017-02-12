@@ -24,7 +24,7 @@
 
 #include "WindowButton.h"
 
-WindowButton(int x, int y, std::string name, clipboardData data):
+WindowButton::WindowButton(int x, int y, std::string name, clipboardData data):
     Button(x,y,name,data) 
 {
 
