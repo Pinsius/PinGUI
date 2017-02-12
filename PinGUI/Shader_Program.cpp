@@ -39,7 +39,7 @@ GLint Shader_Program::_cameraMatrixLocation = 0;
 void Shader_Program::initShaders(){
 
     // Compile our color shader
-    compileShaders("Shaders/vertexShader.txt", "Shaders/fragmentShader.txt");
+    compileShaders("PinGUI/Shaders/vertexShader.txt", "PinGUI/Shaders/fragmentShader.txt");
 
     //Now add variables
     addAttribute("vertexPosition");
