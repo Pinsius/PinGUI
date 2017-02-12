@@ -37,7 +37,6 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include "PinGUI/TextSheet_Manager.h"
 #include "PinGUI/VBO_Manager.h"
 #include "PinGUI/PinGUI_Vector.hpp"
 #include "PinGUI/CropManager.hpp"
