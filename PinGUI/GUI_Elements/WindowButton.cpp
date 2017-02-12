@@ -24,6 +24,11 @@
 
 #include "WindowButton.h"
 
+WindowButton(int x, int y, std::string name, clipboardData data):
+    Button(x,y,name,data) 
+{
+
+}
 
 WindowButton::WindowButton(int x, int y, std::string name, clipboardData data, PinGUI::basicPointer f):
     Button(x,y,name,f,data)
