@@ -72,6 +72,8 @@ class PINGUI
         static int getSizeOfActiveWindows();
 
         static void checkMainWindow();
+    
+        static GUIManager* getGUI();
 
         static PinGUI::basicPointer getFunctionPointer();
 };
