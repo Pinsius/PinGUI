@@ -5,7 +5,7 @@
 
     PinGUI
 
-    Copyright (c) 2017 ¼ubomír Barantal <l.pinsius@gmail.com>
+    Copyright (c) 2017 Â¼ubomÃ­r Barantal <l.pinsius@gmail.com>
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the authors be held liable for any damages
@@ -30,7 +30,6 @@
 #include <SDL_image.h>
 
 #include "PinGUI/GUI_Elements/ClipBoard.h"
-#include "PinGUI/TextSheet_Manager.h"
 #include "PinGUI/GUI_Elements/Window_Arrow.h"
 #include "PinGUI/SheetManager.h"
 
