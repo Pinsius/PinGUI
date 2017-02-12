@@ -27,89 +27,93 @@
 
 #include <GL/glew.h>
 
-class VertexColor{
-    public:
-        GLubyte r;
-        GLubyte g;
-        GLubyte b;
-        GLubyte a;
+namespace PinGUI{
+    
+    class VertexColor{
+        public:
+            GLubyte r;
+            GLubyte g;
+            GLubyte b;
+            GLubyte a;
 
-        VertexColor();
-        VertexColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A):
-            r(R),
-            g(G),
-            b(B),
-            a(A){
+            VertexColor();
+            VertexColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A):
+                r(R),
+                g(G),
+                b(B),
+                a(A){
+                };
+            void setColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A)
+            {
+                r = R;
+                g = G;
+                b = B;
+                a = A;
             };
-        void setColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A)
-        {
-            r = R;
-            g = G;
-            b = B;
-            a = A;
-        };
-};
+    };
 
 
 
-class VertexPosition{
+    class VertexPosition{
+        public:
+            float x;
+            float y;
+            VertexPosition();
+            VertexPosition(int X, int Y):
+                x(X),
+                y(Y){
+                };
+
+    };
+
+    class VertexUV{
+        public:
+            float u;
+            float v;
+            VertexUV();
+            VertexUV(float U, float V):
+                u(U),
+                v(V){
+                };
+    };
+
+
+    class Vertex{
+        public:
+            VertexPosition position;
+            VertexColor color;
+            VertexUV uv;
+
+            Vertex();
+            Vertex(VertexColor Color, VertexPosition Position, VertexUV UV):
+                color(Color),
+                position(Position),
+                uv(UV)
+                {};
+            void setPosition(float X, float Y);
+            void setColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A);
+            void setUV(float U, float V);
+            void addUV(float U, float V);
+            void setU(float U);
+            void setV(float V);
+    };
+
+    //Structure to represent the sprite box - rect
+    class Rect{
     public:
         float x;
         float y;
-        VertexPosition();
-        VertexPosition(int X, int Y):
+        float w;
+        float h;
+        Rect();
+        Rect(float X, float Y, float W, float H) :
             x(X),
-            y(Y){
-            };
-
-};
-
-class VertexUV{
-    public:
-        float u;
-        float v;
-        VertexUV();
-        VertexUV(float U, float V):
-            u(U),
-            v(V){
-            };
-};
-
-
-class Vertex{
-    public:
-        VertexPosition position;
-        VertexColor color;
-        VertexUV uv;
-
-        Vertex();
-        Vertex(VertexColor Color, VertexPosition Position, VertexUV UV):
-            color(Color),
-            position(Position),
-            uv(UV)
-            {};
-        void setPosition(float X, float Y);
-        void setColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A);
-        void setUV(float U, float V);
-        void addUV(float U, float V);
-        void setU(float U);
-        void setV(float V);
-};
-
-//Structure to represent the sprite box - rect
-class Rect{
-public:
-    float x;
-    float y;
-    float w;
-    float h;
-    Rect();
-    Rect(float X, float Y, float W, float H) :
-        x(X),
-        y(Y),
-        w(W),
-        h(H){};
-};
+            y(Y),
+            w(W),
+            h(H){};
+    };
+    
+}
 
 
 #endif // GL_VERTEX_H
