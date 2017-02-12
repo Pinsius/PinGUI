@@ -24,6 +24,7 @@
 #include <GL/glew.h>
 
 #include "PinGUI/PINGUI.h"
+#include "PinGUI/GUI_Elements/WindowButton.h"
 #include "FPS_Timer.h"
 
 
@@ -85,6 +86,17 @@ void createGUI(){
     tmpWindow->normalize();
 
     PINGUI::addWindow(tmpWindow);
+    
+    /** Creation of "Show window" button **/
+
+    WindowButton* button = new WindowButton(10,
+                                            350,
+                                            "Show window",
+                                            PINGUI::getGUI()->getClipboardData());
+    button->setWindowTarget(tmpWindow);
+    button->setState(true);
+
+    PINGUI::getGUI()->putElement(button);
 }
 
 void initSDL_OGL();
