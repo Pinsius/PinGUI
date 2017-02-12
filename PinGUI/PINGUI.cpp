@@ -183,5 +183,5 @@ void PINGUI::initLibrary(int screenWidth, int screenHeight){
 
 void PINGUI::processInput(){
 
-    Input_Manager::processInput();
+    Input_Manager::process();
 }
