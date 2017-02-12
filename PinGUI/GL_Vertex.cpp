@@ -23,51 +23,53 @@
 **/
 
 #include "PinGUI/GL_Vertex.h"
+namespace PinGUI{
+    VertexColor::VertexColor(){
 
-VertexColor::VertexColor(){
-
-}
-
-
-VertexPosition::VertexPosition(){
-
-}
+    }
 
 
-VertexUV::VertexUV(){
+    VertexPosition::VertexPosition(){
 
-}
+    }
 
-Vertex::Vertex(){
 
-}
+    VertexUV::VertexUV(){
 
-void Vertex::setPosition(float X, float Y){
-    position.x = X;
-    position.y = Y;
-}
+    }
 
-void Vertex::setColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A){
-    color.r = R;
-    color.g = G;
-    color.b = B;
-    color.a = A;
-}
+    Vertex::Vertex(){
 
-void Vertex::setUV(float U, float V){
-    uv.u = U;
-    uv.v = V;
-}
+    }
 
-void Vertex::addUV(float U, float V){
-    uv.u += U;
-    uv.v += V;
-}
+    void Vertex::setPosition(float X, float Y){
+        position.x = X;
+        position.y = Y;
+    }
 
-void Vertex::setU(float U){
-    uv.u = U;
-}
+    void Vertex::setColor(GLubyte R,GLubyte G, GLubyte B, GLubyte A){
+        color.r = R;
+        color.g = G;
+        color.b = B;
+        color.a = A;
+    }
 
-void Vertex::setV(float V){
-    uv.v = V;
+    void Vertex::setUV(float U, float V){
+        uv.u = U;
+        uv.v = V;
+    }
+
+    void Vertex::addUV(float U, float V){
+        uv.u += U;
+        uv.v += V;
+    }
+
+    void Vertex::setU(float U){
+        uv.u = U;
+    }
+
+    void Vertex::setV(float V){
+        uv.v = V;
+    }
+    
 }
