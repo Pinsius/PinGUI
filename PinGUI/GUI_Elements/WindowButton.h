@@ -35,6 +35,7 @@ class WindowButton: public Button
         bool _switchState;
 
     public:
+        WindowButton(int x, int y, std::string name, clipboardData data);
         WindowButton(int x, int y, std::string name, clipboardData data, PinGUI::basicPointer f);
         WindowButton(int x, int y, std::string name, clipboardData data, PinGUI::basicPointer f, int maxSize);
         ~WindowButton();
