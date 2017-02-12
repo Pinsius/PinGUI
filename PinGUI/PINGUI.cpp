@@ -142,7 +142,7 @@ int PINGUI::getSizeOfActiveWindows(){
 
 void PINGUI::checkMainWindow(){
 
-    if (!GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_mainWindow->getCollider()))){
+    if (_mainWindow && !GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_mainWindow->getCollider()))){
 
         for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++){
 
