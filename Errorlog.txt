@@ -1,0 +1,3 @@
+Error 1 : Scroller was unable to be loaded due to a incorrect ratio
+- it means the scroller wasnt able to create the scroller because of the size of realWidth/realHeight and the fact it wasnt too big
+  for example : width 300 and realWidth 305 etc.
