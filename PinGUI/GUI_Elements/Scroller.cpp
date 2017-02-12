@@ -176,5 +176,8 @@ void Scroller::initNormalizer(const int& totalValue, const int& numOfPixels){
     _NORMALIZER._PLUS = totalValue - (_ratio * numOfPixels);
     _NORMALIZER._MINUS = 0;
 
+     if (_NORMALIZER._PLUS==0)
+        _NORMALIZER._PLUS++;
+    
     _NORMALIZER._RATIO = numOfPixels/_NORMALIZER._PLUS;
 }
