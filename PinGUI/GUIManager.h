@@ -50,7 +50,7 @@
 
 #define BUTTON_TYPES 2
 
-//For allocation of new VBO´s(per object)
+//For allocation of new VBOÂ´s(per object)
 #define VBO_ALLOCATION_LIMIT 1000
 
 
@@ -97,9 +97,6 @@ class GUIManager
 
         //Method for checking the collisions
         void checkCollisions();
-
-        void manageCamera();
-
 
     public:
         GUIManager();
