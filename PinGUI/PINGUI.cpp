@@ -24,8 +24,6 @@
 
 #include "PINGUI.h"
 
-std::vector<Window*> PINGUI::_WINDOWS;
-
 std::vector<Window*> PINGUI::_ACTIVE_WINDOWS;
 
 std::vector<Window*> PINGUI::_NON_ACTIVE_WINDOWS;
@@ -38,10 +36,16 @@ GUIManager* PINGUI::_mainGUIManager = nullptr;
 
 void PINGUI::destroy(){
 
-    for (std::size_t i = 0; i < _WINDOWS.size(); i++){
+    for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++){
 
-        delete _WINDOWS[i];
+        delete _ACTIVE_WINDOWS[i];
     }
+    
+    for (std::size_t i = 0; i < _NON_ACTIVE_WINDOWS.size(); i++){
+
+        delete _NON_ACTIVE_WINDOWS[i];
+    }
+    
     delete _mainGUIManager;
 }
 
