@@ -92,8 +92,6 @@ class TextManager
 
         void removeData(std::size_t& position);
 
-        void manageCamera();
-
         /**
             Manipulation with VBOs etc.
         **/
