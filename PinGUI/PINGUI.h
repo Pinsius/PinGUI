@@ -35,7 +35,6 @@
 class PINGUI
 {
     private:
-         static std::vector<Window*> _WINDOWS;
 
          static std::vector<Window*> _ACTIVE_WINDOWS;
 
