@@ -90,7 +90,6 @@ Text* TextManager::writeText(const std::string& text,int x, int y, int* var){
 void TextManager::renderText(){
 
     glBindVertexArray(_vaoID);
-    manageCamera();
 
     updateText();
 
@@ -175,11 +174,6 @@ void TextManager::removeData(std::size_t& position){
     _mainDataStorage.erase(_mainDataStorage.begin()+position);
 
     _needUpdate = true;
-}
-
-void TextManager::manageCamera(){
-    
-    glUniformMatrix4fv(CameraManager::getMatrixLocation(), 1, GL_FALSE, CameraManager::getCamera());
 }
 
 void TextManager::checkForUpdate(){
