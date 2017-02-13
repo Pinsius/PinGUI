@@ -226,8 +226,11 @@ void GUIManager::loadVBO(){
 
 void GUIManager::render(){
 
-    if (_needUpdate)
+    if (_needUpdate || _moved)
     {
+       if (_moved) 
+           _moved = false
+           
        updateVBO();
     }
 
