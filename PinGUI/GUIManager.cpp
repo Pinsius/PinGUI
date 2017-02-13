@@ -226,8 +226,6 @@ void GUIManager::loadVBO(){
 
 void GUIManager::render(){
 
-    manageCamera();
-
     if (_needUpdate)
     {
        updateVBO();
@@ -338,10 +336,6 @@ void GUIManager::updateVBO(){
     }
 
     loadVBO();
-}
-
-void GUIManager::manageCamera(){
-    glUniformMatrix4fv(CameraManager::getMatrixLocation(), 1, GL_FALSE, CameraManager::getCamera());
 }
 
 GLuint* GUIManager::getVAOID(){
