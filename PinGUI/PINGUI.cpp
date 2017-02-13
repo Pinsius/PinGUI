@@ -123,7 +123,8 @@ void PINGUI::checkActiveWindows(){
 
     for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++)
         if (!_ACTIVE_WINDOWS[i]->getShow()){
-
+            
+            _mainCollider = nullptr;
             _NON_ACTIVE_WINDOWS.push_back(_ACTIVE_WINDOWS[i]);
             _ACTIVE_WINDOWS.erase(_ACTIVE_WINDOWS.begin()+i);
 
