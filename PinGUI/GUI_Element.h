@@ -165,9 +165,9 @@ class GUI_Element
         float getTopPoint(int pos = 0);
         PinGUI::Vector2<GUIPos> getPositionVector();
         PinGUI::Vector2<GUIPos>* getPositionVector_P();
+    
+        bool isAiming();
+        void setAim(bool state);
 };
-
-//Member function pointer
-typedef void (*clFunction)();
 
 #endif // GUI_ELEMENT_H
