@@ -126,6 +126,14 @@ int PINGUI::getSizeOfActiveWindows(){
     return _ACTIVE_WINDOWS.size();
 }
 
+bool PINGUI::collide(Window* win){
+
+    if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(win->getCollider())))
+        return true;
+    else
+        return false;
+}
+
 void PINGUI::checkMainWindow(){
 
     if (_mainWindow && !GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_mainWindow->getCollider()))){
