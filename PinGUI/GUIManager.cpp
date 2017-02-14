@@ -229,7 +229,7 @@ void GUIManager::render(){
     if (_needUpdate || _moved)
     {
        if (_moved) 
-           _moved = false
+           _moved = false;
            
        updateVBO();
     }
@@ -270,7 +270,7 @@ void GUIManager::renderText(){
     _texter->renderText();
 }
 
-void GUIManager::update(){
+void GUIManager::update(bool allowCollision){
 
     if (_manipulatingElement==nullptr){
         
