@@ -212,7 +212,7 @@ class Window: public GUI_Element
 
         void render();
 
-        void update();
+        void update(bool allowCollision = true);
         void update(float deltaTime);
 
         void moveWindow(PinGUI::Vector2<GUIPos> vect);
