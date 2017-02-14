@@ -351,3 +351,11 @@ void GUI_Element::setExist(bool state){
 bool GUI_Element::exist(){
     return _exist;
 }
+
+bool GUI_Element::isAiming(){
+    return _aimON;
+}
+
+void GUI_Element::setAim(bool state){
+    _aimON = state;
+}
