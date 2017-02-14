@@ -273,7 +273,19 @@ void GUIManager::renderText(){
 void GUIManager::update(){
 
     if (_manipulatingElement==nullptr){
-        checkCollisions();
+        
+        if (allowCollision)
+            checkCollisions();
+         else {
+
+            for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
+
+                if (_ELEMENTS[i]->isAiming()){
+                    _ELEMENTS[i]->turnOffAim();
+                    _needUpdate = true;
+                }
+            }
+         }
     } else {
         _manipulatingElement->manipulatingMod(&_manipulatingElement);
     }
