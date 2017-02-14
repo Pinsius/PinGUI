@@ -30,8 +30,6 @@ std::vector<Window*> PINGUI::_NON_ACTIVE_WINDOWS;
 
 Window* PINGUI::_mainWindow = nullptr;
 
-Window* PINGUI::_mainCollider = nullptr;
-
 GUIManager* PINGUI::_mainGUIManager = nullptr;
 
 void PINGUI::destroy(){
@@ -81,42 +79,22 @@ void PINGUI::render(){
 }
 
 void PINGUI::update(){
-
+    
+    bool allowUpdate = true;
+    
     checkActiveWindows();
 
+    for (std::size_t i = _ACTIVE_WINDOWS.size(); i > 0; i--){
+
+        _ACTIVE_WINDOWS[i-1]->update(allowUpdate);
+
+        if (allowUpdate && collide(_ACTIVE_WINDOWS[i-1])){
+            allowUpdate = false;
+        }
+    }
+
     if (_mainGUIManager)
-        _mainGUIManager->update();
-
-    if (!_mainCollider){
-
-        findMainCollider();
-    } else {
-
-        if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_mainCollider->getCollider()))){
-
-            _mainCollider->update();
-        } else {
-
-            _mainCollider = nullptr;
-        }
-    }
-
-    for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++)
-        if (_mainCollider != _ACTIVE_WINDOWS[i])
-            _ACTIVE_WINDOWS[i]->update();
-}
-
-void PINGUI::findMainCollider(){
-
-    for (std::size_t i = _ACTIVE_WINDOWS.size(); i >0; i--){
-
-        if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_ACTIVE_WINDOWS[i-1]->getCollider()))){
-
-            _mainCollider = _ACTIVE_WINDOWS[i-1];
-            _mainCollider->update();
-            break;
-        }
-    }
+        _mainGUIManager->update(allowUpdate);
 }
 
 void PINGUI::setMainWindow(Window* win){
@@ -153,11 +131,14 @@ void PINGUI::checkMainWindow(){
 
     if (_mainWindow && !GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_mainWindow->getCollider()))){
 
-        for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++){
+        for (std::size_t i = _ACTIVE_WINDOWS.size(); i >0; i--){
 
-            if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_ACTIVE_WINDOWS[i]->getCollider()))){
+            if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(_ACTIVE_WINDOWS[i-1]->getCollider()))){
 
-                _mainWindow = _ACTIVE_WINDOWS[i];
+                _mainWindow = _ACTIVE_WINDOWS[i-1];
+
+                _ACTIVE_WINDOWS[i-1] = _ACTIVE_WINDOWS.back();
+                _ACTIVE_WINDOWS.back() = _mainWindow;
 
                 return;
             }
@@ -176,6 +157,8 @@ PinGUI::basicPointer PINGUI::getFunctionPointer(){
 void PINGUI::initLibrary(int screenWidth, int screenHeight){
     
     _mainGUIManager = new GUIManager();
+    
+    initStorage();
 
     SheetManager::loadAllTextures();
 
@@ -200,4 +183,10 @@ void PINGUI::processInput(){
 GUIManager* PINGUI::getGUI(){
     
     return _mainGUIManager;
+}
+
+void PINGUI::initStorage(){
+
+    _ACTIVE_WINDOWS.reserve(WINDOW_STORAGE_SIZE);
+    _NON_ACTIVE_WINDOWS.reserve(WINDOW_STORAGE_SIZE);
 }
