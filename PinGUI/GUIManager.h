@@ -133,7 +133,7 @@ class GUIManager
         void render();
 
         //Update method
-        void update();
+        void update(bool allowCollision = true);
 
         void checkCrop();
         void doCrop();
