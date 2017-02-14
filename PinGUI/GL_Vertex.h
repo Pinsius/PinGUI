@@ -98,21 +98,6 @@ namespace PinGUI{
             void setV(float V);
     };
 
-    //Structure to represent the sprite box - rect
-    class Rect{
-    public:
-        float x;
-        float y;
-        float w;
-        float h;
-        Rect();
-        Rect(float X, float Y, float W, float H) :
-            x(X),
-            y(Y),
-            w(W),
-            h(H){};
-    };
-    
 }
 
 
