@@ -209,13 +209,13 @@ void Window::render(){
     }
 }
 
-void Window::update(){
+void Window::update(bool allowCollision){
 
 
     if (_windowUpdate)
         moveWindow(Input_Manager::getLastVector());
 
-    _mainGUIManager->update();
+    _mainGUIManager->update(allowCollision);
 
     if (_mainWindowTab){
 
@@ -228,7 +228,7 @@ void Window::update(){
         }
 
         if (_mainWindowTab)
-            _mainWindowTab->update();
+            _mainWindowTab->getGUI()->update(allowCollision);
     }
 }
 
