@@ -26,12 +26,13 @@
 **/
 
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <boost/bind.hpp>
 
-#include "PinGUI/GUI_Elements/ClipBoard.h"
-#include "PinGUI/GUI_Elements/Window_Arrow.h"
-#include "PinGUI/SheetManager.h"
+#include "../GUI_Elements/ClipBoard.h"
+#include "../GUI_Elements/Window_Arrow.h"
+#include "../SheetManager.h"
 
 #define ARROW_OFFSET 3
 #define HORIZONTAL_ARROWS_OFFSET 4
@@ -41,13 +42,11 @@
 #define ARROWBOARD_COLLIDER_W -4,5
 #define ARROWBOARD_COLLIDER_H -3
 
-
-
-
 class ArrowBoard: public GUI_Element
 {
     private:
         GUI_Element* _clipBoard;
+
         std::vector<GUI_Element*> _ARROWS;
 
         int* _var;
@@ -76,6 +75,7 @@ class ArrowBoard: public GUI_Element
         void info() override;
 
         void moveElement(const PinGUI::Vector2<GUIPos>& vect) override;
+
         void cropElement(PinGUI::Rect& rect) override;
 
 };

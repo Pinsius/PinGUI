@@ -25,12 +25,11 @@
 
 **/
 
-#include "PinGUI/GUI_Sprite.h"
-#include "PinGUI/PinGUI_Rect.hpp"
-#include "PinGUI/GUI_CollisionManager.cpp"
-
-#include "PinGUI/clFunction.hpp"
-#include "PinGUI/GL_Vertex.h"
+#include "GUI_Sprite.h"
+#include "PinGUI_Rect.hpp"
+#include "GUI_CollisionManager.cpp"
+#include "clFunction.hpp"
+#include "GL_Vertex.h"
 
 #define NORMALIZE_CONSTANT 1
 

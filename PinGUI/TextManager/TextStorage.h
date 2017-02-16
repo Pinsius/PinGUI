@@ -25,8 +25,8 @@
 
 **/
 
-#include "PinGUI/TextManager/TextManager.h"
-#include "PinGUI/stuff.h"
+#include "../TextManager/TextManager.h"
+#include "../stuff.h"
 
 struct additionalStorage{
     PinGUI::Rect* offsetRect;
@@ -38,6 +38,7 @@ class TextStorage
     private:
         //It is holding pointers to texts and also a pointer to the textmanager
         std::vector<Text*> _TEXTS;
+
         TextManager* texter;
 
         //Pointer to an additional informations - in case of clipboards, etc.
@@ -49,14 +50,18 @@ class TextStorage
 
         void addText(const std::string& text, int x, int y) ;
         void addText(const std::string& text, int x, int y, int* var);
+
         void destroyText(int position = 0);
 
         void addChar(char* ch, int position, int maxValue);
         void removeChar(int position);
 
         Text* getText(int position = 0);
+
         std::vector<Text*>* getVector();
+
         void setAdditionalInfo(PinGUI::Rect* OffsetRect, clipboard_type* Type);
+
         void proccess(char* ch);
 };
 

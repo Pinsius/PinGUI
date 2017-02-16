@@ -25,10 +25,10 @@
 
 **/
 
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
-#include "PinGUI/GL_Vertex.h"
+#include "GL_Vertex.h"
 
 class textInfo{
 public:

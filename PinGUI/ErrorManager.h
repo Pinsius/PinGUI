@@ -25,10 +25,10 @@
 
 **/
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <string>
-#include <conio.h>
 #include <cstdlib>
+#include <iostream>
 
 ///Namespace for defining error messages
 
@@ -48,7 +48,7 @@ namespace ErrorManager{
 
     //System errors - they talk about system fails
     static void systemError(const std::string& errorName){
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"System error",errorName.c_str(),NULL);
+        std::cout << "System error: " << errorName.c_str();
         closeProgram();
     }
 
@@ -58,7 +58,7 @@ namespace ErrorManager{
 
     //Errors connected with file loading problems (Couldn´t open aaa.txt ... )
     static void fileError(const std::string& errorName){
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"File can not be loaded!",errorName.c_str(),NULL);
+        std::cout << "File can not be loaded! Log: " << errorName.c_str();
         closeProgram();
     }
 
@@ -68,7 +68,7 @@ namespace ErrorManager{
 
     //Just info logs - for changing resolution, telling the version of openGL etc.
     static void infoLog(const std::string& title, const std::string& info){
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,title.c_str(),info.c_str(),NULL);
+        std::cout << "Warning log: " << title.c_str() << info.c_str();
     }
 }
 

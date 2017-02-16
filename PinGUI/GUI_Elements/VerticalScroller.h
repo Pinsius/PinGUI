@@ -24,9 +24,9 @@
     3. This notice may not be removed or altered from any source distribution.
 
 **/
+#include <boost/bind.hpp>
 
-
-#include "PinGUI/GUI_Elements/Scroller.h"
+#include "../GUI_Elements/Scroller.h"
 
 class VerticalScroller: public Scroller
 {

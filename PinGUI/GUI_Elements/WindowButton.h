@@ -25,8 +25,8 @@
 
 **/
 
-#include "PinGUI/GUI_Elements/Button.h"
-#include "PinGUI/GUI_Elements/Window.h"
+#include "../GUI_Elements/Button.h"
+#include "../GUI_Elements/Window.h"
 
 class WindowButton: public Button
 {

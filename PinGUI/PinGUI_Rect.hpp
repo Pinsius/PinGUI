@@ -25,11 +25,10 @@
 
 **/
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 
-#include "PinGUI/PinGUI_Vector.hpp"
-
+#include "PinGUI_Vector.hpp"
 
 //In case you use also vector objects from other libraries
 namespace PinGUI{

@@ -24,9 +24,11 @@
     3. This notice may not be removed or altered from any source distribution.
 
 **/
+#include <boost/bind.hpp>
 
-#include "PinGUI/GUI_Elements/Window.h"
-#include "PinGUI/Shader_Program.h"
+#include "GUI_Elements/Window.h"
+#include "Shader_Program.h"
+
 
 #define WINDOW_STORAGE_SIZE 200
 /**
@@ -50,15 +52,15 @@ class PINGUI
          static void checkActiveWindows();
 
          static void initStorage();
-         
+
          static bool collide(Window* win);
 
     public:
 
         static void initLibrary(int screenWidth, int screenHeight);
-    
+
         static void processInput();
-    
+
         static void destroy();
 
         static void addWindow(Window* win);
@@ -72,7 +74,7 @@ class PINGUI
         static int getSizeOfActiveWindows();
 
         static void checkMainWindow();
-    
+
         static GUIManager* getGUI();
 
         static PinGUI::basicPointer getFunctionPointer();

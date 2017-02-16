@@ -24,8 +24,6 @@
 
 #include "CrossBox.h"
 
-
-
 CrossBox::CrossBox(int x, int y, bool* var):
     _var(var)
 {
@@ -52,16 +50,20 @@ CrossBox::~CrossBox()
 }
 
 void CrossBox::onClick(){
+
     if (*_var){
+
         *_var = false;
         _SPRITES[0]->changeTexture(SheetManager::getSurface(CHECKBOX));
     } else {
+
         *_var = true;
         _SPRITES[0]->changeTexture(SheetManager::getSurface(NON_CHECKBOX));
     }
 }
 
 void CrossBox::setWritingAvailability(bool state){
+
     if (state){
         getSprite()->changeColor(GUI_ColorManager::getColor(CLIPBOARD_TCOLOR));
     } else {

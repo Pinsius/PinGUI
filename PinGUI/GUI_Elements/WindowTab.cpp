@@ -24,8 +24,6 @@
 
 #include "WindowTab.h"
 
-
-
 WindowTab::WindowTab(PinGUI::Rect positionRect,WindowTab** mainTab, bool* tabChange):
     _mainTab(mainTab),
     _tabChange(tabChange)

@@ -24,8 +24,6 @@
 
 #include "Image.h"
 
-
-
 Image::Image(std::string filePath, int x, int y)
 {
     _position.x = x;

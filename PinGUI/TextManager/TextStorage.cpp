@@ -56,14 +56,13 @@ void TextStorage::addText(const std::string& text, int x, int y, int* var){
 void TextStorage::destroyText(int position){
 
     _TEXTS[position]->setActive(false);
-  //  delete _TEXTS[position];
-   // _TEXTS[position] = nullptr;
     _TEXTS.erase(_TEXTS.begin()+ position);
 }
 
 void TextStorage::addChar(char* ch, int position, int maxValue){
     if (*(_additionalStorage->type)==INT_ONLY){
         if (_TEXTS[position]->haveNum()){
+
             //In case that the clipboard contains a variable
             if ((_TEXTS[position]->getVariableNum()*10) + (*ch-48)<=maxValue){
                 if (_TEXTS[position]->isZero()){
@@ -73,6 +72,7 @@ void TextStorage::addChar(char* ch, int position, int maxValue){
                 return;
             }
         } else {
+
             //In case of normal clipboard with int text
             if (_TEXTS[position]->isZero()){
                 _TEXTS[position]->removeChar();
@@ -86,6 +86,7 @@ void TextStorage::addChar(char* ch, int position, int maxValue){
 }
 
 void TextStorage::removeChar(int position){
+
     if (*(_additionalStorage->type)==INT_ONLY){
 
         if (_TEXTS[position]->getTextSize()==1)
@@ -108,6 +109,7 @@ Text* TextStorage::getText(int position){
 }
 
 void TextStorage::setAdditionalInfo(PinGUI::Rect* OffsetRect, clipboard_type* Type){
+
     if (_additionalStorage){
         delete _additionalStorage;
     }

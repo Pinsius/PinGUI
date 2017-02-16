@@ -25,8 +25,7 @@
 
 **/
 
-
-#include "PinGUI/GUI_Element.h"
+#include "../GUI_Element.h"
 
 class Image: public GUI_Element
 {

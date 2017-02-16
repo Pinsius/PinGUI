@@ -25,10 +25,11 @@
 
 **/
 
+#include <boost/bind.hpp>
 
-#include "PinGUI/GUI_Elements/ClipBoard.h"
-#include "PinGUI/GUI_Elements/VerticalScroller.h"
-#include "PinGUI/GUI_Elements/ComboBoxItem.h"
+#include "../GUI_Elements/ClipBoard.h"
+#include "../GUI_Elements/VerticalScroller.h"
+#include "../GUI_Elements/ComboBoxItem.h"
 
 #define DEFAULT_NUM_OF_COMBO_ITEMS 4
 #define DEFAULT_LENGTH_OF_KEYCOMBO_WORD 10

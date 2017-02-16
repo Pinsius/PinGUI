@@ -60,7 +60,7 @@ void Scroller::loadScrollMover(int value, int totalValue){
     _oldDiff = 0;
 
     calculateRatio(totalValue - value);
-    
+
      // In case the realSize was not big enough to load the scroller
     if (_ratio<=0){
 
@@ -96,7 +96,7 @@ void Scroller::setWritingAvailability(bool state){
 void Scroller::attachScrollerToInput(){
 
     PinGUI::basicPointer f;
-    f._function = std::bind(Scroller::checkForWheelMove,this);
+    f._function = boost::bind(&Scroller::checkForWheelMove,this);
 
     Input_Manager::setWheeledInfo(getSprite(1),_update,f);
 }
@@ -186,6 +186,6 @@ void Scroller::initNormalizer(const int& totalValue, const int& numOfPixels){
 
      if (_NORMALIZER._PLUS==0)
         _NORMALIZER._PLUS++;
-    
+
     _NORMALIZER._RATIO = numOfPixels/_NORMALIZER._PLUS;
 }

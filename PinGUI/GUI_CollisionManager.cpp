@@ -26,7 +26,7 @@
 
 **/
 
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include <iostream>
 #include "PinGUI_Rect.hpp"
 
@@ -35,6 +35,7 @@
 **/
 
 namespace GUI_CollisionManager{
+
     static bool colliding;
 
     /**
@@ -56,8 +57,11 @@ namespace GUI_CollisionManager{
 
     //Normal listener for click
     static bool clicked(SDL_Event* e){
+
         switch(e->type){
+
             case SDL_MOUSEBUTTONDOWN : {
+
                 if (e->button.button==SDL_BUTTON_LEFT){
                         return true;
                 }

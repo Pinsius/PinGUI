@@ -22,7 +22,8 @@
 
 **/
 
-#include "PinGUI/GL_Vertex.h"
+#include "GL_Vertex.h"
+
 namespace PinGUI{
     VertexColor::VertexColor(){
 
@@ -71,5 +72,5 @@ namespace PinGUI{
     void Vertex::setV(float V){
         uv.v = V;
     }
-    
+
 }

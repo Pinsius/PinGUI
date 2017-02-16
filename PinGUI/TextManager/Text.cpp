@@ -75,6 +75,7 @@ Text::~Text()
 }
 
 void Text::needUpdate(textInfo* info, bool& update){
+
     if (variable!=NULL){
         if (*variable!=last_var||changed){
 
@@ -103,6 +104,7 @@ void Text::needUpdate(textInfo* info, bool& update){
 }
 
 void Text::getNewText(textInfo*& info){
+
     GUI_Sprite* tmp;
     if (variable==NULL){
 
@@ -126,6 +128,7 @@ void Text::getNewText(textInfo*& info){
 }
 
 void Text::replaceText(std::string newText){
+
     text = newText;
     changed = true;
 }

@@ -33,15 +33,15 @@
 #include <algorithm>
 #include <memory>
 
-#include "PinGUI/TextManager/Text.h"
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include "../TextManager/Text.h"
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
-#include "PinGUI/VBO_Manager.h"
-#include "PinGUI/PinGUI_Vector.hpp"
-#include "PinGUI/CropManager.hpp"
-#include "PinGUI/clFunction.hpp"
-#include "PinGUI/CameraManager.h"
+#include "../VBO_Manager.h"
+#include "../PinGUI_Vector.hpp"
+#include "../CropManager.hpp"
+#include "../clFunction.hpp"
+#include "../CameraManager.h"
 
 #define elements 2
 

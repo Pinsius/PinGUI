@@ -38,12 +38,12 @@ void PINGUI::destroy(){
 
         delete _ACTIVE_WINDOWS[i];
     }
-    
+
     for (std::size_t i = 0; i < _NON_ACTIVE_WINDOWS.size(); i++){
 
         delete _NON_ACTIVE_WINDOWS[i];
     }
-    
+
     delete _mainGUIManager;
 }
 
@@ -56,7 +56,7 @@ void PINGUI::addWindow(Window* win){
 }
 
 void PINGUI::render(){
-    
+
     Shader_Program::use();
 
     if (_mainGUIManager)
@@ -74,14 +74,14 @@ void PINGUI::render(){
 
         _mainWindow->render();
     }
-    
+
     Shader_Program::unuse();
 }
 
 void PINGUI::update(){
-    
+
     bool allowUpdate = true;
-    
+
     checkActiveWindows();
 
     for (std::size_t i = _ACTIVE_WINDOWS.size(); i > 0; i--){
@@ -105,7 +105,7 @@ void PINGUI::checkActiveWindows(){
 
     for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++)
         if (!_ACTIVE_WINDOWS[i]->getShow()){
-            
+
             _NON_ACTIVE_WINDOWS.push_back(_ACTIVE_WINDOWS[i]);
             _ACTIVE_WINDOWS.erase(_ACTIVE_WINDOWS.begin()+i);
 
@@ -156,15 +156,15 @@ void PINGUI::checkMainWindow(){
 PinGUI::basicPointer PINGUI::getFunctionPointer(){
 
     PinGUI::basicPointer f;
-    f._function = std::bind(PINGUI::checkMainWindow);
+    f._function = boost::bind(&PINGUI::checkMainWindow);
 
     return f;
 }
 
 void PINGUI::initLibrary(int screenWidth, int screenHeight){
-    
+
     _mainGUIManager = new GUIManager();
-    
+
     initStorage();
 
     SheetManager::loadAllTextures();
@@ -178,7 +178,7 @@ void PINGUI::initLibrary(int screenWidth, int screenHeight){
     CameraManager::init(screenWidth,screenHeight);
 
     Input_Manager::setClickFunction(PINGUI::getFunctionPointer());
-    
+
     Shader_Program::initShaders();
 }
 
@@ -188,7 +188,7 @@ void PINGUI::processInput(){
 }
 
 GUIManager* PINGUI::getGUI(){
-    
+
     return _mainGUIManager;
 }
 

@@ -25,7 +25,7 @@
 
 **/
 
-#include "PinGUI/GUI_Element.h"
+#include "../GUI_Element.h"
 
 /**
     This element contains a sprite with transparency at 100%

@@ -74,8 +74,8 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<GUI_Element*>& _ELEME
     Window_Arrow* tmpArrow;
 
     PinGUI::basicPointer f1,f2;
-    f1._function = std::bind(&ArrowBoard::incVar,this);
-    f2._function = std::bind(&ArrowBoard::decVar,this);
+    f1._function = boost::bind(&ArrowBoard::incVar,this);
+    f2._function = boost::bind(&ArrowBoard::decVar,this);
 
 
     switch (state){

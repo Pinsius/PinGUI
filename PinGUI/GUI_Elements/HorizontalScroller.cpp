@@ -48,10 +48,10 @@ HorizontalScroller::~HorizontalScroller()
 void HorizontalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
 
     PinGUI::basicPointer f1;
-    f1._function = std::bind(HorizontalScroller::incScroller,this);
+    f1._function = boost::bind(&HorizontalScroller::incScroller,this);
 
     PinGUI::basicPointer f2;
-    f2._function = std::bind(HorizontalScroller::decScroller,this);
+    f2._function = boost::bind(&HorizontalScroller::decScroller,this);
 
     PinGUI::Rect tmpRect;
     tmpRect.w = WINDOW_ARROW_W;

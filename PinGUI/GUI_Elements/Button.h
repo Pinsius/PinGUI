@@ -25,8 +25,7 @@
 
 **/
 
-
-#include "PinGUI/GUI_Elements/ClipBoard.h"
+#include "../GUI_Elements/ClipBoard.h"
 
 class Button: public ClipBoard
 {

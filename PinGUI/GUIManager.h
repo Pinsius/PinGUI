@@ -29,28 +29,26 @@
 #include <algorithm>
 #include <typeinfo>
 
-#include "PinGUI/TextManager/TextManager.h"
-
-#include "PinGUI/stuff.h"
-#include "PinGUI/GUI_Cursor.h"
-#include "PinGUI/GUI_CollisionManager.cpp"
-#include "PinGUI/GUI_ColorManager.h"
-#include "PinGUI/CameraManager.h"
-
-#include "PinGUI/VBO_Manager.h"
+#include "TextManager/TextManager.h"
+#include "stuff.h"
+#include "GUI_Cursor.h"
+#include "GUI_CollisionManager.cpp"
+#include "GUI_ColorManager.h"
+#include "CameraManager.h"
+#include "VBO_Manager.h"
 
 /*** GUI ELEMENTS ***/
-#include "PinGUI/GUI_Elements/ClipBoard.h"
-#include "PinGUI/GUI_Elements/ArrowBoard.h"
-#include "PinGUI/GUI_Elements/VolumeBoard.h"
-#include "PinGUI/GUI_Elements/CrossBox.h"
-#include "PinGUI/GUI_Elements/ComboBox.h"
-#include "PinGUI/GUI_Elements/Image.h"
-#include "PinGUI/GUI_Elements/Button.h"
+#include "GUI_Elements/ClipBoard.h"
+#include "GUI_Elements/ArrowBoard.h"
+#include "GUI_Elements/VolumeBoard.h"
+#include "GUI_Elements/CrossBox.h"
+#include "GUI_Elements/ComboBox.h"
+#include "GUI_Elements/Image.h"
+#include "GUI_Elements/Button.h"
 
 #define BUTTON_TYPES 2
 
-//For allocation of new VBO´s(per object)
+//For allocation of new VBO´s
 #define VBO_ALLOCATION_LIMIT 1000
 
 

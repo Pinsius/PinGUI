@@ -26,9 +26,9 @@
 **/
 
 
-#include "PinGUI/TextManager/TextStorage.h"
-#include "PinGUI/GUI_Element.h"
-#include "PinGUI/stuff.h"
+#include "../TextManager/TextStorage.h"
+#include "../GUI_Element.h"
+#include "../stuff.h"
 
 #define CLIPBOARD_WIDTH_OFFSET 6
 #define CLIPBOARD_HEIGHT_OFFSET 2

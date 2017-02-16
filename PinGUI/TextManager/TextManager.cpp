@@ -25,8 +25,6 @@
 #include "TextManager.h"
 #include <iostream>
 
-
-
 TextManager::TextManager():
 _vaoID(0),
 _vboID(0),
@@ -149,13 +147,13 @@ void TextManager::setColor(GLubyte R, GLubyte G, GLubyte B, GLubyte A){
 }
 
 void TextManager::loadVBO(){
-    
+
     if (_textVBOManager->bufferData(0,_mainDataStorage))
         _needUpdate = true;
 }
 
 void TextManager::loadTextInfo(){
-    
+
     SDL_Color tmp;
 
     //Default color
@@ -165,7 +163,7 @@ void TextManager::loadTextInfo(){
     tmp.a = 255;
 
     _mainTextInfo.color = tmp;
-    _mainTextInfo.font = loadFont("PinGUI/TextManager/Fonts/Oswald-Light.ttf",_fontSize);
+    _mainTextInfo.font = loadFont("TextManager/Fonts/Oswald-Light.ttf",_fontSize);
 }
 
 void TextManager::removeData(std::size_t& position){
@@ -216,9 +214,9 @@ Text* TextManager::getLastText(){
 }
 
 void TextManager::moveTextManager(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement){
-    
+
     for (std::size_t i = 0; i < _TEXTS.size(); i++){
-        
+
         if (!_TEXTS[i]->isNetworked())
             _TEXTS[i]->moveText(vect,croppedMovement);
     }

@@ -25,10 +25,10 @@
 
 **/
 
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
-#include "PinGUI/PinGUI_Rect.hpp"
-#include "PinGUI/Input_Manager.h"
+#include "PinGUI_Rect.hpp"
+#include "Input_Manager.h"
 
 #define CURSOR_WIDTH 1
 #define CURSOR_HEIGHT 1

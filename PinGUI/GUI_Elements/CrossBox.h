@@ -25,10 +25,9 @@
 
 **/
 
-
 #include <iostream>
 
-#include "PinGUI/GUI_Element.h"
+#include "../GUI_Element.h"
 
 #define CHECKBOX_COLLIDER_X 1
 #define CHECKBOX_COLLIDER_Y 1
@@ -38,13 +37,16 @@
 class CrossBox: public GUI_Element
 {
     private:
+
         bool* _var;
 
         /**
             Private methods
         **/
         void onClick() override;
+
         bool listenForClick(GUI_Element** manipulatingElement) override;
+
         void setWritingAvailability(bool state) override;
     public:
         CrossBox(int x, int y, bool* var);

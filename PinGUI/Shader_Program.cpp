@@ -39,7 +39,7 @@ GLint Shader_Program::_cameraMatrixLocation = 0;
 void Shader_Program::initShaders(){
 
     // Compile our color shader
-    compileShaders("PinGUI/Shaders/vertexShader.txt", "PinGUI/Shaders/fragmentShader.txt");
+    compileShaders("Shaders/vertexShader.txt", "PinGUI/Shaders/fragmentShader.txt");
 
     //Now add variables
     addAttribute("vertexPosition");
@@ -49,7 +49,7 @@ void Shader_Program::initShaders(){
 
     //Link the shaders
     linkShaders();
-    
+
     _cameraMatrixLocation = Shader_Program::getUniformLocation("P");
 
     CameraManager::setMatrixLocation(_cameraMatrixLocation);
@@ -172,7 +172,7 @@ void Shader_Program::use(){
     for (int i=0;i<_attributes;i++){
         glEnableVertexAttribArray(i);
     }
-    
+
     glActiveTexture(GL_TEXTURE0);
 
     glUniform1i(_samplerLocation, 0);
@@ -188,10 +188,10 @@ void Shader_Program::unuse(){
     for (int i=0;i<_attributes;i++){
         glDisableVertexAttribArray(i);
     }
-    
+
     //unbind the texture
     glBindTexture(GL_TEXTURE_2D, 0);
-    
+
 }
 
 GLuint Shader_Program::getUniformLocation(const std::string& uniformName){

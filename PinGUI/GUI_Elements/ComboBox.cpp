@@ -150,7 +150,7 @@ void ComboBox::initScroller(){
 
     //Set clFunction
     PinGUI::scrollFuncPointer f;
-    f._function = std::bind(ComboBox::updateCropArea,this,std::placeholders::_1);
+    f._function = boost::bind(&ComboBox::updateCropArea,this,_1);
 
     _scroller->setCamRollFunction(f);
 
@@ -195,7 +195,7 @@ void ComboBox::addItem(std::string name){
     PinGUI::Vector2<GUIPos> tmpPos (_position.x, getPosOfNextItem());
 
     PinGUI::basicPointer f;
-    f._function = std::bind(ComboBox::uploadContent,this);
+    f._function = boost::bind(&ComboBox::uploadContent,this);
 
     _ITEMS.push_back(new ComboBoxItem(tmpPos,name,&_mainItem,f,_maxSize,_data));
 
@@ -261,8 +261,6 @@ void ComboBox::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 
     moveCollider(_cropRect.realRect,vect);
     moveCollider(_cropRect.rect,vect);
-
-    //_textStorage->getText()->setOffsetRect(_offsetCollider);
 }
 
 void ComboBox::onClick(){
@@ -277,7 +275,7 @@ void ComboBox::onClick(){
         _ITEMS[i]->setShow(true);
 
     PinGUI::basicPointer tmpF;
-    tmpF._function = std::bind(ComboBox::hideContent,this);
+    tmpF._function = boost::bind(&ComboBox::hideContent,this);
     Input_Manager::setCallbackFunction(tmpF);
 
     _cropRect.rect.x = _offsetCollider.x;
@@ -304,7 +302,7 @@ void ComboBox::onClick(){
         _scroller->setShow(true);
 
         PinGUI::basicPointer f;
-        f._function = std::bind(Scroller::checkForWheelMove,_scroller);
+        f._function = boost::bind(&Scroller::checkForWheelMove,_scroller);
 
         Input_Manager::setTMPWheeledInfo(_scroller->getSprite(1),_needUpdate,f);
     }
@@ -340,8 +338,6 @@ void ComboBox::hideContent(){
         Input_Manager::cancelTMPWheeledInfo();
         Input_Manager::setAllowWheel(false);
     }
-
-
 }
 
 void ComboBox::uploadContent(){

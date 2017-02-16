@@ -25,7 +25,7 @@
 
 **/
 
-#include "PinGUI/GUI_Element.h"
+#include "../GUI_Element.h"
 
 /** EXIT BUTTON **/
 #define WINDOW_EXIT_X_OFFSET -15

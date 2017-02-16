@@ -25,7 +25,9 @@
 #include "CropManager.hpp"
 
 int CropManager::_cropVar = 0;
+
 int CropManager::_cropSize = 0;
+
 PinGUI::Rect CropManager::_lastCropRect(0,0,0,0);
 
 inline bool collideFromLeft(PinGUI::Rect& cropRect, PinGUI::Rect& dstRect){
@@ -204,7 +206,7 @@ void CropManager::cropSpriteVertically(GUI_Sprite*& sprite, PinGUI::Rect& cropRe
         changeUV(UP, sprite->getVBOData(), percentage);
 
         cropSize -= _cropVar;
-        
+
     } else if (sprite->getGUIRect().rect.h != rect.realRect.h){
 
         sprite->getGUIRect_P()->rect.h = sprite->getGUIRect_P()->realRect.h;

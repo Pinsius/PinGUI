@@ -47,10 +47,13 @@ WindowMover::~WindowMover()
 }
 
 void WindowMover::manipulatingMod(GUI_Element** manipulatingElement){
+
     if (!Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+
         endManipulatingMod(manipulatingElement);
         optionCollider();
         return;
+
     } else {
         //*_windowUpdate = true;
     }

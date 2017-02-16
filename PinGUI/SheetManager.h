@@ -25,12 +25,12 @@
 
 **/
 
-#include <SDL_image.h>
-#include <SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL.h>
 #include <vector>
 
-#include "PinGUI/ErrorManager.h"
-#include "PinGUI/Input_Manager.h"
+#include "ErrorManager.h"
+#include "Input_Manager.h"
 
 /**
     This class is used for choosing different sprites for TextManager/PinGUI from the sheet

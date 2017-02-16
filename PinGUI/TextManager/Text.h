@@ -28,7 +28,7 @@
 #include <sstream>
 #include <cstdlib>
 
-#include "PinGUI/GUI_Sprite.h"
+#include "../GUI_Sprite.h"
 
     class Text
     {

@@ -25,7 +25,7 @@
 
 **/
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #define COLOR_NUM 2
 

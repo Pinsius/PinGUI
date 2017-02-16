@@ -27,8 +27,9 @@
 
 #include <vector>
 #include <iostream>
+#include <stddef.h>
 
-#include "PinGUI/stuff.h"
+#include "stuff.h"
 
 class VBO_Manager
 {

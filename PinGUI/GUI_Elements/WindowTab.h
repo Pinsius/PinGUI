@@ -25,11 +25,11 @@
 
 **/
 
-#include "PinGUI/GUI_Element.h"
-#include "PinGUI/GUIManager.h"
-#include "PinGUI/SheetManager.h"
-#include "PinGUI/TextManager/Text.h"
-#include "PinGUI/clFunction.hpp"
+#include "../GUI_Element.h"
+#include "../GUIManager.h"
+#include "../SheetManager.h"
+#include "../TextManager/Text.h"
+#include "../clFunction.hpp"
 
 #define DEFAULT_WINDOWTAB_ALPHA 20
 #define ON_COLLIDE_WINDOWTAB_ALPHA 50

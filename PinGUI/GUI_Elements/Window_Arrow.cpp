@@ -52,14 +52,17 @@ Window_Arrow::~Window_Arrow()
 }
 
 void Window_Arrow::createCollider(PinGUI::Rect& tmpRect, arrowCollider& colliderType, orientation& orient){
+
     switch(colliderType){
+
         case WHOLE_RECT : {
+
             getSprite(-1)->offsetToRect(tmpRect);
             setUpBackgroundSprite(tmpRect);
             break;
         }
         case ARROW_ONLY : {
-           // tmpRect.x += 1;
+
             tmpRect.y += 1;
             if (orient==UP || orient==DOWN) {
                 tmpRect.w = PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_W;
@@ -96,6 +99,7 @@ void Window_Arrow::setUpBackgroundSprite(const PinGUI::Rect& tmpRect){
 }
 
 void Window_Arrow::setWritingAvailability(bool state){
+
     if (_arrowCollider==WHOLE_RECT) highlightRect(state);
     else highlightArrow(state);
 }

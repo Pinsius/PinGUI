@@ -25,18 +25,17 @@
 
 **/
 
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <vector>
 #include <iostream>
 #include <cstring>
 
-#include "PinGUI/GL_Vertex.h"
-
-#include "PinGUI//ErrorManager.h"
-#include "PinGUI/stuff.h"
-#include "PinGUI/PinGUI_Vector.hpp"
-#include "PinGUI/PinGUI_Rect.hpp"
+#include "GL_Vertex.h"
+#include "ErrorManager.h"
+#include "stuff.h"
+#include "PinGUI_Vector.hpp"
+#include "PinGUI_Rect.hpp"
 
 typedef float GUIPos;
 
@@ -132,12 +131,8 @@ class GUI_Sprite
         void changeColor(SDL_Color tmp);
         void setAlpha(int value);
 
-
         vboData* getVBOData();
         void setRect(PinGUI::Rect rect);
-
-
-
 };
 
 #endif // GUI_SPRITE_H

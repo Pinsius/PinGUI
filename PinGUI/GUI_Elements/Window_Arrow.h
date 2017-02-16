@@ -25,14 +25,12 @@
 
 **/
 
-#include "PinGUI/GUI_Element.h"
+#include "../GUI_Element.h"
 
 #define BASIC_ARROW_Y_OFFSET 2
 
 #define WINDOW_ARROW_W 11
 #define WINDOW_ARROW_H 11
-
-
 
 enum arrowCollider{
     WHOLE_RECT,
@@ -47,7 +45,6 @@ class Window_Arrow: public GUI_Element
 
         //Callback function that is called onClick
         PinGUI::basicPointer _clFunction;
-
 
         /**
             Private methods

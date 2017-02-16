@@ -24,8 +24,6 @@
 
 #include "ComboBoxItem.h"
 
-
-
 ComboBoxItem::ComboBoxItem(PinGUI::Vector2<GUIPos> position,
                            std::string itemText,
                            ComboBoxItem** mainComboBoxItem,
