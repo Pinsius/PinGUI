@@ -31,4 +31,4 @@ Video : https://www.youtube.com/watch?v=YxVG0uQdU_Y
 This library was developed primary for learning purposes but now i consider it to be able
 to handle also the GUI in my projects ( even if it still needs lot of improvements).
 
-More info will be provided soon and a small demo too
+More info will be provided soon 
