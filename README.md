@@ -14,6 +14,11 @@ C++/SDL2/OpenGL created by Lubomir "Pinsius" Barantal
  GLM library for matrix operations
  http://glm.g-truc.net/0.9.8/index.html
  
+ Boost (for bind function)
+ http://www.boost.org/
+ 
+ 
+ 
 Some of its features are :
 - Text creation (using SDL_TTF extension)
 - Dynamic text handling(if you write a variable, library will automatically update the text if the variable changes)
@@ -24,6 +29,7 @@ Some of its features are :
 - Windows have its own coordinate system ( [0;0] is the left corner of the window)
 - Each tab can have its own settings (for example font)
 
+Note: the library is still in development
 
 Video : https://www.youtube.com/watch?v=YxVG0uQdU_Y
 
