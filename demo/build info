@@ -3,4 +3,4 @@ Linked against:
 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 -lSDL2_ttf -lopengl32 -lglew32
 
-Extensions you need: SDL2,SDL2_image,SDL2_TTF,GLEW,glm
+Extensions you need: SDL2,SDL2_image,SDL2_TTF,GLEW,glm,boost
