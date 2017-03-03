@@ -124,13 +124,16 @@ class Input_Manager
         static int _screenWidth;
         static int _screenHeight;
 
-        static void process();
+        static void process(SDL_Event* mainEvent = nullptr);
 
         //Normal input
         static void processInput();
 
         //Writing mod
         static void writingMod();
+
+        //Manipulating mod
+        static void manipulatingMod();
 
         static void pressKey(unsigned int keyID);
 
@@ -202,7 +205,6 @@ class Input_Manager
         /**
             Manipulation with volumeboards like type(it is used also for moving the windowses)
         **/
-        static void manipulatingMod();
 
         static void manipulate();
 

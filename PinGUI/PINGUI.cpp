@@ -182,9 +182,9 @@ void PINGUI::initLibrary(int screenWidth, int screenHeight){
     Shader_Program::initShaders();
 }
 
-void PINGUI::processInput(){
+void PINGUI::processInput(SDL_Event* event){
 
-    Input_Manager::process();
+    Input_Manager::process(event);
 }
 
 GUIManager* PINGUI::getGUI(){

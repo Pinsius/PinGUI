@@ -35,11 +35,11 @@ void SheetManager::loadAllTextures(){
 
     //First i load whole image into 1 surface
     SDL_Surface* wholeSurface = nullptr;
-    wholeSurface = IMG_Load("TextManager/Images/TextManagerSheet.png");
+    wholeSurface = IMG_Load("PinGUI/TextManager/Images/TextManagerSheet.png");
 
     //Error checking
     if (wholeSurface==nullptr){
-        ErrorManager::fileError("TextManager/Images/TextManagerSheet.png");
+        ErrorManager::fileError("PinGUI/TextManager/Images/TextManagerSheet.png");
     }
 
     //I load all surfaces i need only once(at startup) so i have them loaded all the time prepared for use

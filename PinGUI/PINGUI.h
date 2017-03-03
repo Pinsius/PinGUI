@@ -59,7 +59,7 @@ class PINGUI
 
         static void initLibrary(int screenWidth, int screenHeight);
 
-        static void processInput();
+        static void processInput(SDL_Event* event = nullptr);
 
         static void destroy();
 

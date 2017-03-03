@@ -118,145 +118,158 @@ gameState Input_Manager::getState(){
     return _currentState;
 }
 
-void Input_Manager::process(){
-    
-    GUI_Cursor::updateCursor();
-    
+void Input_Manager::process(SDL_Event* mainEvent){
+
+    if (mainEvent){
+
+       _mainEvent = *mainEvent;
+    } else {
+
+        SDL_PollEvent(&_mainEvent);
+    }
+
     switch(_mainInputState){
+
         case GAMEINPUT: {
+
             processInput();
             break;
         }
         case WRITINGMOD: {
+
             writingMod();
             break;
         }
-        case MANIPULATINGMOD: {
+        case MANIPULATINGMOD:{
+
             manipulatingMod();
             break;
         }
     }
+
+    GUI_Cursor::updateCursor();
 }
 
 void Input_Manager::processInput(){
-    
-    while (SDL_PollEvent(&_mainEvent)) {
-        
-        switch (_mainEvent.type) {
-            case SDL_QUIT : {
-                Input_Manager::pressKey(SDL_QUIT);
-                break;
+
+    switch (_mainEvent.type) {
+        case SDL_QUIT : {
+            Input_Manager::pressKey(SDL_QUIT);
+            break;
+        }
+        case SDL_KEYDOWN : {
+            Input_Manager::pressKey(_mainEvent.key.keysym.sym);
+            break;
+        }
+        case SDL_KEYUP : {
+            Input_Manager::releaseKey(_mainEvent.key.keysym.sym);
+            break;
+        }
+        case SDL_MOUSEBUTTONDOWN : {
+
+            if (_mainEvent.button.button == SDL_BUTTON_LEFT){
+
+                if (_haveTarget) checkTarget();
+
+                _clickFunction.exec();
             }
-            case SDL_KEYDOWN : {
-                Input_Manager::pressKey(_mainEvent.key.keysym.sym);
-                break;
-            }
-            case SDL_KEYUP : {
-                Input_Manager::releaseKey(_mainEvent.key.keysym.sym);
-                break;
-            }
-            case SDL_MOUSEBUTTONDOWN : {
 
-                if (_mainEvent.button.button == SDL_BUTTON_LEFT){
+            Input_Manager::pressKey(_mainEvent.button.button);
+            break;
+        }
+        case SDL_MOUSEBUTTONUP : {
 
-                    if (_haveTarget) checkTarget();
+            if (_mainEvent.button.button == SDL_BUTTON_LEFT)
+                _alreadyClicked = false;
 
-                    _clickFunction.exec();
-                }
+            Input_Manager::releaseKey(_mainEvent.button.button);
+            break;
+        }
+        case SDL_MOUSEMOTION : {
 
+            singleClickTracker();
+            break;
+        }
+        case SDL_MOUSEWHEEL : {
 
-                Input_Manager::pressKey(_mainEvent.button.button);
-                break;
-            }
-            case SDL_MOUSEBUTTONUP : {
-
-                if (_mainEvent.button.button == SDL_BUTTON_LEFT)
-                    _alreadyClicked = false;
-
-                Input_Manager::releaseKey(_mainEvent.button.button);
-                break;
-            }
-            case SDL_MOUSEMOTION : {
-                singleClickTracker();
-                break;
-            }
-            case SDL_MOUSEWHEEL : {
-
-                if (_allowWheel)
-                    doWheelMovement();
-                break;
-            }
+            if (_allowWheel)
+                doWheelMovement();
+            break;
         }
     }
 }
 
 void Input_Manager::writingMod(){
-    
-    while (SDL_PollEvent(&_mainEvent)) {
-        
-        if(_mainEvent.type==SDL_QUIT){
-            Input_Manager::pressKey(SDL_QUIT);
-            break;
-        }
-        if (_mainEvent.type==SDL_KEYDOWN){
 
-            switch(_mainEvent.key.keysym.sym){
-                case SDLK_BACKSPACE: {
+    if(_mainEvent.type==SDL_QUIT){
 
-                    _clFunction.exec();
+        Input_Manager::pressKey(SDL_QUIT);
+        return;
+    }
 
-                    _manipulatedText->removeChar(0);
-                    break;
-                }
-                case SDLK_RETURN :
-                case SDLK_KP_ENTER :
-                case SDLK_ESCAPE : {
+    if (_mainEvent.type==SDL_KEYDOWN){
 
-                    Input_Manager::pressKey(_mainEvent.key.keysym.sym);
-                    break;
-                }
-            }
-        }
-        if (_mainEvent.type==SDL_TEXTINPUT && _mainEvent.key.repeat == 0){
+        switch(_mainEvent.key.keysym.sym){
+            case SDLK_BACKSPACE: {
 
-            if (canWrite(_mainEvent.text.text)){
-
-                //Also call callback
                 _clFunction.exec();
 
-                //I add the char to a manipulated text
-                _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo.maxValue);
-                break;
+                _manipulatedText->removeChar(0);
+                return;
             }
+            case SDLK_RETURN :
+            case SDLK_KP_ENTER :
+            case SDLK_ESCAPE : {
+
+                Input_Manager::pressKey(_mainEvent.key.keysym.sym);
+                return;
+            }
+        }
+    }
+    if (_mainEvent.type==SDL_TEXTINPUT && _mainEvent.key.repeat == 0){
+
+        if (canWrite(_mainEvent.text.text)){
+
+            //Also call callback
+            _clFunction.exec();
+
+            //I add the char to a manipulated text
+            _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo.maxValue);
+
+            return;
         }
     }
 }
 
 void Input_Manager::manipulatingMod(){
-    
-    while (SDL_PollEvent(&_mainEvent)) {
-        
-        switch(_mainEvent.type){
-            case SDL_KEYDOWN:{
-                Input_Manager::pressKey(_mainEvent.key.keysym.sym);
+
+    switch(_mainEvent.type){
+
+        case SDL_KEYDOWN:{
+
+            Input_Manager::pressKey(_mainEvent.key.keysym.sym);
+            return;
+        }
+
+        case SDL_MOUSEBUTTONUP:{
+
+            if (_mainEvent.button.button==SDL_BUTTON_LEFT){
+                Input_Manager::setKey(_mainEvent.button.button,false);
             }
-            case SDL_MOUSEBUTTONUP:{
-                if (_mainEvent.button.button==SDL_BUTTON_LEFT){
-                    Input_Manager::setKey(_mainEvent.button.button,false);
-                }
-                break;
-            }
-            case SDL_MOUSEMOTION:{
-                manipulate();
-                *_needUpdate = true;
-                break;
-            }
+            return;
+        }
+
+        case SDL_MOUSEMOTION:{
+
+            manipulate();
+            *_needUpdate = true;
+            return;
         }
     }
 }
 
 void Input_Manager::singleClickTracker(){
-    
+
     //Single click tracker function
     if (isKeyPressed(SDL_BUTTON_LEFT))
         _alreadyClicked = true;
@@ -264,19 +277,22 @@ void Input_Manager::singleClickTracker(){
 
 
 void Input_Manager::manipulate(){
-    
+
     int tmpX;
     int tmpY;
+
     SDL_GetMouseState(&tmpX,&tmpY);
     convertScreenToWorld(tmpX,tmpY);
 
     //Moving the sprite in horizontal line
     if (_manipulatingModInfo.manipState==HORIZONTAL||_manipulatingModInfo.manipState==WINDOW_MOVING){
+
         moveHorizontal(tmpX,tmpY);
     }
 
     //Moving the sprite in vertical line
     if (_manipulatingModInfo.manipState==VERTICAL||_manipulatingModInfo.manipState==WINDOW_MOVING){
+
         moveVertical(tmpX,tmpY);
     }
 
@@ -284,7 +300,7 @@ void Input_Manager::manipulate(){
 }
 
 void Input_Manager::moveHorizontal(const int& tmpX, const int& tmpY){
-    
+
     int diff = tmpX - GUI_Cursor::getX();
 
     _lastVector.x = diff;
@@ -294,7 +310,7 @@ void Input_Manager::moveHorizontal(const int& tmpX, const int& tmpY){
 }
 
 void Input_Manager::moveVertical(const int& tmpX, const int& tmpY){
-    
+
     int diff = tmpY - GUI_Cursor::getY();
 
     _lastVector.y = diff;
@@ -331,7 +347,7 @@ void Input_Manager::setManipulatedText(TextStorage* text){
 }
 
 bool Input_Manager::canWrite(char* ch){
-    
+
     if (_writingModInfo.intOnly){
 
         if (isdigit(*ch)&&chooseText()->getTextSize()+1<=_writingModInfo.max&&((*ch - 48)+(chooseText()->getNumericalText()*10)<=_writingModInfo.maxValue)){
@@ -360,7 +376,7 @@ void Input_Manager::initManipulation(GUI_Sprite* manip, bool* needUpdate){
 }
 
 void Input_Manager::createManipulatingModInfo(int x, int y, manipulationState state){
-    
+
     _manipulatingModInfo.lastX = x;
     _manipulatingModInfo.lastY = y;
     _manipulatingModInfo.manipState = state;
@@ -419,7 +435,7 @@ void Input_Manager::setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::
 
     if (!_allowWheel)
         _allowWheel = true;
-    
+
     _tmpWheelInfo = true;
 }
 
