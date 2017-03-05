@@ -37,4 +37,6 @@ Video : https://www.youtube.com/watch?v=YxVG0uQdU_Y
 This library was developed primary for learning purposes but now i consider it to be able
 to handle also the GUI in my projects ( even if it still needs lot of improvements).
 
+Im currently working on documentation and of course improvements of the existing code (also port to smart pointers to avoid memory leaks and fix bugs) but with lack of free time it takes longer than expected.
+
 More info will be provided soon 
