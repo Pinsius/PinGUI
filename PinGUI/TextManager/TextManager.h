@@ -43,13 +43,6 @@
 #include "../clFunction.hpp"
 #include "../CameraManager.h"
 
-#define elements 2
-
-enum cameraType{
-    DYNAMIC,
-    STAT
-};
-
 /**
     Main class
 **/
@@ -66,16 +59,11 @@ class TextManager
 
         //Font stuff
         int _fontSize;
+
         textInfo _mainTextInfo;
 
-        //GL stuff
-        GLuint _vaoID;
-
-        //VBO for position, color, UV
-        GLuint _vboID;
-        GLuint _instanceVBO; // VBO for instancing
-
         bool _needUpdate;
+
         bool _moved;
 
         //Function to be called everytime when i update text ( useful for dynamic cropping )
@@ -86,8 +74,11 @@ class TextManager
 
         //Functions for adding new text
         void checkForUpdate();
+
         void update();
+
         void createText();
+
         void replaceText(int& position);
 
         void removeData(std::size_t& position);
@@ -95,15 +86,11 @@ class TextManager
         /**
             Manipulation with VBOs etc.
         **/
-        void createDataStorage();
-        void manageOffsets();
         void loadVBO();
         void updateVBOData();
-        void createInstanceData();
 
     public:
         TextManager();
-        TextManager(GLuint* vaoID);
         ~TextManager();
 
         //I have 2 cases, so i need to overload these functions
@@ -119,6 +106,7 @@ class TextManager
         void setUpdate(bool state);
 
         void renderText();
+
         void updateText();
 
         void cropText(PinGUI::Rect& cropRect);
@@ -127,7 +115,7 @@ class TextManager
 
         std::vector<Text*>* getMainTextStorage();
 
-        int getFontSize(){return _fontSize;}
+        int getFontSize();
 
         Text* getLastText();
 
@@ -136,10 +124,6 @@ class TextManager
         textInfo* getTextInfo();
 
         void setFunction(PinGUI::basicPointer f);
-
 };
-
-
-
 
 #endif // TEXTMANAGER_H

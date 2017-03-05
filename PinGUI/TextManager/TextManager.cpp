@@ -26,42 +26,27 @@
 #include <iostream>
 
 TextManager::TextManager():
-_vaoID(0),
-_vboID(0),
 _needUpdate(false),
 _moved(false)
 {
     _fontSize = 14;
 
     _textVBOManager = new VBO_Manager(40,true);
-    _vaoID = _textVBOManager->getVAO();
 
-    //Loading all the stuff
-    loadTextInfo();
-}
-
-TextManager::TextManager(GLuint* vaoID):
-_vboID(0),
-_vaoID(*vaoID),
-_needUpdate(false),
-_moved(false)
-{
-    _fontSize = 14;
-
-    _textVBOManager = new VBO_Manager(40,false);
     //Loading all the stuff
     loadTextInfo();
 }
 
 TextManager::~TextManager()
 {
-    glDeleteBuffers(1,&_vboID);
+    delete _textVBOManager;
 
     if (_TEXTS.size()!=0){
         for (std::size_t i =0; i < _TEXTS.size();i++){
             delete _TEXTS[i];
         }
     }
+    _TEXTS.clear();
 }
 
 //I have 2 cases, so i need to overload these functions
@@ -72,6 +57,7 @@ Text* TextManager::writeText(const std::string& text,int x, int y){
     _TEXTS.push_back(new Text(text,tmpVecc,&_mainTextInfo));
 
     _needUpdate = true;
+
     return _TEXTS.back();
 
 }
@@ -82,12 +68,13 @@ Text* TextManager::writeText(const std::string& text,int x, int y, int* var){
     _TEXTS.push_back(new Text(text,tmpVecc,&_mainTextInfo,var));
 
     _needUpdate = true;
+
     return _TEXTS.back();
 }
 
 void TextManager::renderText(){
 
-    glBindVertexArray(_vaoID);
+    glBindVertexArray(_textVBOManager->getVAO());
 
     updateText();
 
@@ -248,4 +235,8 @@ void TextManager::cropText(PinGUI::Rect& cropRect){
 
 void TextManager::setFunction(PinGUI::basicPointer f){
     _function = f;
+}
+
+int TextManager::getFontSize(){
+    return _fontSize;
 }
