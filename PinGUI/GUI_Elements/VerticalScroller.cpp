@@ -110,10 +110,10 @@ int VerticalScroller::calculateScrollerSize(const int& value, int& totalValue){
 void VerticalScroller::onClick(){
 
     //Setting the input state
-    Input_Manager::setInputState(MANIPULATINGMOD);
-    Input_Manager::setState(GUI);
-    Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),VERTICAL);
-    Input_Manager::initManipulation(_SPRITES[1],_update);
+    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),VERTICAL);
+    PinGUI::Input_Manager::initManipulation(_SPRITES[1],_update);
 
 }
 

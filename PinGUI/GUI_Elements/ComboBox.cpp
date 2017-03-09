@@ -276,7 +276,7 @@ void ComboBox::onClick(){
 
     PinGUI::basicPointer tmpF;
     tmpF._function = boost::bind(&ComboBox::hideContent,this);
-    Input_Manager::setCallbackFunction(tmpF);
+    PinGUI::Input_Manager::setCallbackFunction(tmpF);
 
     _cropRect.rect.x = _offsetCollider.x;
     _cropRect.rect.w = _offsetCollider.w;
@@ -294,7 +294,7 @@ void ComboBox::onClick(){
 
     _cropRect.realRect = _cropRect.rect;
 
-    Input_Manager::setTarget(true,_cropRect.rect);
+    PinGUI::Input_Manager::setTarget(true,_cropRect.rect);
 
     if (_maxNumberOfItems< _ITEMS.size()){
 
@@ -304,7 +304,7 @@ void ComboBox::onClick(){
         PinGUI::basicPointer f;
         f._function = boost::bind(&Scroller::checkForWheelMove,_scroller);
 
-        Input_Manager::setTMPWheeledInfo(_scroller->getSprite(1),_needUpdate,f);
+        PinGUI::Input_Manager::setTMPWheeledInfo(_scroller->getSprite(1),_needUpdate,f);
     }
 
     updateCropArea(_rollbackVect);
@@ -335,8 +335,8 @@ void ComboBox::hideContent(){
 
         _scroller->hideScroller();
 
-        Input_Manager::cancelTMPWheeledInfo();
-        Input_Manager::setAllowWheel(false);
+        PinGUI::Input_Manager::cancelTMPWheeledInfo();
+        PinGUI::Input_Manager::setAllowWheel(false);
     }
 }
 

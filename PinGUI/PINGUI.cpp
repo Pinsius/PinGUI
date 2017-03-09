@@ -57,7 +57,7 @@ void PINGUI::addWindow(Window* win){
 
 void PINGUI::render(){
 
-    Shader_Program::use();
+    PinGUI::Shader_Program::use();
 
     if (_mainGUIManager)
         _mainGUIManager->render();
@@ -75,7 +75,7 @@ void PINGUI::render(){
         _mainWindow->render();
     }
 
-    Shader_Program::unuse();
+    PinGUI::Shader_Program::unuse();
 }
 
 void PINGUI::update(){
@@ -171,20 +171,20 @@ void PINGUI::initLibrary(int screenWidth, int screenHeight){
 
     GUI_CollisionManager::colliding = false;
 
-    Input_Manager::setScreenSize(screenWidth,screenHeight);
+    PinGUI::Input_Manager::setScreenSize(screenWidth,screenHeight);
 
     GUI_ColorManager::initColors();
 
-    CameraManager::init(screenWidth,screenHeight);
+    PinGUI::CameraManager::init(screenWidth,screenHeight);
 
-    Input_Manager::setClickFunction(PINGUI::getFunctionPointer());
+    PinGUI::Input_Manager::setClickFunction(PINGUI::getFunctionPointer());
 
-    Shader_Program::initShaders();
+    PinGUI::Shader_Program::initShaders();
 }
 
 void PINGUI::processInput(SDL_Event* event){
 
-    Input_Manager::process(event);
+    PinGUI::Input_Manager::process(event);
 }
 
 GUIManager* PINGUI::getGUI(){

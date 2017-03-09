@@ -108,9 +108,9 @@ void WindowTab::onClick(){
 
 bool WindowTab::listenForClick(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::hasAlreadyClicked()){
+    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
-        if (Input_Manager::clicked(SDL_BUTTON_LEFT)){
+        if (PinGUI::Input_Manager::clicked(SDL_BUTTON_LEFT)){
 
                 onClick();
                 return true;

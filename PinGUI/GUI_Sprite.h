@@ -31,7 +31,6 @@
 #include <iostream>
 #include <cstring>
 
-#include "GL_Vertex.h"
 #include "ErrorManager.h"
 #include "stuff.h"
 #include "PinGUI_Vector.hpp"

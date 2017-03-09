@@ -32,37 +32,41 @@
 
 #include "GUI_Sprite.h"
 
-class CameraManager
-{
-    private:
-        static float* _staticCamera;
+namespace PinGUI{
 
-        static GLint _matrixLocation;
+    class CameraManager
+    {
+        private:
+            static float* _staticCamera;
 
-        static int _screenWidth;
+            static GLint _matrixLocation;
 
-        static int _screenHeight;
+            static int _screenWidth;
 
-        /**
-        For GUI elements
-        static and dynamic matrices.
-        **/
-        static glm::mat4 _staticCameraMatrix;
+            static int _screenHeight;
 
-        //Orthomatrix
-        static glm::mat4 _orthoMatrix;
+            /**
+            For GUI elements
+            static and dynamic matrices.
+            **/
+            static glm::mat4 _staticCameraMatrix;
 
-    public:
+            //Orthomatrix
+            static glm::mat4 _orthoMatrix;
 
-        //sets up the orthographic matrix and screen dimensions
-        static void init(int screenWidth, int screenHeight);
+        public:
 
-        static float* getCamera();
+            //sets up the orthographic matrix and screen dimensions
+            static void init(int screenWidth, int screenHeight);
 
-        static glm::mat4 getCameraMatrix();
+            static float* getCamera();
 
-        static void setMatrixLocation(GLint location);
-        static GLint getMatrixLocation();
-};
+            static glm::mat4 getCameraMatrix();
+
+            static void setMatrixLocation(GLint location);
+            static GLint getMatrixLocation();
+    };
+}
+
 
 #endif // CAMERAMANAGER_H

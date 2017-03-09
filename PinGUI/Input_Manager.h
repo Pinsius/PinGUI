@@ -74,163 +74,166 @@ struct wheelingInfo{
     PinGUI::basicPointer _function;
 };
 
-class Input_Manager
-{
-    private:
+namespace PinGUI{
+    class Input_Manager
+    {
+        private:
 
-        static std::unordered_map<unsigned int, bool> _KEYS;
+            static std::unordered_map<unsigned int, bool> _KEYS;
 
-        static gameState _currentState;
+            static gameState _currentState;
 
-        static SDL_Event _mainEvent;
+            static SDL_Event _mainEvent;
 
-        static inputState _mainInputState;
+            static inputState _mainInputState;
 
-        //Pointer to an text that is being changed by writing mod
-        static TextStorage* _manipulatedText;
+            //Pointer to an text that is being changed by writing mod
+            static TextStorage* _manipulatedText;
 
-        static int _positionOfText;
+            static int _positionOfText;
 
-        static writingModInfo _writingModInfo;
+            static writingModInfo _writingModInfo;
 
-        static manipulatingModInfo _manipulatingModInfo;
+            static manipulatingModInfo _manipulatingModInfo;
 
-        static GUI_Sprite* _manipulatedSprite;
+            static GUI_Sprite* _manipulatedSprite;
 
-        static bool* _needUpdate;
+            static bool* _needUpdate;
 
-        static bool _alreadyClicked;
+            static bool _alreadyClicked;
 
-        static bool _singleClickTracker;
+            static bool _singleClickTracker;
 
-        static bool _allowWheel;
+            static bool _allowWheel;
 
-        static bool _haveTarget;
+            static bool _haveTarget;
 
-        static PinGUI::Rect _targetRect;
+            static PinGUI::Rect _targetRect;
 
-        static PinGUI::Vector2<GUIPos> _lastVector;
+            static PinGUI::Vector2<GUIPos> _lastVector;
 
-        static wheelingInfo _wheelingInfo;
+            static wheelingInfo _wheelingInfo;
 
-        static bool _tmpWheelInfo;
+            static bool _tmpWheelInfo;
 
-        static PinGUI::basicPointer _clFunction;
+            static PinGUI::basicPointer _clFunction;
 
-        //These two variables do something else!!
-        static PinGUI::basicPointer _clickFunction;
+            //These two variables do something else!!
+            static PinGUI::basicPointer _clickFunction;
 
-    public:
-        static int _screenWidth;
-        static int _screenHeight;
+        public:
+            static int _screenWidth;
+            static int _screenHeight;
 
-        static void process(SDL_Event* mainEvent = nullptr);
+            static void process(SDL_Event* mainEvent = nullptr);
 
-        //Normal input
-        static void processInput();
+            //Normal input
+            static void processInput();
 
-        //Writing mod
-        static void writingMod();
+            //Writing mod
+            static void writingMod();
 
-        //Manipulating mod
-        static void manipulatingMod();
+            //Manipulating mod
+            static void manipulatingMod();
 
-        static void pressKey(unsigned int keyID);
+            static void pressKey(unsigned int keyID);
 
-        static void setKey(unsigned int keyID, bool state);
+            static void setKey(unsigned int keyID, bool state);
 
-        static void releaseKey(unsigned int keyID);
+            static void releaseKey(unsigned int keyID);
 
-        static bool isKeyPressed(unsigned int keyID);
+            static bool isKeyPressed(unsigned int keyID);
 
-        static bool clicked(unsigned int keyID);
+            static bool clicked(unsigned int keyID);
 
-        static void setState(gameState newState);
+            static void setState(gameState newState);
 
-        static gameState getState();
+            static gameState getState();
 
-        static void singleClickTracker();
+            static void singleClickTracker();
 
-        static SDL_Event getEvent();
+            static SDL_Event getEvent();
 
-        static SDL_Event* getEvent_P();
+            static SDL_Event* getEvent_P();
 
-        static void setWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
+            static void setWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
 
-        static bool hasTMPWheeledInfo();
+            static bool hasTMPWheeledInfo();
 
-        static void setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
+            static void setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
 
-        static void cancelTMPWheeledInfo();
+            static void cancelTMPWheeledInfo();
 
-        static void doWheelMovement();
+            static void doWheelMovement();
 
-        static void setAllowWheel(bool state);
+            static void setAllowWheel(bool state);
 
-        static bool getAllowWheel();
+            static bool getAllowWheel();
 
-        static wheelingInfo getWheelInfo();
+            static wheelingInfo getWheelInfo();
 
-        static void setCallbackFunction(PinGUI::basicPointer f);
+            static void setCallbackFunction(PinGUI::basicPointer f);
 
-        static void checkTarget();
+            static void checkTarget();
 
-        static bool haveTarget();
+            static bool haveTarget();
 
-        static void setTarget(bool state,PinGUI::Rect targetRect);
+            static void setTarget(bool state,PinGUI::Rect targetRect);
 
-        static void setTarget(bool state);
+            static void setTarget(bool state);
 
-        static void setClickFunction(PinGUI::basicPointer f);
+            static void setClickFunction(PinGUI::basicPointer f);
 
-        /**
-            For writing mod
-        **/
+            /**
+                For writing mod
+            **/
 
-        //Choose a text from storage based on the index
-        static Text* chooseText();
+            //Choose a text from storage based on the index
+            static Text* chooseText();
 
-        static char* getTextInput();
+            static char* getTextInput();
 
-        static void setInputState(inputState state);
+            static void setInputState(inputState state);
 
-        static inputState getCurrentState();
+            static inputState getCurrentState();
 
-        static void setManipulatedText(TextStorage* text);
+            static void setManipulatedText(TextStorage* text);
 
-        static bool canWrite(char* ch);
+            static bool canWrite(char* ch);
 
-        static void setWritingModInfo(writingModInfo newMod);
+            static void setWritingModInfo(writingModInfo newMod);
 
-        /**
-            Manipulation with volumeboards like type(it is used also for moving the windowses)
-        **/
+            /**
+                Manipulation with volumeboards like type(it is used also for moving the windowses)
+            **/
 
-        static void manipulate();
+            static void manipulate();
 
-        static void moveHorizontal(const int& tmpX, const int& tmpY);
+            static void moveHorizontal(const int& tmpX, const int& tmpY);
 
-        static void moveVertical(const int& tmpX, const int& tmpY);
+            static void moveVertical(const int& tmpX, const int& tmpY);
 
-        static void initManipulation(GUI_Sprite* manip, bool* needUpdate);
+            static void initManipulation(GUI_Sprite* manip, bool* needUpdate);
 
-        static void createManipulatingModInfo(int x, int y, manipulationState state);
+            static void createManipulatingModInfo(int x, int y, manipulationState state);
 
-        static void destroyManipulatingModInfo();
+            static void destroyManipulatingModInfo();
 
-        static void setAlreadyClick(bool state);
+            static void setAlreadyClick(bool state);
 
-        static bool hasAlreadyClicked();
+            static bool hasAlreadyClicked();
 
-        static void setScreenSize(int width, int height);
+            static void setScreenSize(int width, int height);
 
-        static void convertScreenToWorld(int& x, int& y);
+            static void convertScreenToWorld(int& x, int& y);
 
-        static PinGUI::Vector2<GUIPos> getLastVector();
+            static PinGUI::Vector2<GUIPos> getLastVector();
 
-        static PinGUI::Vector2<GUIPos>* getLastVector_P();
+            static PinGUI::Vector2<GUIPos>* getLastVector_P();
 
-        static GUI_Sprite* getManipulatedSprite();
-};
+            static GUI_Sprite* getManipulatedSprite();
+    };
+}
+
 
 #endif // INPUT_MANAGER_H

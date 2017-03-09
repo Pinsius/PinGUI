@@ -48,7 +48,7 @@ WindowMover::~WindowMover()
 
 void WindowMover::manipulatingMod(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+    if (!PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
         endManipulatingMod(manipulatingElement);
         optionCollider();
@@ -62,19 +62,19 @@ void WindowMover::manipulatingMod(GUI_Element** manipulatingElement){
 void WindowMover::onClick(){
 
     //Setting the input state
-    Input_Manager::setInputState(MANIPULATINGMOD);
-    Input_Manager::setState(GUI);
-    Input_Manager::createManipulatingModInfo(getSprite()->getX(),getSprite()->getY(),WINDOW_MOVING);
-    Input_Manager::initManipulation(getSprite(),_windowUpdate);
+    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite()->getX(),getSprite()->getY(),WINDOW_MOVING);
+    PinGUI::Input_Manager::initManipulation(getSprite(),_windowUpdate);
 }
 
 bool WindowMover::listenForClick(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::hasAlreadyClicked()){
+    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
-        if (Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+        if (PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
-            Input_Manager::setAlreadyClick(true);
+            PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
             *manipulatingElement = this;
         }

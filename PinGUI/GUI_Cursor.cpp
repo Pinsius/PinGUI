@@ -48,7 +48,7 @@ void GUI_Cursor::updateCursor(){
     _collisionRect.x = x;
     _collisionRect.y = y;
 
-    _collisionRect.y = Input_Manager::_screenHeight - _collisionRect.y;
+    _collisionRect.y = PinGUI::Input_Manager::_screenHeight - _collisionRect.y;
 }
 
 

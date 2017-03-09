@@ -27,7 +27,7 @@
 #include <boost/bind.hpp>
 
 #include "GUI_Elements/Window.h"
-#include "Shader_Program.h"
+#include "../PinGUI/Shader_Program.h"
 
 
 #define WINDOW_STORAGE_SIZE 200

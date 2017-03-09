@@ -98,7 +98,7 @@ void Scroller::attachScrollerToInput(){
     PinGUI::basicPointer f;
     f._function = boost::bind(&Scroller::checkForWheelMove,this);
 
-    Input_Manager::setWheeledInfo(getSprite(1),_update,f);
+    PinGUI::Input_Manager::setWheeledInfo(getSprite(1),_update,f);
 }
 
 void Scroller::checkForWheelMove(){
@@ -110,7 +110,7 @@ void Scroller::checkForWheelMove(){
 
 void Scroller::manipulatingMod(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+    if (!PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
         endManipulatingMod(manipulatingElement);
         checkLimits();
@@ -125,11 +125,12 @@ void Scroller::manipulatingMod(GUI_Element** manipulatingElement){
 }
 
 bool Scroller::listenForClick(GUI_Element** manipulatingElement){
-    if (!Input_Manager::hasAlreadyClicked()){
 
-        if (Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
-            Input_Manager::setAlreadyClick(true);
+        if (PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+
+            PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
             *manipulatingElement = this;
 

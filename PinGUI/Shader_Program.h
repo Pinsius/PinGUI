@@ -34,40 +34,43 @@
 #include "stuff.h"
 #include "CameraManager.h"
 
-class Shader_Program
-{
-    private:
+namespace PinGUI{
+    class Shader_Program
+    {
+        private:
 
-        static int _attributes;
+            static int _attributes;
 
-        static GLuint _programID;
+            static GLuint _programID;
 
-        static GLuint _vertexShaderID;
-        static GLuint _fragmentShaderID;
+            static GLuint _vertexShaderID;
+            static GLuint _fragmentShaderID;
 
-        static GLint _samplerLocation;
-        static GLint _cameraMatrixLocation;
+            static GLint _samplerLocation;
+            static GLint _cameraMatrixLocation;
 
 
-        /**
-            Private methods
-        **/
-        static void compileShader(const std::string& filePath,GLuint id);
+            /**
+                Private methods
+            **/
+            static void compileShader(const std::string& filePath,GLuint id);
 
-    public:
+        public:
 
-        static void initShaders();
+            static void initShaders();
 
-        static void compileShaders(const std::string& vertexShaderFilePath,const std::string& fragmentShaderFilePath);
-        static void linkShaders();
+            static void compileShaders(const std::string& vertexShaderFilePath,const std::string& fragmentShaderFilePath);
+            static void linkShaders();
 
-        static void addAttribute(const std::string& attributeName);
+            static void addAttribute(const std::string& attributeName);
 
-        static GLuint getUniformLocation(const std::string& uniformName);
+            static GLuint getUniformLocation(const std::string& uniformName);
 
-        static void use();
-        static void unuse();
+            static void use();
+            static void unuse();
 
-};
+    };
+}
+
 
 #endif // SHADER_PROGRAM_H

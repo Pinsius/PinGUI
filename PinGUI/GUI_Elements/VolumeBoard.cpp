@@ -111,7 +111,7 @@ bool VolumeBoard::needMove(){
 
 void VolumeBoard::moveMover(){
 
-    if (Input_Manager::getCurrentState()!=MANIPULATINGMOD || Input_Manager::getManipulatedSprite()!=_SPRITES[VOL_MOVER]){
+    if (PinGUI::Input_Manager::getCurrentState()!=MANIPULATINGMOD || PinGUI::Input_Manager::getManipulatedSprite()!=_SPRITES[VOL_MOVER]){
         _SPRITES[VOL_MOVER]->setX(calculatePosition());
     }
 
@@ -148,19 +148,20 @@ int VolumeBoard::calculatePosition(){
 void VolumeBoard::onClick(){
 
     //Setting the input state
-    Input_Manager::setInputState(MANIPULATINGMOD);
-    Input_Manager::setState(GUI);
-    Input_Manager::createManipulatingModInfo(getSprite(VOL_MOVER)->getX(),getSprite(VOL_MOVER)->getY(),HORIZONTAL);
-    Input_Manager::initManipulation(_SPRITES[VOL_MOVER],_needUpdate);
+    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(VOL_MOVER)->getX(),getSprite(VOL_MOVER)->getY(),HORIZONTAL);
+    PinGUI::Input_Manager::initManipulation(_SPRITES[VOL_MOVER],_needUpdate);
 }
 
 
 bool VolumeBoard::listenForClick(GUI_Element** manipulatingElement){
-    if (!Input_Manager::hasAlreadyClicked()){
 
-        if (Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
-            Input_Manager::setAlreadyClick(true);
+        if (PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+
+            PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
             *manipulatingElement = this;
         }
@@ -173,7 +174,7 @@ bool VolumeBoard::listenForClick(GUI_Element** manipulatingElement){
 
 void VolumeBoard::manipulatingMod(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
+    if (!PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
         modifyVar();
         _COLLIDERS[0] = _SPRITES[VOL_MOVER]->getGUIRect();

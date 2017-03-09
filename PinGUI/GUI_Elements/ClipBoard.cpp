@@ -191,10 +191,10 @@ void ClipBoard::onClick(){
 
     SDL_ShowCursor(SDL_DISABLE);
     //Setting the input state
-    Input_Manager::setInputState(WRITINGMOD);
+    PinGUI::Input_Manager::setInputState(WRITINGMOD);
 
     //Saving the text of my clipboard to be the one that is manipulated
-    Input_Manager::setManipulatedText(_textStorage);
+    PinGUI::Input_Manager::setManipulatedText(_textStorage);
 
     //Creating mod info
     writingModInfo tmp;
@@ -208,17 +208,17 @@ void ClipBoard::onClick(){
     }
     tmp.max = _maxSize;
 
-    Input_Manager::setWritingModInfo(tmp);
+    PinGUI::Input_Manager::setWritingModInfo(tmp);
 }
 
 void ClipBoard::manipulatingMod(GUI_Element** manipulatingElement){
 
-    if (Input_Manager::isKeyPressed(SDLK_ESCAPE)||Input_Manager::isKeyPressed(SDLK_RETURN)){
+    if (PinGUI::Input_Manager::isKeyPressed(SDLK_ESCAPE)||PinGUI::Input_Manager::isKeyPressed(SDLK_RETURN)){
 
         *manipulatingElement = nullptr;
         SDL_ShowCursor(SDL_ENABLE);
-        Input_Manager::setInputState(GAMEINPUT);
-        Input_Manager::setAlreadyClick(false);
+        PinGUI::Input_Manager::setInputState(GAMEINPUT);
+        PinGUI::Input_Manager::setAlreadyClick(false);
         return;
     }
 }
@@ -286,11 +286,11 @@ void ClipBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 
 bool ClipBoard::listenForClick(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::hasAlreadyClicked()){
+    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
-        if (Input_Manager::clicked(SDL_BUTTON_LEFT)){
+        if (PinGUI::Input_Manager::clicked(SDL_BUTTON_LEFT)){
 
-            Input_Manager::setAlreadyClick(true);
+            PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
             *manipulatingElement = this;
 

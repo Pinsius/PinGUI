@@ -86,14 +86,14 @@ void GUI_Element::turnOnAim(){
 
     _aimON = true;
     setWritingAvailability(_aimON);
-    Input_Manager::setState(GUI);
+    PinGUI::Input_Manager::setState(GUI);
 }
 
 void GUI_Element::turnOffAim(){
 
     _aimON = false;
     setWritingAvailability(_aimON);
-    Input_Manager::setState(GAME);
+    PinGUI::Input_Manager::setState(GAME);
 }
 
 
@@ -104,19 +104,19 @@ void GUI_Element::onAim(){
 void GUI_Element::endManipulatingMod(GUI_Element** manipulatingElement){
 
     *manipulatingElement = nullptr;
-    Input_Manager::setInputState(GAMEINPUT);
-    Input_Manager::destroyManipulatingModInfo();
-    Input_Manager::setAlreadyClick(false);
+    PinGUI::Input_Manager::setInputState(GAMEINPUT);
+    PinGUI::Input_Manager::destroyManipulatingModInfo();
+    PinGUI::Input_Manager::setAlreadyClick(false);
     SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 bool GUI_Element::listenForClick(GUI_Element** manipulatingElement){
 
-    if (!Input_Manager::hasAlreadyClicked()){
+    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
-        if (Input_Manager::clicked(SDL_BUTTON_LEFT)){
+        if (PinGUI::Input_Manager::clicked(SDL_BUTTON_LEFT)){
 
-            Input_Manager::setAlreadyClick(true);
+            PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
             return true;
         }

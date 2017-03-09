@@ -213,7 +213,7 @@ void Window::update(bool allowCollision){
 
 
     if (_windowUpdate)
-        moveWindow(Input_Manager::getLastVector());
+        moveWindow(PinGUI::Input_Manager::getLastVector());
 
     _mainGUIManager->update(allowCollision);
 
@@ -235,7 +235,7 @@ void Window::update(bool allowCollision){
 void Window::update(float deltaTime){
 
     if (_windowUpdate)
-        moveWindow(Input_Manager::getLastVector(),deltaTime);
+        moveWindow(PinGUI::Input_Manager::getLastVector(),deltaTime);
 
     _mainGUIManager->update();
     if (_mainWindowTab){
@@ -380,7 +380,7 @@ void Window::updateTab(){
 
     setWindowCamRect();
 
-    if (!isScrollerActive(_verticalScroller)) Input_Manager::setAllowWheel(false);
+    if (!isScrollerActive(_verticalScroller)) PinGUI::Input_Manager::setAllowWheel(false);
 
     cropTabArea();
 }
@@ -563,16 +563,16 @@ void Window::onEndAim(){
 
     if (isScrollerActive(_verticalScroller)){
 
-        if (Input_Manager::getWheelInfo()._wheeledSprite == _verticalScroller->getSprite(1))
-            Input_Manager::setAllowWheel(false);
+        if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite == _verticalScroller->getSprite(1))
+            PinGUI::Input_Manager::setAllowWheel(false);
     }
 }
 
 bool Window::listenForClick(GUI_Element** manipulatingElement){
 
-    if (isScrollerActive(_verticalScroller)  && !Input_Manager::hasTMPWheeledInfo()){
+    if (isScrollerActive(_verticalScroller)  && !PinGUI::Input_Manager::hasTMPWheeledInfo()){
 
-        if (!Input_Manager::getAllowWheel()) Input_Manager::setAllowWheel(true);
+        if (!PinGUI::Input_Manager::getAllowWheel()) PinGUI::Input_Manager::setAllowWheel(true);
     }
     return false;
 }

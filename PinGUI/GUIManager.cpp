@@ -228,9 +228,9 @@ void GUIManager::render(){
 
     if (_needUpdate || _moved)
     {
-       if (_moved) 
+       if (_moved)
            _moved = false;
-           
+
        updateVBO();
     }
 
@@ -273,7 +273,7 @@ void GUIManager::renderText(){
 void GUIManager::update(bool allowCollision){
 
     if (_manipulatingElement==nullptr){
-        
+
         if (allowCollision)
             checkCollisions();
          else {
@@ -312,7 +312,7 @@ void GUIManager::doCrop(){
 
 void GUIManager::checkCollisions(){
 
-    if (Input_Manager::getCurrentState() != MANIPULATINGMOD){
+    if (PinGUI::Input_Manager::getCurrentState() != MANIPULATINGMOD){
 
         if (!_collidingElement){
 

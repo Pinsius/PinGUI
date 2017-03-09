@@ -1,9 +1,9 @@
-#version 330
+#version 130
 
-layout (location=0)in vec2 vertexPosition;
-layout (location=1)in vec4 vertexColor;
-layout (location=2)in vec2 vertexUV;
-layout (location=3)in vec2 instancePos;
+in vec2 vertexPosition;
+in vec4 vertexColor;
+in vec2 vertexUV;
+in vec2 instancePos;
 
 
 out vec4 fragmentColor;

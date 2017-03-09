@@ -56,7 +56,7 @@ ComboBoxItem::~ComboBoxItem()
 void ComboBoxItem::onClick(){
 
     //Tmp disabling it
-    Input_Manager::setTarget(false);
+    PinGUI::Input_Manager::setTarget(false);
 
 
     if (*_mainComboBoxItem)
@@ -68,7 +68,7 @@ void ComboBoxItem::onClick(){
 
     _function.exec();
 
-    Input_Manager::setTarget(true);
+    PinGUI::Input_Manager::setTarget(true);
 
 }
 
