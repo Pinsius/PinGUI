@@ -562,9 +562,12 @@ void Window::onAim(){
 void Window::onEndAim(){
 
     if (isScrollerActive(_verticalScroller)){
+        
+        if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite){
 
-        if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite == _verticalScroller->getSprite(1))
-            PinGUI::Input_Manager::setAllowWheel(false);
+            if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite == _verticalScroller->getSprite(1))
+                PinGUI::Input_Manager::setAllowWheel(false);
+        }
     }
 }
 
