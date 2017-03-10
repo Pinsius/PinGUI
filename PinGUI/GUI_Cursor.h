@@ -38,8 +38,8 @@ class GUI_Cursor
     private:
         static PinGUI::Rect _collisionRect;
     public:
-        GUI_Cursor();
-        ~GUI_Cursor();
+
+        static void initCursor();
 
         static void updateCursor();
 

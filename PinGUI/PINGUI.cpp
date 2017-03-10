@@ -169,7 +169,7 @@ void PINGUI::initLibrary(int screenWidth, int screenHeight){
 
     SheetManager::loadAllTextures();
 
-    GUI_CollisionManager::colliding = false;
+    GUI_Cursor::initCursor();
 
     PinGUI::Input_Manager::setScreenSize(screenWidth,screenHeight);
 

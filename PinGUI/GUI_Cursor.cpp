@@ -27,16 +27,12 @@
 
 PinGUI::Rect GUI_Cursor::_collisionRect;
 
-GUI_Cursor::GUI_Cursor()
-{
+void GUI_Cursor::initCursor(){
+
     _collisionRect.w = CURSOR_WIDTH;
     _collisionRect.h = CURSOR_HEIGHT;
     _collisionRect.x = 0;
     _collisionRect.y = 0;
-}
-
-GUI_Cursor::~GUI_Cursor()
-{
 
 }
 
