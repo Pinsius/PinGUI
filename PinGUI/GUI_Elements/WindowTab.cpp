@@ -24,25 +24,19 @@
 
 #include "WindowTab.h"
 
-WindowTab::WindowTab(PinGUI::Rect positionRect,WindowTab** mainTab, bool* tabChange):
-    _mainTab(mainTab),
-    _tabChange(tabChange)
+WindowTab::WindowTab(PinGUI::Rect positionRect,std::shared_ptr<WindowTab>* mainTab, bool* tabChange):
+    _tabChange(tabChange),
+    _mainTab(mainTab)
 {
     initPosition(positionRect);
 
-    _guiManager = new GUIManager();
+    _guiManager = std::make_shared<GUIManager>();
 
     initSprites(positionRect);
 }
 
-WindowTab::WindowTab(TextManager* texter)
-{
-    _guiManager = new GUIManager(texter);
-}
-
 WindowTab::~WindowTab()
 {
-    delete _guiManager;
 }
 
 void WindowTab::initSprites(PinGUI::Rect& positionRect){
@@ -53,7 +47,7 @@ void WindowTab::initSprites(PinGUI::Rect& positionRect){
     addCollider(positionRect);
 }
 
-GUIManager* WindowTab::getGUI(){
+std::shared_ptr<GUIManager> WindowTab::getGUI(){
     return _guiManager;
 }
 
@@ -68,7 +62,7 @@ void WindowTab::update(){
 
 void WindowTab::setWritingAvailability(bool state){
 
-    if (*_mainTab != this){
+    if (*_mainTab != shared_from_this() ){
 
         if (state){
 
@@ -90,14 +84,15 @@ void WindowTab::setWritingAvailability(bool state){
 void WindowTab::onClick(){
 
     //Setting the old mainTab to collidable state
-    (*(_mainTab))->setCollidable(true);
-    (*(_mainTab))->getSprite()->setAlpha(DEFAULT_WINDOWTAB_ALPHA);
+    (*_mainTab)->setCollidable(true);
+
+    (*_mainTab)->getSprite()->setAlpha(0);
 
     //Rollback the tab camera(if needed) - and do some additional stuff.....
     WindowTab::_function.exec();
 
     //Now need to setup this tab as the main
-    *_mainTab = this;
+    *_mainTab = std::dynamic_pointer_cast<WindowTab>(shared_from_this());
 
     //Allerting the window to update itself
     *_tabChange = true;
@@ -106,22 +101,22 @@ void WindowTab::onClick(){
     setCollidable(false);
 }
 
-bool WindowTab::listenForClick(GUI_Element** manipulatingElement){
+bool WindowTab::listenForClick(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
         if (PinGUI::Input_Manager::clicked(SDL_BUTTON_LEFT)){
 
-                onClick();
-                return true;
+            WindowTab::onClick();
+            return true;
         }
         return false;
     }
     return false;
 }
 
-void WindowTab::setTabText(Text* text){
-    _tabText = &text;
+void WindowTab::setTabText(std::shared_ptr<Text> text){
+    _tabText = text;
 }
 
 
@@ -129,7 +124,7 @@ void WindowTab::info(){
     std::cout << "WindowMover element. Address: " << this << std::endl;
 }
 
-void WindowTab::setMainTab(WindowTab** mainTab){
+void WindowTab::setMainTab(std::shared_ptr<WindowTab>* mainTab){
     _mainTab = mainTab;
 }
 

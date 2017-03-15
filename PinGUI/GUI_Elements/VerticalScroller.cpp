@@ -25,20 +25,15 @@
 #include "VerticalScroller.h"
 
 
-VerticalScroller::VerticalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool* update, std::vector<GUI_Element*>* _ELEMENTS):
+VerticalScroller::VerticalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool* update, std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS):
     Scroller(pos,update)
 {
-
     PinGUI::Rect tmpRect;
     tmpRect.initPos(pos);
 
     addSprite(tmpRect,SheetManager::createWindowScroller(value,VERTICAL));
 
     _collidable = false;
-
-    _ELEMENTS->push_back(this);
-
-    createArrows(_ELEMENTS);
 }
 
 VerticalScroller::~VerticalScroller()
@@ -46,7 +41,8 @@ VerticalScroller::~VerticalScroller()
     //dtor
 }
 
-void VerticalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
+void VerticalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS){
+
     PinGUI::basicPointer f1;
     f1._function = boost::bind(&VerticalScroller::incScroller,this);
 
@@ -60,7 +56,7 @@ void VerticalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
     tmpRect.y = getSprite()->getY()+PINGUI_WINDOW_LINE_H;
 
     //Down arrow
-    Window_Arrow* tmpArrow = new Window_Arrow(tmpRect,SheetManager::getSurface(BOARD),DOWN);
+    auto tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),DOWN);
 
     tmpArrow->setClickFunction(f1);
     _ARROWS.push_back(tmpArrow);
@@ -68,12 +64,13 @@ void VerticalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
     //Up arrow
     tmpRect.y = (getSprite()->getY()+getSprite()->getH())-WINDOW_ARROW_H;
 
-    tmpArrow = new Window_Arrow(tmpRect,SheetManager::getSurface(BOARD),UP);
+    tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),UP);
     tmpArrow->setClickFunction(f2);
 
     _ARROWS.push_back(tmpArrow);
 
-    for (std::size_t i = 0; i < _ARROWS.size(); i++) _ELEMENTS->push_back(_ARROWS[i]);
+    for (auto&& arrow : _ARROWS)
+        _ELEMENTS->push_back(arrow);
 }
 
 void VerticalScroller::calculateRatio(const int& totalValue){

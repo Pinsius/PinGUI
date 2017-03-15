@@ -25,7 +25,7 @@
 #include "WindowButton.h"
 
 WindowButton::WindowButton(int x, int y, std::string name, clipboardData data):
-    Button(x,y,name,data) 
+    Button(x,y,name,data)
 {
 
 }
@@ -49,15 +49,13 @@ WindowButton::~WindowButton()
 
 void WindowButton::onClick(){
 
-    _target->setShow(_switchState);
+    if (!_target->getShow())
+        _target->setShow(true);
+    else
+        _target->setShow(false);
 }
 
-void WindowButton::setWindowTarget(Window* target){
+void WindowButton::setWindowTarget(std::shared_ptr<Window> target){
 
     _target = target;
-}
-
-void WindowButton::setState(bool state){
-
-    _switchState = state;
 }

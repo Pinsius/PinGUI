@@ -26,7 +26,7 @@
 #include <iostream>
 
 
-TextStorage::TextStorage(TextManager* text):
+TextStorage::TextStorage(std::shared_ptr<TextManager> text):
     _additionalStorage(nullptr)
 {
     texter = text;
@@ -34,15 +34,12 @@ TextStorage::TextStorage(TextManager* text):
 
 TextStorage::~TextStorage()
 {
-    for (int i =0; i < _TEXTS.size();i++){
+    for (auto&& txt : _TEXTS){
 
-        _TEXTS[i]->setActive(false);
+        txt->setActive(false);
     }
 
     _TEXTS.clear();
-
-    if (_additionalStorage)
-        delete _additionalStorage;
 }
 
 void TextStorage::addText(const std::string& text, int x, int y){
@@ -60,6 +57,7 @@ void TextStorage::destroyText(int position){
 }
 
 void TextStorage::addChar(char* ch, int position, int maxValue){
+
     if (*(_additionalStorage->type)==INT_ONLY){
         if (_TEXTS[position]->haveNum()){
 
@@ -99,7 +97,7 @@ void TextStorage::removeChar(int position){
     }
 }
 
-Text* TextStorage::getText(int position){
+std::shared_ptr<Text> TextStorage::getText(int position){
 
     if (_TEXTS.size() > 0)
         return _TEXTS[position];
@@ -110,20 +108,19 @@ Text* TextStorage::getText(int position){
 
 void TextStorage::setAdditionalInfo(PinGUI::Rect* OffsetRect, clipboard_type* Type){
 
-    if (_additionalStorage){
-        delete _additionalStorage;
-    }
+    _additionalStorage.reset();
 
-    _additionalStorage = new additionalStorage;
-
-    _additionalStorage->offsetRect = OffsetRect;
-    _additionalStorage->type = Type;
+    _additionalStorage = std::make_shared<additionalStorage>(OffsetRect,Type);
 }
 
-void TextStorage::proccess(char* ch){
-
-}
-
-std::vector<Text*>* TextStorage::getVector(){
+std::vector<std::shared_ptr<Text>>* TextStorage::getVector(){
     return &_TEXTS;
+}
+
+void TextStorage::setShow(bool state){
+
+    for (auto&& txt : _TEXTS){
+
+        txt->setShow(state);
+    }
 }

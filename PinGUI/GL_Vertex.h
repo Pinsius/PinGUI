@@ -28,7 +28,7 @@
 #include <GL/glew.h>
 
 namespace PinGUI{
-    
+
     class VertexColor{
         public:
             GLubyte r;
@@ -100,6 +100,4 @@ namespace PinGUI{
 
 }
 
-
 #endif // GL_VERTEX_H
-

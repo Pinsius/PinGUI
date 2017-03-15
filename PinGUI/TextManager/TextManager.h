@@ -51,11 +51,11 @@ class TextManager
     private:
 
         //Storage variables
-        std::vector<Text*> _TEXTS;
+        std::vector<std::shared_ptr<Text>> _TEXTS;
 
         std::vector<vboData> _mainDataStorage;
 
-        VBO_Manager* _textVBOManager;
+        std::shared_ptr<VBO_Manager> _textVBOManager;
 
         //Font stuff
         int _fontSize;
@@ -91,11 +91,12 @@ class TextManager
 
     public:
         TextManager();
+        TextManager(const TextManager& txt);
         ~TextManager();
 
         //I have 2 cases, so i need to overload these functions
-        Text* writeText(const std::string& text,int x, int y);
-        Text* writeText(const std::string& text,int x, int y, int* var);
+        std::shared_ptr<Text> writeText(const std::string& text,int x, int y);
+        std::shared_ptr<Text> writeText(const std::string& text,int x, int y, int* var);
 
         TTF_Font* loadFont(const std::string& fontPath, int size);
 
@@ -113,11 +114,11 @@ class TextManager
 
         void normalizeText(const PinGUI::Vector2<GUIPos>& normalizationVector);
 
-        std::vector<Text*>* getMainTextStorage();
+        std::vector<std::shared_ptr<Text>>* getMainTextStorage();
 
         int getFontSize();
 
-        Text* getLastText();
+        std::shared_ptr<Text> getLastText();
 
         void moveTextManager(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement);
 

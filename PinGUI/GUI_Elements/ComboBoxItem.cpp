@@ -26,7 +26,7 @@
 
 ComboBoxItem::ComboBoxItem(PinGUI::Vector2<GUIPos> position,
                            std::string itemText,
-                           ComboBoxItem** mainComboBoxItem,
+                           std::shared_ptr<ComboBoxItem>* mainComboBoxItem,
                            PinGUI::basicPointer functionP,
                            int maxSize,
                            clipboardData& data):
@@ -34,7 +34,6 @@ ComboBoxItem::ComboBoxItem(PinGUI::Vector2<GUIPos> position,
     _mainComboBoxItem(mainComboBoxItem),
     _option(0)
 {
-
     init(position,maxSize,data,NORMAL,RECTANGLED);
 
     _maxSize = maxSize;
@@ -58,11 +57,10 @@ void ComboBoxItem::onClick(){
     //Tmp disabling it
     PinGUI::Input_Manager::setTarget(false);
 
-
     if (*_mainComboBoxItem)
         (*_mainComboBoxItem)->setCollidable(true);
 
-    *_mainComboBoxItem = this;
+    *_mainComboBoxItem = std::dynamic_pointer_cast<ComboBoxItem>(shared_from_this());
 
     this->setCollidable(false);
 
@@ -72,7 +70,7 @@ void ComboBoxItem::onClick(){
 
 }
 
-bool ComboBoxItem::listenForClick(GUI_Element** manipulatingElement){
+bool ComboBoxItem::listenForClick(manip_Element manipulatingElement){
     GUI_Element::listenForClick(manipulatingElement);
 }
 

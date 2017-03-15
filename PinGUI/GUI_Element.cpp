@@ -31,19 +31,15 @@ GUI_Element::GUI_Element():
     _allowCropp(true),
     _exist(true)
 {
-
 }
 
 GUI_Element::~GUI_Element()
 {
-    for (std::size_t i = 0; i < _SPRITES.size(); i++){
-        delete _SPRITES[i];
-    }
-
     _SPRITES.clear();
 }
 
-bool GUI_Element::collide(bool& needUpdate, GUI_Element** manipulatingElement){
+bool GUI_Element::collide(bool& needUpdate, manip_Element manipulatingElement){
+
 
     if (_collidable && _show){
 
@@ -60,7 +56,6 @@ bool GUI_Element::collide(bool& needUpdate, GUI_Element** manipulatingElement){
 
                 return true;
             } else {
-
                 /**
                     Here i listen for click
                 */
@@ -76,9 +71,13 @@ bool GUI_Element::collide(bool& needUpdate, GUI_Element** manipulatingElement){
 
             //Every element can modify something else via this function
             onEndAim();
+
+            return false;
         }
+
         doAdditionalFunc();
     }
+
     return false;
 }
 
@@ -101,16 +100,17 @@ void GUI_Element::onAim(){
 
 }
 
-void GUI_Element::endManipulatingMod(GUI_Element** manipulatingElement){
+void GUI_Element::endManipulatingMod(manip_Element manipulatingElement){
 
-    *manipulatingElement = nullptr;
+    manipulatingElement = nullptr;
+
     PinGUI::Input_Manager::setInputState(GAMEINPUT);
     PinGUI::Input_Manager::destroyManipulatingModInfo();
     PinGUI::Input_Manager::setAlreadyClick(false);
     SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
-bool GUI_Element::listenForClick(GUI_Element** manipulatingElement){
+bool GUI_Element::listenForClick(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
@@ -118,6 +118,7 @@ bool GUI_Element::listenForClick(GUI_Element** manipulatingElement){
 
             PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
+
             return true;
         }
 
@@ -135,17 +136,23 @@ void GUI_Element::addCollider(PinGUI::Rect tmpRect){
 }
 
 void GUI_Element::addSprite(PinGUI::Rect rect,SDL_Surface* source,SDL_Color color){
-    _SPRITES.push_back(new GUI_Sprite(rect,source,color));
+
+    auto ptr = std::make_shared<GUI_Sprite>(rect,source,color);
+    _SPRITES.push_back(ptr);
 }
 
 void GUI_Element::addSprite(PinGUI::Rect rect,SDL_Surface* source){
-    _SPRITES.push_back(new GUI_Sprite(rect,source));
+
+    auto ptr = std::make_shared<GUI_Sprite>(rect,source);
+    _SPRITES.push_back(ptr);
 }
 
 void GUI_Element::addSprite(int x, int y, SDL_Surface* source){
 
     PinGUI::Vector2<GUIPos> vect(x,y);
-    _SPRITES.push_back(new GUI_Sprite(vect,source));
+
+    auto ptr = std::make_shared<GUI_Sprite>(vect,source);
+    _SPRITES.push_back(ptr);
 }
 
 
@@ -188,7 +195,7 @@ void GUI_Element::loadData(std::vector<vboData>* vboData){
     }
 }
 
-GUI_Sprite* GUI_Element::getSprite(int pos){
+std::shared_ptr<GUI_Sprite> GUI_Element::getSprite(int pos){
 
     if (pos!=-1)
         return _SPRITES[pos];
@@ -254,7 +261,7 @@ bool GUI_Element::getShow(){
 }
 
 void GUI_Element::deleteSprite(int pos){
-    delete _SPRITES[pos];
+
     _SPRITES.erase(_SPRITES.begin()+pos);
 }
 
@@ -323,7 +330,7 @@ void GUI_Element::cropElement(PinGUI::Rect& rect){
 
     for (std::size_t i = 0; i <_SPRITES.size(); i++){
 
-        CropManager::cropSprite(_SPRITES[i],rect);
+        CropManager::cropSprite(_SPRITES[i].get(),rect);
     }
 
     for (std::size_t i = 0; i < _COLLIDERS.size(); i++){

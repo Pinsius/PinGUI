@@ -70,9 +70,7 @@ inline bool isIn(PinGUI::Rect& cropRect, PinGUI::Rect dstRect){
         return false;
 }
 
-
 bool CropManager::doCropping(PinGUI::Rect& cropRect, GUIRect& dstRect){
-
 
     if (_lastCropRect != cropRect)
         _lastCropRect = cropRect;
@@ -83,6 +81,7 @@ bool CropManager::doCropping(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
 //Normal checking
 void CropManager::repairRect(int& var, const int& maxVar){
+
     if (var<1)
         var = 0;
     else if (var>maxVar)
@@ -90,6 +89,7 @@ void CropManager::repairRect(int& var, const int& maxVar){
 }
 
 void CropManager::finishCropping(int& targetVar, int& maxVar){
+
     targetVar = maxVar - _cropVar ;
 
     repairRect(targetVar,maxVar);
@@ -128,9 +128,7 @@ void CropManager::cropHorizontally(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
     if (alreadyCropped)
         finishCropping(dstRect.rect.w,dstRect.realRect.w);
-
 }
-
 
 void CropManager::cropVertically(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
@@ -157,7 +155,6 @@ void CropManager::cropVertically(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
     if (!alreadyCropped && ((dstRect.rect.y!= dstRect.realRect.y)||(dstRect.rect.h!= dstRect.realRect.h))){
 
-
         dstRect.rect.y = dstRect.realRect.y;
         dstRect.rect.h = dstRect.realRect.h;
     }
@@ -165,9 +162,12 @@ void CropManager::cropVertically(PinGUI::Rect& cropRect, GUIRect& dstRect){
     if (alreadyCropped){
 
         finishCropping(dstRect.rect.h,dstRect.realRect.h);
-
     }
 
+    if (alreadyCropped){
+
+        finishCropping(dstRect.rect.h,dstRect.realRect.h);
+    }
 }
 
 void CropManager::cropRect(PinGUI::Rect cropRect, GUIRect& dstRect){
@@ -185,6 +185,7 @@ void CropManager::cropSprite(GUI_Sprite* sprite, PinGUI::Rect cropRect){
         cropSpriteVertically(sprite,cropRect) ;
         cropSpriteHorizontally(sprite,cropRect);
     } else {
+
         sprite->setH(0);
         sprite->setW(0);
     }
@@ -194,25 +195,8 @@ void CropManager::cropSpriteVertically(GUI_Sprite*& sprite, PinGUI::Rect& cropRe
 
     PinGUI::Vector2<float> percentage(0.0f,0.0f);
     GUIRect rect = sprite->getGUIRect();
+
     int cropSize = 0;
-    bool alreadyCropped = false;
-
-    if (collideFromTop(cropRect,rect.realRect) ){
-
-        _cropVar = (rect.realRect.getTopPoint() - cropRect.getTopPoint()) ;
-
-        percentage.x = 1.0f - (static_cast<float>(_cropVar) / static_cast<float>(rect.realRect.h));
-
-        changeUV(UP, sprite->getVBOData(), percentage);
-
-        cropSize -= _cropVar;
-
-    } else if (sprite->getGUIRect().rect.h != rect.realRect.h){
-
-        sprite->getGUIRect_P()->rect.h = sprite->getGUIRect_P()->realRect.h;
-        sprite->getGUIRect_P()->rect.y = sprite->getGUIRect_P()->realRect.y;
-        sprite->createVBO(V);
-    }
 
     if (collideFromBottom(cropRect,rect.realRect) ){
 
@@ -228,27 +212,41 @@ void CropManager::cropSpriteVertically(GUI_Sprite*& sprite, PinGUI::Rect& cropRe
 
     } else if (sprite->getGUIRect().rect.h != rect.realRect.h){
 
+        sprite->getGUIRect_P()->rect.h = sprite->getGUIRect_P()->realRect.h;
+        sprite->getGUIRect_P()->rect.y = sprite->getGUIRect_P()->realRect.y;
+
+        sprite->createVBO(V);
+    }
+
+    if (collideFromTop(cropRect,rect.realRect) ){
+
+        _cropVar = (rect.realRect.getTopPoint() - cropRect.getTopPoint()) ;
+
+        percentage.x = 1.0f - (static_cast<float>(_cropVar) / static_cast<float>(rect.realRect.h));
+
+        changeUV(UP, sprite->getVBOData(), percentage);
+
+        cropSize -= _cropVar;
+
+    } else if (sprite->getGUIRect().rect.h != rect.realRect.h){
+
         sprite->setH(rect.realRect.h);
         percentage.x = 1.0f;
         changeUV(UP, sprite->getVBOData(), percentage);
         sprite->updatePositions();
     }
 
-
-    if (cropSize!=0){
-
-        sprite->decH(cropSize);
-    }
+     sprite->decH(cropSize);
 }
 
 void CropManager::cropSpriteHorizontally(GUI_Sprite*& sprite, PinGUI::Rect& cropRect){
 
     PinGUI::Vector2<float> percentage(0.0f,0.0f);
     GUIRect rect = sprite->getGUIRect();
+
     int cropSize = 0;
     bool cropLeft = false;
     bool cropRight = false;
-    float normalizeDistance = 0.0f;
 
     if (collideFromLeft(cropRect,rect.realRect)){
 
@@ -270,13 +268,12 @@ void CropManager::cropSpriteHorizontally(GUI_Sprite*& sprite, PinGUI::Rect& crop
 
             sprite->getGUIRect_P()->rect.w = sprite->getGUIRect_P()->realRect.w;
             sprite->getGUIRect_P()->rect.x = sprite->getGUIRect_P()->realRect.x;
+
             sprite->createVBO(U);
         }
-
     }
 
     if (collideFromRight(cropRect,rect.realRect)){
-
 
         _cropVar = static_cast<int>(rect.realRect.getRightPoint() - cropRect.getRightPoint());
 
@@ -288,7 +285,7 @@ void CropManager::cropSpriteHorizontally(GUI_Sprite*& sprite, PinGUI::Rect& crop
 
         cropRight = true;
 
-    } else if (cropSize==0){
+    } else if (sprite->getGUIRect().rect.w != rect.realRect.w){
 
         sprite->setW(rect.realRect.w);
         percentage.x = 1.0f;
@@ -296,17 +293,14 @@ void CropManager::cropSpriteHorizontally(GUI_Sprite*& sprite, PinGUI::Rect& crop
         sprite->updatePositions();
     }
 
-    if (cropSize!=0){
+    sprite->decW(cropSize);
 
-        sprite->decW(cropSize);
+    if (cropLeft && cropRight){
 
-        if (cropLeft && cropRight){
-
-            sprite->incW(1);
-        }
+        sprite->incW(1);
     }
-
 }
+
 
 void CropManager::changeUV(orientation orient, vboData* dataPointer, PinGUI::Vector2<float> percentage){
 

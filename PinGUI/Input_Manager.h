@@ -69,12 +69,13 @@ struct manipulatingModInfo{
 };
 
 struct wheelingInfo{
-    GUI_Sprite* _wheeledSprite;
+    std::shared_ptr<GUI_Sprite> _wheeledSprite;
     bool* _update;
     PinGUI::basicPointer _function;
 };
 
 namespace PinGUI{
+
     class Input_Manager
     {
         private:
@@ -88,7 +89,7 @@ namespace PinGUI{
             static inputState _mainInputState;
 
             //Pointer to an text that is being changed by writing mod
-            static TextStorage* _manipulatedText;
+            static std::shared_ptr<TextStorage> _manipulatedText;
 
             static int _positionOfText;
 
@@ -96,7 +97,7 @@ namespace PinGUI{
 
             static manipulatingModInfo _manipulatingModInfo;
 
-            static GUI_Sprite* _manipulatedSprite;
+            static std::shared_ptr<GUI_Sprite> _manipulatedSprite;
 
             static bool* _needUpdate;
 
@@ -156,11 +157,11 @@ namespace PinGUI{
 
             static SDL_Event* getEvent_P();
 
-            static void setWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
+            static void setWheeledInfo(std::shared_ptr<GUI_Sprite> sprite, bool* update, PinGUI::basicPointer f);
 
             static bool hasTMPWheeledInfo();
 
-            static void setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f);
+            static void setTMPWheeledInfo(std::shared_ptr<GUI_Sprite> sprite, bool* update, PinGUI::basicPointer f);
 
             static void cancelTMPWheeledInfo();
 
@@ -189,7 +190,7 @@ namespace PinGUI{
             **/
 
             //Choose a text from storage based on the index
-            static Text* chooseText();
+            static std::shared_ptr<Text> chooseText();
 
             static char* getTextInput();
 
@@ -197,7 +198,7 @@ namespace PinGUI{
 
             static inputState getCurrentState();
 
-            static void setManipulatedText(TextStorage* text);
+            static void setManipulatedText(std::shared_ptr<TextStorage> text);
 
             static bool canWrite(char* ch);
 
@@ -213,7 +214,7 @@ namespace PinGUI{
 
             static void moveVertical(const int& tmpX, const int& tmpY);
 
-            static void initManipulation(GUI_Sprite* manip, bool* needUpdate);
+            static void initManipulation(std::shared_ptr<GUI_Sprite> manip, bool* needUpdate);
 
             static void createManipulatingModInfo(int x, int y, manipulationState state);
 
@@ -231,7 +232,7 @@ namespace PinGUI{
 
             static PinGUI::Vector2<GUIPos>* getLastVector_P();
 
-            static GUI_Sprite* getManipulatedSprite();
+            static std::shared_ptr<GUI_Sprite> getManipulatedSprite();
     };
 }
 

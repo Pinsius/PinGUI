@@ -34,10 +34,7 @@ Scroller::Scroller(PinGUI::Vector2<GUIPos> pos, bool* update):
 
 Scroller::~Scroller()
 {
-    for (std::size_t i = 0; i < _ARROWS.size(); i++){
-        delete _ARROWS[i];
-        _ARROWS[i] = nullptr;
-    }
+    _ARROWS.clear();
 }
 
 void Scroller::loadScrollMover(int value, int totalValue){
@@ -90,15 +87,17 @@ void Scroller::setWritingAvailability(bool state){
     } else {
         getSprite(1)->setColor(255,255,255);
     }
-
 }
 
 void Scroller::attachScrollerToInput(){
 
-    PinGUI::basicPointer f;
-    f._function = boost::bind(&Scroller::checkForWheelMove,this);
+    if (_SPRITES.size()>1){
 
-    PinGUI::Input_Manager::setWheeledInfo(getSprite(1),_update,f);
+        PinGUI::basicPointer f;
+        f._function = boost::bind(&Scroller::checkForWheelMove,this);
+
+        PinGUI::Input_Manager::setWheeledInfo(getSprite(1),_update,f);
+    }
 }
 
 void Scroller::checkForWheelMove(){
@@ -108,7 +107,7 @@ void Scroller::checkForWheelMove(){
     _COLLIDERS[0] = getSprite(1)->getCollider();
 }
 
-void Scroller::manipulatingMod(GUI_Element** manipulatingElement){
+void Scroller::manipulatingMod(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
@@ -124,16 +123,17 @@ void Scroller::manipulatingMod(GUI_Element** manipulatingElement){
     _COLLIDERS[0] = getSprite(1)->getCollider();
 }
 
-bool Scroller::listenForClick(GUI_Element** manipulatingElement){
+bool Scroller::listenForClick(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
         if (PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
             PinGUI::Input_Manager::setAlreadyClick(true);
-            onClick();
-            *manipulatingElement = this;
 
+            onClick();
+
+            manipulatingElement = this;
         }
 
         return true;

@@ -46,8 +46,8 @@ class GUI_Cursor
         static PinGUI::Rect getCollider();
 
         static int getX();
-        static int getY();
 
+        static int getY();
 };
 
 #endif // GUI_CURSOR_H

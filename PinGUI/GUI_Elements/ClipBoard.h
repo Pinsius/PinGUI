@@ -45,7 +45,7 @@
 #define CLIPBOARD_RECTANGLE_COLLIDER
 
 struct clipboardData{
-    TextManager* texter;
+    std::shared_ptr<TextManager> texter;
 };
 
 class ClipBoard: public GUI_Element
@@ -61,7 +61,7 @@ class ClipBoard: public GUI_Element
         int _maxSize;
 
         //Text storage unit
-        TextStorage* _textStorage;
+        std::shared_ptr<TextStorage> _textStorage;
 
         //This indicates if i have rounded or rectangle shape (important for collisions)
         element_shape _shape;
@@ -75,7 +75,7 @@ class ClipBoard: public GUI_Element
         PinGUI::Rect getSpriteRect(const GUIPos& tmp_width, const GUIPos& tmp_height, const PinGUI::Vector2<GUIPos> position);
 
         //Changing the sprite color to see if i have collision or not
-        void manipulatingMod(GUI_Element** manipulatingElement);
+        void manipulatingMod(manip_Element manipulatingElement) override;
 
         void setWritingAvailability(bool state);
 
@@ -100,11 +100,14 @@ class ClipBoard: public GUI_Element
 
         ~ClipBoard();
 
-        TextStorage* getStorage(){return _textStorage;}
+        std::shared_ptr<TextStorage> getStorage(){return _textStorage;}
 
         void normalizeElement(const PinGUI::Vector2<GUIPos>& vect) override;
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+
+        bool listenForClick(manip_Element manipulatingElement) override;
+
         void moveElement(const PinGUI::Vector2<GUIPos>& vect) override;
+
         void cropElement(PinGUI::Rect& rect) override;
 
         void setClipboardText(std::string text);

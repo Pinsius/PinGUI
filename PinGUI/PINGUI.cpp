@@ -24,32 +24,43 @@
 
 #include "PINGUI.h"
 
-std::vector<Window*> PINGUI::_ACTIVE_WINDOWS;
+std::vector<std::shared_ptr<Window>> PINGUI::_ACTIVE_WINDOWS;
 
-std::vector<Window*> PINGUI::_NON_ACTIVE_WINDOWS;
+std::vector<std::shared_ptr<Window>> PINGUI::_NON_ACTIVE_WINDOWS;
 
-Window* PINGUI::_mainWindow = nullptr;
+std::shared_ptr<Window> PINGUI::_mainWindow = nullptr;
 
-GUIManager* PINGUI::_mainGUIManager = nullptr;
+std::shared_ptr<GUIManager> PINGUI::_mainGUIManager = nullptr;
+
+std::shared_ptr<Window> PINGUI::lastWindow = nullptr;
 
 void PINGUI::destroy(){
 
-    for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++){
-
-        delete _ACTIVE_WINDOWS[i];
-    }
-
-    for (std::size_t i = 0; i < _NON_ACTIVE_WINDOWS.size(); i++){
-
-        delete _NON_ACTIVE_WINDOWS[i];
-    }
-
-    delete _mainGUIManager;
+    _ACTIVE_WINDOWS.clear();
+    _NON_ACTIVE_WINDOWS.clear();
+    _mainWindow.reset();
 }
 
-void PINGUI::addWindow(Window* win){
+void PINGUI::addWindow(std::shared_ptr<Window> win){
+
+    win->addElementsToManager();
 
     _ACTIVE_WINDOWS.push_back(win);
+
+    lastWindow = win;
+
+    if (!_mainWindow)
+        _mainWindow = win;
+}
+
+void PINGUI::createWindow(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape){
+
+    auto win = std::make_shared<Window>(mainFrame,tabs,type,shape);
+    win->addElementsToManager();
+
+    _ACTIVE_WINDOWS.push_back(win);
+
+    lastWindow = win;
 
     if (!_mainWindow)
         _mainWindow = win;
@@ -76,6 +87,7 @@ void PINGUI::render(){
     }
 
     PinGUI::Shader_Program::unuse();
+
 }
 
 void PINGUI::update(){
@@ -83,6 +95,9 @@ void PINGUI::update(){
     bool allowUpdate = true;
 
     checkActiveWindows();
+
+    if (_mainGUIManager)
+        _mainGUIManager->update(allowUpdate);
 
     for (std::size_t i = _ACTIVE_WINDOWS.size(); i > 0; i--){
 
@@ -92,12 +107,9 @@ void PINGUI::update(){
             allowUpdate = false;
         }
     }
-
-    if (_mainGUIManager)
-        _mainGUIManager->update(allowUpdate);
 }
 
-void PINGUI::setMainWindow(Window* win){
+void PINGUI::setMainWindow(std::shared_ptr<Window> win){
     _mainWindow = win;
 }
 
@@ -126,7 +138,7 @@ int PINGUI::getSizeOfActiveWindows(){
     return _ACTIVE_WINDOWS.size();
 }
 
-bool PINGUI::collide(Window* win){
+bool PINGUI::collide(std::shared_ptr<Window> win){
 
     if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(win->getCollider())))
         return true;
@@ -163,7 +175,7 @@ PinGUI::basicPointer PINGUI::getFunctionPointer(){
 
 void PINGUI::initLibrary(int screenWidth, int screenHeight){
 
-    _mainGUIManager = new GUIManager();
+    _mainGUIManager = std::make_shared<GUIManager>();
 
     initStorage();
 
@@ -187,7 +199,7 @@ void PINGUI::processInput(SDL_Event* event){
     PinGUI::Input_Manager::process(event);
 }
 
-GUIManager* PINGUI::getGUI(){
+std::shared_ptr<GUIManager> PINGUI::getGUI(){
 
     return _mainGUIManager;
 }

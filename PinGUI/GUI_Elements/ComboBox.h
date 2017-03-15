@@ -40,16 +40,16 @@ class ComboBox: public ClipBoard
 {
     private:
 
-        std::vector<GUI_Element*>* _ELEMENTS;
+        std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS;
 
         //Also scroller
-        VerticalScroller* _scroller;
+        std::shared_ptr<VerticalScroller> _scroller;
 
         //Crop area
         GUIRect _cropRect;
 
         //ITEMS
-        std::vector<ComboBoxItem*> _ITEMS;
+        std::vector<std::shared_ptr<ComboBoxItem>> _ITEMS;
 
         //Maximum number of Items(that are allowed without scrolling)
         int _maxNumberOfItems;
@@ -61,7 +61,7 @@ class ComboBox: public ClipBoard
         clipboardData _data;
 
         //The main option
-        ComboBoxItem* _mainItem;
+        std::shared_ptr<ComboBoxItem> _mainItem;
 
         bool* _needUpdate;
 
@@ -96,14 +96,16 @@ class ComboBox: public ClipBoard
         ComboBox(int x,
                  int y,
                  std::vector<std::string> itemList,
-                 clipboardData data, std::vector<GUI_Element*>* ELEMENTS,
+                 clipboardData data,
+                 std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
                  int maxNumOfItems,
                  bool* update);
 
         ComboBox(int x,
                  int y,
                  std::vector<std::string> itemList,
-                 clipboardData data, std::vector<GUI_Element*>* ELEMENTS,
+                 clipboardData data,
+                 std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
                  int maxNumOfItems,
                  bool* update,
                  int maxSize);
@@ -128,7 +130,7 @@ class ComboBox: public ClipBoard
 
         void onClick() override;
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
 
         void setShow(bool state) override;
 

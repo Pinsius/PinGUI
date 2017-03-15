@@ -36,7 +36,6 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
     _type(type),
     _shape(shape)
 {
-
     initClipBoard(maxSize,data,position);
 
     initText();
@@ -46,7 +45,6 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
     _type(type),
     _shape(shape)
 {
-
     initClipBoard(maxSize,data,position);
 
     initText(var);
@@ -64,7 +62,6 @@ void ClipBoard::init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardDat
 
 ClipBoard::~ClipBoard()
 {
-    delete _textStorage;
 }
 
 
@@ -99,7 +96,7 @@ void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2
               GUI_ColorManager::getColor(CLIPBOARD_NCOLOR));
 
     //Creation of textStorage unit
-    _textStorage = new TextStorage(data.texter);
+    _textStorage = std::make_shared<TextStorage>(data.texter);
 }
 
 void ClipBoard::initText(){
@@ -211,14 +208,17 @@ void ClipBoard::onClick(){
     PinGUI::Input_Manager::setWritingModInfo(tmp);
 }
 
-void ClipBoard::manipulatingMod(GUI_Element** manipulatingElement){
+void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
+
 
     if (PinGUI::Input_Manager::isKeyPressed(SDLK_ESCAPE)||PinGUI::Input_Manager::isKeyPressed(SDLK_RETURN)){
 
-        *manipulatingElement = nullptr;
+        manipulatingElement = nullptr;
+
         SDL_ShowCursor(SDL_ENABLE);
         PinGUI::Input_Manager::setInputState(GAMEINPUT);
         PinGUI::Input_Manager::setAlreadyClick(false);
+
         return;
     }
 }
@@ -248,12 +248,10 @@ void ClipBoard::fakeInputText(int& width, int& height, const clipboardData& data
     for (int i = 0; i < _maxSize; i++)
         tmpString+='O';
 
-    GUI_Sprite* tmpSprite = new GUI_Sprite(tmpString,data.texter->getTextInfo());
+    std::shared_ptr<GUI_Sprite> tmpSprite = std::make_shared<GUI_Sprite>(tmpString,data.texter->getTextInfo());
 
     width = tmpSprite->getW() + CLIPBOARD_WIDTH_OFFSET;
     height = tmpSprite->getH() + CLIPBOARD_HEIGHT_OFFSET;
-
-    delete tmpSprite;
 }
 
 void ClipBoard::normalizeElement(const PinGUI::Vector2<GUIPos>& vect){
@@ -284,7 +282,7 @@ void ClipBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
     _textStorage->getText()->moveText(vect);
 }
 
-bool ClipBoard::listenForClick(GUI_Element** manipulatingElement){
+bool ClipBoard::listenForClick(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
@@ -292,7 +290,8 @@ bool ClipBoard::listenForClick(GUI_Element** manipulatingElement){
 
             PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
-            *manipulatingElement = this;
+
+            manipulatingElement = this;
 
             return true;
         }
@@ -331,5 +330,5 @@ void ClipBoard::cropElement(PinGUI::Rect& rect){
 
     GUI_Element::cropElement(rect);
 
-    CropManager::cropSprite(_textStorage->getText()->getSprite(),rect);
+    CropManager::cropSprite(_textStorage->getText()->getSprite().get(),rect);
 }

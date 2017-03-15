@@ -41,7 +41,7 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
     initPosition(mainFrame);
 
     //Creation of GUI manager
-    _mainGUIManager = new GUIManager();
+    _mainGUIManager = std::make_shared<GUIManager>();
 
     //Now setting the size of Font for Tab names
     _mainGUIManager->getTextManager()->setFontSize(WINDOW_TAB_FONT_SIZE);
@@ -56,16 +56,13 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
         else if (shape==RECTANGLED)
             addSprite(tmpPositionRect,SheetManager::createRectangle(tmpPositionRect.w,tmpPositionRect.h,WINDOW_BACKGROUND,WINDOW_LINE));
 
-
         addCollider(tmpPositionRect);
 
         //Now need to create the tabs
         createTabs(tabs,tmpPositionRect);
     }
 
-    //By default the main tab will be the first one
-    if (_TABS.size()!=0)
-        _mainWindowTab = _TABS[0]->windowTab;
+    _mainWindowTab = _TABS[0]->windowTab;
 
     //Initializing the mainTab
     if (_mainWindowTab)
@@ -74,11 +71,10 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
     PinGUI::basicPointer tmpFunction;
     tmpFunction._function = boost::bind(&Window::rollbackTabCamera,this);
 
-    for (std::size_t i = 0; i < _TABS.size(); i++)
-        _TABS[i]->windowTab->setRollBackFunction(tmpFunction);
+    for (auto&& tab : _TABS){
 
-    //I also need to put my elements into the guiManager
-    addElementsToManager();
+        tab->windowTab->setRollBackFunction(tmpFunction);
+    }
 
     //Creating additional elements
     if (haveMover())
@@ -86,30 +82,10 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
 
     if (haveExit())
         createWindowExitButton();
-
-
 }
 
 Window::~Window()
 {
-    for (std::size_t i = 0; i < _TABS.size(); i++){
-        delete _TABS[i];
-    }
-
-    delete _mainGUIManager;
-
-    if (_verticalScroller)
-        delete _verticalScroller;
-
-    if (_horizontalScroller)
-        delete _horizontalScroller;
-
-    if (_windowExit)
-        delete _windowExit;
-
-    if (_windowMover)
-        delete _windowMover;
-
     _TABS.clear();
 }
 
@@ -120,9 +96,14 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
 
     for (std::size_t i = 0; i < tabs.size(); i++){
 
-        _TABS.push_back(new tabInfo);
-        _TABS[i]->tabName = tabs[i];
-        _TABS[i]->windowTab = new WindowTab(calculateSize(tabs.size(),positionRect,i),&_mainWindowTab,&_tabChange);
+        auto winTab = std::make_shared<WindowTab>(calculateSize(tabs.size(),positionRect,i),
+                                                  &_mainWindowTab,
+                                                  &_tabChange);
+
+        auto ptr = std::make_shared<tabInfo>(tabs[i],winTab);
+
+        _TABS.push_back(ptr);
+
         offsetTab(_TABS.back()->windowTab);
 
         //Creating a name of tab
@@ -144,9 +125,13 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
 
 void Window::createEmptyTabLine(PinGUI::Rect& positionRect){
 
-    _TABS.push_back(new tabInfo);
-    _TABS.back()->tabName = "Blank";
-    _TABS.back()->windowTab = new WindowTab(calculateSize(1,positionRect,0,false),&_mainWindowTab,&_tabChange);
+    auto winTab = std::make_shared<WindowTab>(calculateSize(1,positionRect,0,false),
+                                              &_mainWindowTab,
+                                              &_tabChange);
+
+    auto ptr = std::make_shared<tabInfo>("Blank",winTab);
+
+    _TABS.push_back(ptr);
 
     _TABS.back()->windowTab->getSprite()->setH(SINGLE_WINDOWTAB_HEIGHT);
     _TABS.back()->windowTab->getSprite()->setColor(95,95,95);
@@ -161,6 +146,7 @@ void Window::createEmptyTabLine(PinGUI::Rect& positionRect){
 }
 
 PinGUI::Rect Window::calculateSize(int vecSize,const PinGUI::Rect& positionRect, std::size_t counter, bool nameIt){
+
     PinGUI::Rect tmp;
 
     tmp.w = positionRect.w/vecSize;
@@ -174,7 +160,8 @@ PinGUI::Rect Window::calculateSize(int vecSize,const PinGUI::Rect& positionRect,
     return tmp;
 }
 
-void Window::nameTab(tabInfo* tab){
+void Window::nameTab(std::shared_ptr<tabInfo> tab){
+
     PinGUI::Rect tmpRect = *(tab->windowTab->getCollider());
 
     //I also need to render the text name and offset it to the correct possition
@@ -184,8 +171,7 @@ void Window::nameTab(tabInfo* tab){
     _mainGUIManager->getTextManager()->getLastText()->setOffsetRect(tmpRect);
 }
 
-
-WindowTab* Window::getTab(std::string tabName){
+std::shared_ptr<WindowTab> Window::getTab(std::string tabName){
 
     for (std::size_t i = 0; i < _TABS.size(); i++){
 
@@ -211,7 +197,6 @@ void Window::render(){
 
 void Window::update(bool allowCollision){
 
-
     if (_windowUpdate)
         moveWindow(PinGUI::Input_Manager::getLastVector());
 
@@ -219,41 +204,32 @@ void Window::update(bool allowCollision){
 
     if (_mainWindowTab){
 
-        if (_tabChange)
+        if (_tabChange){
             updateTab();
+        }
+
 
         if (_needCrop && _mainWindowTab->getGUI()->getUpdate()){
-
             cropTabArea();
         }
 
-        if (_mainWindowTab)
+        if (_mainWindowTab){
             _mainWindowTab->getGUI()->update(allowCollision);
-    }
-}
-
-void Window::update(float deltaTime){
-
-    if (_windowUpdate)
-        moveWindow(PinGUI::Input_Manager::getLastVector(),deltaTime);
-
-    _mainGUIManager->update();
-    if (_mainWindowTab){
-        if (_tabChange) updateTab();
-        _mainWindowTab->update();
+        }
     }
 }
 
 void Window::addElementsToManager(){
 
-    _mainGUIManager->putElement(this);
+    _mainGUIManager->putElementAtStart(shared_from_this());
 
     for (std::size_t i = 0; i < _TABS.size(); i++){
         _mainGUIManager->putElement(_TABS[i]->windowTab);
     }
 }
 
-void Window::offsetTab(WindowTab*& tab){
+void Window::offsetTab(std::shared_ptr<WindowTab> tab){
+
     //Offset the windowTab
     int tmpY = (getSprite()->getY()+getSprite()->getH())-WINDOW_TAB_OFFSET;
     tab->getSprite()->setY(tmpY-tab->getSprite()->getH());
@@ -273,11 +249,13 @@ void Window::offsetTab(WindowTab*& tab){
 }
 
 void Window::createWindowMoverArea(){
+
     PinGUI::Rect positionRect;
 
     //Setting the width and height
     positionRect.h = WINDOW_MOVER_HEIGHT;
     moverWidthCalculator(positionRect.w,_mainFrame.w);
+
     if (!haveExit()) positionRect.w += WINDOW_EXIT_W_AREA;
 
     positionRect.x = _mainFrame.x + PINGUI_WINDOW_LINE_W+WINDOW_MOVER_X_OFFSET;
@@ -285,17 +263,20 @@ void Window::createWindowMoverArea(){
     int tmpY = (getSprite()->getY()+getSprite()->getH())+WINDOW_MOVER_Y_OFFSET-PINGUI_WINDOW_LINE_H;
     positionRect.y = tmpY-positionRect.h;
 
-    _windowMover = new WindowMover(positionRect,&_windowUpdate);
+    _windowMover = std::make_shared<WindowMover>(positionRect,&_windowUpdate);
+
     _mainGUIManager->putElement(_windowMover);
 }
 
 void Window::createWindowExitButton(){
+
     PinGUI::Rect positionRect;
 
-    positionRect.x = this->getSprite()->getX() + this->getSprite()->getW() - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_H;
-    positionRect.y = this->getSprite()->getY() + this->getSprite()->getH() - PINGUI_WINDOW_EXITBUTTON_H + PINGUI_WINDOW_LINE_H;
+    positionRect.x = getSprite()->getX() + getSprite()->getW() - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_H;
+    positionRect.y = getSprite()->getY() + getSprite()->getH() - PINGUI_WINDOW_EXITBUTTON_H + PINGUI_WINDOW_LINE_H;
 
-    _windowExit = new WindowExit(positionRect,&_show);
+    _windowExit = std::make_shared<WindowExit>(positionRect,&_show);
+
     _mainGUIManager->putElement(_windowExit);
 }
 
@@ -303,24 +284,12 @@ void Window::createWindowExitButton(){
 void Window::moveWindow(PinGUI::Vector2<GUIPos> vect){
 
     _mainGUIManager->moveGUI(vect);
+
     _cameraRect.addPos(vect);
 
     for (std::size_t i = 0; i < _TABS.size(); i++){
         _TABS[i]->windowTab->getGUI()->moveGUI(vect);
     }
-
-    _windowUpdate = false;
-
-}
-
-void Window::moveWindow(PinGUI::Vector2<GUIPos> vect,float deltaTime){
-    vect.x *= deltaTime ;
-    vect.y *= deltaTime ;
-
-    _movingVect += vect;
-
-    _mainGUIManager->moveGUI(vect);
-    if (_mainWindowTab) _mainWindowTab->getGUI()->moveGUI(vect);
 
     _windowUpdate = false;
 }
@@ -430,9 +399,15 @@ void Window::createVerticalScroller(int height){
 
     position.y = _TABS.back()->windowTab->getSprite()->getY() - height + PINGUI_WINDOW_LINE_H;
 
-    _verticalScroller = new VerticalScroller(position,height,_mainGUIManager->getUpdateBool(),_mainGUIManager->getElementVector());
-    _verticalScroller->setCamRollFunction(getCamRollFunction());
+    _verticalScroller = std::make_shared<VerticalScroller>(position,
+                                                           height,
+                                                           _mainGUIManager->getUpdateBool(),
+                                                           _mainGUIManager->getElementVector());
 
+    _mainGUIManager->putElement(_verticalScroller);
+    _verticalScroller->createArrows(_mainGUIManager->getElementVector());
+
+    _verticalScroller->setCamRollFunction(getCamRollFunction());
 }
 
 void Window::createHorizontalScroller(int width){
@@ -446,7 +421,14 @@ void Window::createHorizontalScroller(int width){
     position.x = _TABS[0]->windowTab->getSprite()->getX();
     position.y = getSprite()->getY();
 
-    _horizontalScroller = new HorizontalScroller(position,width,_mainGUIManager->getUpdateBool(),_mainGUIManager->getElementVector());
+    _horizontalScroller = std::make_shared<HorizontalScroller>(position,
+                                                               width,
+                                                               _mainGUIManager->getUpdateBool(),
+                                                               _mainGUIManager->getElementVector());
+
+    _mainGUIManager->putElement(_horizontalScroller);
+    _horizontalScroller->createArrows(_mainGUIManager->getElementVector());
+
     _horizontalScroller->setCamRollFunction(getCamRollFunction());
 }
 
@@ -477,6 +459,7 @@ void Window::setTabWidth(int width, std::string tabName){
 }
 
 void Window::checkDimensions(manipulationState state, const int& value){
+
     switch(state){
         case VERTICAL : {
 
@@ -553,25 +536,24 @@ elementType Window::getElementType(){
 
 void Window::onAim(){
 
-    if(isScrollerActive(_verticalScroller)){
-
-        _verticalScroller->attachScrollerToInput();
-    }
+    if(isScrollerActive(_verticalScroller)) _verticalScroller->attachScrollerToInput();
 }
 
 void Window::onEndAim(){
 
+
     if (isScrollerActive(_verticalScroller)){
-        
+
         if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite){
 
             if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite == _verticalScroller->getSprite(1))
                 PinGUI::Input_Manager::setAllowWheel(false);
         }
+
     }
 }
 
-bool Window::listenForClick(GUI_Element** manipulatingElement){
+bool Window::listenForClick(manip_Element manipulatingElement){
 
     if (isScrollerActive(_verticalScroller)  && !PinGUI::Input_Manager::hasTMPWheeledInfo()){
 
@@ -609,7 +591,7 @@ void Window::normalize(){
     setWindowCamRect();
 }
 
-void Window::normalizeTab(WindowTab* tab, const float& x, const float& y){
+void Window::normalizeTab(std::shared_ptr<WindowTab> tab, const float& x, const float& y){
 
     tab->getGUI()->normalizeElements(x,y);
 }
@@ -678,6 +660,6 @@ void Window::setWindowCamRect(){
     _cameraRect.w++;
 }
 
-GUIManager* Window::getGUI(){
+std::shared_ptr<GUIManager> Window::getGUI(){
     return _mainGUIManager;
 }

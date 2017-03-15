@@ -254,9 +254,6 @@ class GUIRect{
         bool hasEqualDimensions(PinGUI::Rect rect){
 
         }
-
-
 };
 
 #endif // PINGUI_RECT_HPP
-

@@ -28,41 +28,58 @@
 #include "../TextManager/TextManager.h"
 #include "../stuff.h"
 
-struct additionalStorage{
-    PinGUI::Rect* offsetRect;
-    clipboard_type* type;
+class additionalStorage{
+
+    public:
+        PinGUI::Rect* offsetRect;
+        clipboard_type* type;
+
+        additionalStorage()
+        {
+        };
+        additionalStorage(PinGUI::Rect* rect, clipboard_type* Type):
+            offsetRect(rect),
+            type(Type)
+        {
+
+        };
+        ~additionalStorage()
+        {
+        };
 };
 
 class TextStorage
 {
     private:
         //It is holding pointers to texts and also a pointer to the textmanager
-        std::vector<Text*> _TEXTS;
+        std::vector<std::shared_ptr<Text>> _TEXTS;
 
-        TextManager* texter;
+        std::shared_ptr<TextManager> texter;
 
         //Pointer to an additional informations - in case of clipboards, etc.
-        additionalStorage* _additionalStorage;
+        std::shared_ptr<additionalStorage> _additionalStorage;
 
     public:
-        TextStorage(TextManager* text);
+        TextStorage(std::shared_ptr<TextManager> text);
         ~TextStorage();
 
         void addText(const std::string& text, int x, int y) ;
+
         void addText(const std::string& text, int x, int y, int* var);
 
         void destroyText(int position = 0);
 
         void addChar(char* ch, int position, int maxValue);
+
         void removeChar(int position);
 
-        Text* getText(int position = 0);
+        std::shared_ptr<Text> getText(int position = 0);
 
-        std::vector<Text*>* getVector();
+        std::vector<std::shared_ptr<Text>>* getVector();
 
         void setAdditionalInfo(PinGUI::Rect* OffsetRect, clipboard_type* Type);
 
-        void proccess(char* ch);
+        void setShow(bool state);
 };
 
 #endif // TEXTSTORAGE_H

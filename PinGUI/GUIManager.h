@@ -36,6 +36,7 @@
 #include "GUI_ColorManager.h"
 #include "CameraManager.h"
 #include "VBO_Manager.h"
+#include <memory>
 
 /*** GUI ELEMENTS ***/
 #include "GUI_Elements/ClipBoard.h"
@@ -56,20 +57,21 @@ class GUIManager
 {
     private:
         //OpenGL stuff
-        VBO_Manager* _vboMANAGER;
+        std::unique_ptr<VBO_Manager> _vboMANAGER;
 
         //Vector of vectors for each kind of button type
         std::vector<vboData> _vboDATA;
 
         //Storage place for clipboards
-        std::vector<GUI_Element*> _ELEMENTS;
+        std::vector<std::shared_ptr<GUI_Element>> _ELEMENTS;
 
         //TextManager that belongs to the current GUIManager(GM)
-        TextManager* _texter;
+        std::shared_ptr<TextManager> _texter;
 
         //Pointer to an element which is currently in manipulating mod
         GUI_Element* _manipulatingElement;
-        GUI_Element* _collidingElement;
+
+        std::shared_ptr<GUI_Element> _collidingElement;
 
         //Bool for update state
         bool _needUpdate;
@@ -98,7 +100,7 @@ class GUIManager
 
     public:
         GUIManager();
-        GUIManager(TextManager* texter);
+        GUIManager(std::shared_ptr<TextManager> texter);
         ~GUIManager();
 
         //Making methods
@@ -124,8 +126,9 @@ class GUIManager
         void moveGUITo(PinGUI::Vector2<GUIPos> vect);
         void cropGUI(PinGUI::Rect& rect);
 
-        void putElement(GUI_Element* object);
-        void withdrawElement(GUI_Element* object);
+        void putElement(std::shared_ptr<GUI_Element> object);
+        void putElementAtStart(std::shared_ptr<GUI_Element> object);
+        void withdrawElement(std::shared_ptr<GUI_Element> object);
 
         //Rendering method
         void render();
@@ -136,20 +139,25 @@ class GUIManager
         void checkCrop();
         void doCrop();
 
-
         /** GETTERS SETTERS **/
         clipboardData getClipboardData();
 
-        std::vector<GUI_Element*>* getElementVector();
-        GLuint* getVAOID();
-        TextManager* getTextManager();
+        std::vector<std::shared_ptr<GUI_Element>>* getElementVector();
+
+        std::shared_ptr<TextManager> getTextManager();
+
         bool* getUpdateBool();
+
         bool getUpdate();
+
         std::size_t getGUISize();
 
-        GUI_Element* getGuiElement(int position = 0);
-        GUI_Element* getLastGuiElement();
-        GUI_Element* getCollidingElement();
+        std::shared_ptr<GUI_Element> getGuiElement(int position = 0);
+
+        std::shared_ptr<GUI_Element> getLastGuiElement();
+
+        std::shared_ptr<GUI_Element> getCollidingElement();
+
         void setUpdate(bool state);
 
         void setFunction(PinGUI::basicPointer f);

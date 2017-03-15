@@ -46,16 +46,14 @@ WindowMover::~WindowMover()
     //dtor
 }
 
-void WindowMover::manipulatingMod(GUI_Element** manipulatingElement){
+void WindowMover::manipulatingMod(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
         endManipulatingMod(manipulatingElement);
         optionCollider();
-        return;
 
-    } else {
-        //*_windowUpdate = true;
+        return;
     }
 }
 
@@ -68,7 +66,7 @@ void WindowMover::onClick(){
     PinGUI::Input_Manager::initManipulation(getSprite(),_windowUpdate);
 }
 
-bool WindowMover::listenForClick(GUI_Element** manipulatingElement){
+bool WindowMover::listenForClick(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
@@ -76,7 +74,8 @@ bool WindowMover::listenForClick(GUI_Element** manipulatingElement){
 
             PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
-            *manipulatingElement = this;
+
+            manipulatingElement = this;
         }
         return true;
     } return false;

@@ -31,15 +31,12 @@ GUIManager::GUIManager():
     _collidingElement(nullptr),
     _moved(false)
 {
+    _vboMANAGER = std::make_unique<VBO_Manager>(100,true);
 
-    _vboMANAGER = new VBO_Manager(100);
-
-    _vboDATA.emplace_back();
-
-    _texter = new TextManager();
+    _texter = std::make_shared<TextManager>();
 }
 
-GUIManager::GUIManager(TextManager* texter):
+GUIManager::GUIManager(std::shared_ptr<TextManager> texter):
     _needUpdate(false),
     _manipulatingMod(false),
     _manipulatingElement(nullptr),
@@ -48,87 +45,85 @@ GUIManager::GUIManager(TextManager* texter):
 {
     this->_texter = texter;
 
-    _vboMANAGER = new VBO_Manager(100);
+    _vboMANAGER = std::make_unique<VBO_Manager>(100,true);
 }
 
 GUIManager::~GUIManager()
 {
-    delete _texter;
-    delete _vboMANAGER;
-    if (_ELEMENTS.size()!=0){
-        for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
-            delete _ELEMENTS[i];
-        }
-        _ELEMENTS.clear();
-    }
-
+    _ELEMENTS.clear();
 }
 
 void GUIManager::createClipBoard(int x, int y, clipboard_type type, int maxSize, element_shape shape){
+
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
 
     PinGUI::Vector2<GUIPos> position(x,y);
 
-    _ELEMENTS.push_back(new ClipBoard(position, maxSize, type, tmp,shape));
+    auto ptr = std::make_shared<ClipBoard>(position, maxSize, type, tmp,shape);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
 void GUIManager::createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, element_shape shape){
+
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
     PinGUI::Vector2<GUIPos> position(x,y);
 
-    _ELEMENTS.push_back(new ClipBoard(position,maxSize,type,tmp,var,shape));
+    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,shape);
+    _ELEMENTS.push_back(ptr);
+
     _needUpdate = true;
+
 }
 
 void GUIManager::createComboBox(int x, int y, std::vector<std::string> items, int maxNumOfItems){
 
-    ComboBox* tmpp;
-
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
 
-    tmpp = new ComboBox(x,y,items,tmp,&_ELEMENTS, maxNumOfItems,&_needUpdate);
+    auto ptr = std::make_shared<ComboBox>(x,y,items,tmp,&_ELEMENTS, maxNumOfItems,&_needUpdate);
 
-    _ELEMENTS.push_back(tmpp);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
 void GUIManager::createComboBox(int x, int y, std::vector<std::string> items, int maxSize, int maxNumOfItems){
 
-    ComboBox* tmpp;
-
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
 
-    tmpp = new ComboBox(x,y,items,tmp,&_ELEMENTS, maxNumOfItems,&_needUpdate,maxSize);
+    auto ptr = std::make_shared<ComboBox>(x,y,items,tmp,&_ELEMENTS, maxNumOfItems,&_needUpdate,maxSize);
 
-    _ELEMENTS.push_back(tmpp);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
 
 void GUIManager::createVolumeBoard(int x, int y, bool clickable, int* var, int maxSize){
+
     //Block for creating a clipboard
     {
         clipboardData tmp;
-        tmp.texter = _texter;
+        tmp.texter = getTextManager();
         PinGUI::Vector2<GUIPos> position(x+VOLUMEBOARD_CLIP_OFFSET_X,y+VOLUMEBOARD_CLIP_OFFSET_Y);
 
         if (clickable){
-            _ELEMENTS.push_back(new ClipBoard(position,maxSize,INT_ONLY,tmp,var,ROUNDED));
+
+            createClipBoard(position.x,position.y,INT_ONLY,var,maxSize,ROUNDED);
         } else {
-            _ELEMENTS.push_back(new ClipBoard(position,maxSize,UNCLICKABLE,tmp,var,ROUNDED));
+            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
         }
     }
+
     PinGUI::Vector2<GUIPos> tmpPos(x,y);
 
-    _ELEMENTS.push_back(new VolumeBoard(tmpPos,var,maxSize,_ELEMENTS.back(),&_moved));
+    auto ptr = std::make_shared<VolumeBoard>(tmpPos,var,maxSize,_ELEMENTS.back(),&_moved);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
@@ -138,35 +133,38 @@ void GUIManager::createArrowBoard(int x, int y, int* var, int maxSize, bool clic
     //Block for creating a clipboard
     {
         clipboardData tmp;
-        tmp.texter = _texter;
+        tmp.texter = getTextManager();
         PinGUI::Vector2<GUIPos> position(x,y);
 
         if (clickable){
-            _ELEMENTS.push_back(new ClipBoard(position,maxSize,INT_ONLY,tmp,var));
+
+            createClipBoard(position.x,position.y,INT_ONLY,var,maxSize,ROUNDED);
         } else {
-            _ELEMENTS.push_back(new ClipBoard(position,maxSize,UNCLICKABLE,tmp,var));
+            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
         }
     }
     PinGUI::Rect tmpRect(x,y,WINDOW_ARROW_W,WINDOW_ARROW_H);
 
-    ArrowBoard* elem = new ArrowBoard(tmpRect,var,maxSize,_ELEMENTS.back());
-    elem->addArrows(tmpRect,_ELEMENTS,state);
+    auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back());
+    ptr->addArrows(tmpRect,_ELEMENTS,state);
 
-    _ELEMENTS.push_back(elem);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
 void GUIManager::createImage(std::string filePath, int x, int y){
 
-    _ELEMENTS.push_back(new Image(filePath,x,y));
+    auto ptr = std::make_shared<Image>(filePath,x,y);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
 void GUIManager::createImage(std::string filePath, int x, int y, int width, int height){
 
-    _ELEMENTS.push_back(new Image(filePath,x,y,width,height));
+    auto ptr = std::make_shared<Image>(filePath,x,y,width,height);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
@@ -174,9 +172,10 @@ void GUIManager::createImage(std::string filePath, int x, int y, int width, int 
 void GUIManager::createButton(int x, int y, std::string name, PinGUI::basicPointer f){
 
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
 
-    _ELEMENTS.push_back(new Button(x,y,name,f,tmp));
+    auto ptr = std::make_shared<Button>(x,y,name,f,tmp);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
@@ -185,25 +184,31 @@ void GUIManager::createButton(int x, int y, std::string name, PinGUI::basicPoint
 void GUIManager::createButton(int x, int y, std::string name, PinGUI::basicPointer f, int maxSize){
 
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
 
-    _ELEMENTS.push_back(new Button(x,y,name,f,tmp,maxSize));
+    auto ptr = std::make_shared<Button>(x,y,name,f,tmp,maxSize);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
 void GUIManager::createCheckBox(int x, int y, bool* var){
-    _ELEMENTS.push_back(new CrossBox(x,y,var));
+
+    auto ptr = std::make_shared<CrossBox>(x,y,var);
+    _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
-void GUIManager::putElement(GUI_Element* object){
+void GUIManager::putElement(std::shared_ptr<GUI_Element> object){
+
     _ELEMENTS.push_back(object);
+
     _needUpdate = true;
 }
 
-void GUIManager::withdrawElement(GUI_Element* object){
+void GUIManager::withdrawElement(std::shared_ptr<GUI_Element> object){
+
     std::size_t i;
     bool found = false;
 
@@ -254,10 +259,8 @@ void GUIManager::renderElements(){
 
             if (!_ELEMENTS[i]->exist()){
 
-                delete _ELEMENTS[i];
                 _ELEMENTS.erase(_ELEMENTS.begin()+i);
                 i--;
-
                 continue;
             }
             _ELEMENTS[i]->draw(tmpPos);
@@ -272,22 +275,24 @@ void GUIManager::renderText(){
 
 void GUIManager::update(bool allowCollision){
 
-    if (_manipulatingElement==nullptr){
+    if (!_manipulatingElement){
 
-        if (allowCollision)
+        if (allowCollision){
             checkCollisions();
-         else {
+        } else {
 
             for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
 
                 if (_ELEMENTS[i]->isAiming()){
+
                     _ELEMENTS[i]->turnOffAim();
                     _needUpdate = true;
                 }
             }
          }
     } else {
-        _manipulatingElement->manipulatingMod(&_manipulatingElement);
+
+        _manipulatingElement->manipulatingMod(_manipulatingElement);
     }
 
     checkCrop();
@@ -318,21 +323,23 @@ void GUIManager::checkCollisions(){
 
             for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
 
-                if (_ELEMENTS[i]->collide(_needUpdate,&_manipulatingElement)){
+                if (_ELEMENTS[i]->collide(_needUpdate,_manipulatingElement)){
 
-                    if (_ELEMENTS[i]->getElementType()!=WINDOW){
+                    if (_ELEMENTS[i]->getElementType() != WINDOW){
 
                         _collidingElement = _ELEMENTS[i];
+
                         return;
                     }
                 }
             }
         } else {
 
-            if (!_collidingElement->collide(_needUpdate,&_manipulatingElement)){
+            if (!_collidingElement->collide(_needUpdate,_manipulatingElement)){
 
                 _collidingElement->setWritingAvailability(false);
                 _collidingElement = nullptr;
+
                 _needUpdate = true;
             }
         }
@@ -353,11 +360,8 @@ void GUIManager::updateVBO(){
     loadVBO();
 }
 
-GLuint* GUIManager::getVAOID(){
-    _vboMANAGER->getVAO_P();
-}
+std::shared_ptr<TextManager> GUIManager::getTextManager(){
 
-TextManager* GUIManager::getTextManager(){
     return _texter;
 }
 
@@ -381,30 +385,31 @@ std::size_t GUIManager::getGUISize(){
     return _ELEMENTS.size();
 }
 
-GUI_Element* GUIManager::getGuiElement(int position){
+std::shared_ptr<GUI_Element> GUIManager::getGuiElement(int position){
 
     if (position<_ELEMENTS.size() && position >= 0)
         return _ELEMENTS[position];
     else
-        return nullptr;
+        ErrorManager::errorLog("GUIManager::getGuiElement()", "Tried to get a element with nullptr");
 }
 
 void GUIManager::setUpdate(bool state){
     _needUpdate = true;
 }
 
-GUI_Element* GUIManager::getLastGuiElement(){
+std::shared_ptr<GUI_Element> GUIManager::getLastGuiElement(){
+
     if (_ELEMENTS.size()>0)
         return _ELEMENTS.back();
     else
-        return nullptr;
+        ErrorManager::errorLog("GUIManager::getLastGuiElement()", "Tried to get a element with nullptr");
 }
 
-std::vector<GUI_Element*>* GUIManager::getElementVector(){
+std::vector<std::shared_ptr<GUI_Element>>* GUIManager::getElementVector(){
     return &_ELEMENTS;
 }
 
-GUI_Element* GUIManager::getCollidingElement(){
+std::shared_ptr<GUI_Element> GUIManager::getCollidingElement(){
     return _collidingElement;
 }
 
@@ -423,6 +428,7 @@ void GUIManager::normalizeElements(float x, float y){
 }
 
 void GUIManager::moveGUITo(PinGUI::Vector2<GUIPos> vect){
+
     for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
 
         if (!_ELEMENTS[i]->getNetworking())
@@ -454,7 +460,11 @@ void GUIManager::setFunction(PinGUI::basicPointer f){
 clipboardData GUIManager::getClipboardData(){
 
     clipboardData tmp;
-    tmp.texter = _texter;
+    tmp.texter = getTextManager();
 
     return tmp;
+}
+
+void GUIManager::putElementAtStart(std::shared_ptr<GUI_Element> object){
+    _ELEMENTS.insert(_ELEMENTS.begin(),object);
 }

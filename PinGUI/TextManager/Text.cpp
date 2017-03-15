@@ -25,8 +25,6 @@
 #include "Text.h"
 #include <iostream>
 
-
-
 Text::Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info):
     text(Text),
     active(true),
@@ -42,7 +40,8 @@ Text::Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info):
     _position.y = pos.y;
 
     if (text.size()==0) text.push_back(' ');
-    _sprite = new GUI_Sprite(text,pos,info);
+
+    _sprite = std::make_shared<GUI_Sprite>(text,pos,info);
 }
 
 Text::Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable):
@@ -57,74 +56,87 @@ Text::Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info, int* V
     _position.x = pos.x;
     _position.y = pos.y;
 
-
     variable = Variable;
     last_var = *Variable;
 
-    //Here i make a string from var
-    std::stringstream tmp;
-    tmp.str("");
-    tmp << text << last_var;
+    reloadString();
 
-    _sprite = new GUI_Sprite(tmp.str(),pos,info);
+    _sprite = std::make_shared<GUI_Sprite>(text,pos,info);
 }
 
 Text::~Text()
 {
-    delete _sprite;
 }
 
 void Text::needUpdate(textInfo* info, bool& update){
 
     if (variable!=NULL){
+
         if (*variable!=last_var||changed){
 
-            getNewText(info);
             last_var =*variable;
+            reloadString();
+
+            getNewText(info);
+
             update = true;
+
             changed = false;
 
             return;
         }
     }
+
     if (changed){
 
         getNewText(info);
+
         update = true;
         changed = false;
+
         return;
     }
 
+    checkPositioned(update);
+}
+
+void Text::checkPositioned(bool& update){
+
     if (positioned){
 
-        update = true;
         positioned = false;
-        return;
+
+        if (!update)
+            update = true;
     }
 }
 
 void Text::getNewText(textInfo*& info){
 
-    GUI_Sprite* tmp;
     if (variable==NULL){
 
-        tmp = new GUI_Sprite(text,_position,info);
+        _sprite.reset();
+        _sprite = std::make_shared<GUI_Sprite>(text,_position,info);
     }else {
 
-        last_var=*variable;
-        std::stringstream tmpString;
-        tmpString.str("");
-        tmpString << text << last_var;
+        last_var = *variable;
 
-        tmp = new GUI_Sprite(tmpString.str(),_position,info);
+        _sprite.reset();
+        _sprite = std::make_shared<GUI_Sprite>(text,_position,info);
     }
-
-    delete _sprite;
-    _sprite = tmp;
 
     if (_haveOffsetRect){
         calculateTextPosition();
     }
+}
+
+void Text::reloadString(){
+
+    std::stringstream tmpString;
+    tmpString.str("");
+    tmpString << last_var;
+
+    text = tmpString.str();
 }
 
 void Text::replaceText(std::string newText){
@@ -134,6 +146,7 @@ void Text::replaceText(std::string newText){
 }
 
 void Text::addChar(char* ch){
+
     if ((text[0]==' ' && text.size()==1)){
 
         text[0] = *ch;
@@ -149,7 +162,9 @@ void Text::addChar(char* ch){
 }
 
 void Text::setChar(char ch, int pos){
+
     text[pos] = ch;
+
     if (variable){
         *variable = std::atoi(text.c_str());
     }
@@ -170,9 +185,9 @@ void Text::removeChar(){
 }
 
 void Text::setPos(PinGUI::Vector2<GUIPos> setPos){
+
     _position.x = setPos.x;
     _position.y = setPos.y;
-
 
     _sprite->setPos(_position);
     positioned = true;
@@ -222,8 +237,6 @@ void Text::moveText(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement){
 
     _sprite->moveSprite(vect);
     _position += vect;
-
-    //_position.y += _sprite->getH();
 
     _offsetRect.addPos(vect);
 

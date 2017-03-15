@@ -40,6 +40,7 @@ enum arrowCollider{
 class Window_Arrow: public GUI_Element
 {
     private:
+
         //Collider type
         arrowCollider _arrowCollider;
 

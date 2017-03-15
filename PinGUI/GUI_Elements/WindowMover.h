@@ -50,9 +50,9 @@ public:
 
         void onClick() override;
 
-        void manipulatingMod(GUI_Element** manipulatingElement) override;
+        void manipulatingMod(manip_Element manipulatingElement) override;
 
-        bool listenForClick(GUI_Element** manipulatingElement) override ;
+        bool listenForClick(manip_Element manipulatingElement) override ;
 
         void info() override;
 

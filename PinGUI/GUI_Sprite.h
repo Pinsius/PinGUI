@@ -54,9 +54,13 @@ enum VBO_UV_UPDATE_MODE{
 class GUI_Sprite
 {
     private:
+
         GUIRect _rect;
+
         SDL_Color _color;
+
         GLuint _textureID;
+
         vboData _dataPointer;
 
         /**
@@ -83,14 +87,18 @@ class GUI_Sprite
         void createVBO(VBO_UV_UPDATE_MODE mode = UV);
 
         void updateColors();
+
         void updatePositions();
+
         void updateUVs();
+
         void updateVerticalUVs();
+
         void updateHorizontalUVs();
 
         void changeTexture(SDL_Surface* surface);
-        void moveSprite(const PinGUI::Vector2<GUIPos>& vect);
 
+        void moveSprite(const PinGUI::Vector2<GUIPos>& vect);
 
         void offsetToRect(PinGUI::Rect offsetRect);
 
@@ -101,12 +109,15 @@ class GUI_Sprite
         GLuint getTexture(){return _textureID;}
 
         PinGUI::Rect getCollider(){return _rect.rect;}
+
         GUIRect getGUIRect();
+
         GUIRect* getGUIRect_P();
 
         void addDimensions(int w, int h);
 
         void setColor(float R, float G, float B);
+
         void setPos(PinGUI::Vector2<GUIPos> pos);
 
         float getX();

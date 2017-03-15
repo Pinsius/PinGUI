@@ -29,7 +29,7 @@ ComboBox::ComboBox(int x,
                    int y,
                    std::vector<std::string> itemList,
                    clipboardData data,
-                   std::vector<GUI_Element*>* ELEMENTS,
+                   std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
                    int maxNumOfItems,
                    bool* update):
     _maxNumberOfItems(maxNumOfItems),
@@ -61,7 +61,7 @@ ComboBox::ComboBox(int x,
                    int y,
                    std::vector<std::string> itemList,
                    clipboardData data,
-                   std::vector<GUI_Element*>* ELEMENTS,
+                   std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
                    int maxNumOfItems,
                    bool* update,
                    int maxSize):
@@ -91,17 +91,7 @@ ComboBox::ComboBox(int x,
 
 ComboBox::~ComboBox()
 {
-
-    if (_scroller){
-        delete _scroller;
-        _scroller = nullptr;
-    }
-
-    for (std::size_t i = 0; i < _ITEMS.size(); i++){
-
-        delete _ITEMS[i];
-        _ITEMS[i] = nullptr;
-    }
+    _ITEMS.clear();
 }
 
 void ComboBox::initMainSprites(int& x, int& y, clipboardData& data){
@@ -112,9 +102,10 @@ void ComboBox::initMainSprites(int& x, int& y, clipboardData& data){
     fakeInputText(tmp_width,tmp_height,data);
 
     addCollider(x,y,tmp_width,tmp_height);
+
     _offsetCollider = *(getCollider());
 
-    _textStorage = new TextStorage(data.texter);
+    _textStorage = std::make_shared<TextStorage>(data.texter);
     initText();
 
     //Now need to rearrange the width by adding the width of scroller
@@ -127,7 +118,10 @@ void ComboBox::initMainSprites(int& x, int& y, clipboardData& data){
     addSprite(x,y,tmpSurface);
 
     deleteCollider(0);
+
     addCollider(x,y,tmp_width,tmp_height);
+
+    SDL_FreeSurface(tmpSurface);
 }
 
 void ComboBox::initScroller(){
@@ -137,13 +131,19 @@ void ComboBox::initScroller(){
 
     int height = _maxNumberOfItems * (_offsetCollider.h-BORDER_LINE);
 
-    _scroller = new VerticalScroller(tmpPos,height,_needUpdate,_ELEMENTS);
+    _scroller = std::make_shared<VerticalScroller>(tmpPos,height,_needUpdate,_ELEMENTS);
 
     //Now init cropRect and add function that performs it
     _cropRect.rect.x = getSprite()->getX();
 
+    int num;
+    if (_ITEMS.size()>=_maxNumberOfItems)
+        num = _maxNumberOfItems;
+    else
+        num = _ITEMS.size();
+
     _cropRect.rect.w = _offsetCollider.w;
-    _cropRect.rect.h = _maxNumberOfItems * _offsetCollider.h;
+    _cropRect.rect.h = num * _offsetCollider.h;
     _cropRect.rect.y = _position.y - _cropRect.rect.h;
 
     _cropRect.realRect = _cropRect.rect;
@@ -155,6 +155,10 @@ void ComboBox::initScroller(){
     _scroller->setCamRollFunction(f);
 
     _scroller->setNetworking(true);
+
+    _ELEMENTS->push_back(_scroller);
+    _scroller->createArrows(_ELEMENTS);
+
     _scroller->hideScroller();
 }
 
@@ -197,7 +201,8 @@ void ComboBox::addItem(std::string name){
     PinGUI::basicPointer f;
     f._function = boost::bind(&ComboBox::uploadContent,this);
 
-    _ITEMS.push_back(new ComboBoxItem(tmpPos,name,&_mainItem,f,_maxSize,_data));
+    auto ptr = std::make_shared<ComboBoxItem>(tmpPos,name,&_mainItem,f,_maxSize,_data);
+    _ITEMS.push_back(ptr);
 
     _ELEMENTS->push_back(_ITEMS.back());
     _ITEMS.back()->setOption(_ITEMS.size());
@@ -267,7 +272,7 @@ void ComboBox::onClick(){
 
     if (_cropRect.rect != _cropRect.realRect){
 
-        ErrorManager::infoLog("PinGUI::log","Combobox list cannot be loaded due to cropped area. Move it to normal area");
+        ErrorManager::infoLog("PinGUI error 2","Combobox list cannot be loaded due to cropped area. Move it to normal area");
         return;
     }
 
@@ -315,7 +320,7 @@ void ComboBox::loadScroller(){
     _scroller->loadScrollMover(_cropRect.rect.h,(_ITEMS.size() * (_offsetCollider.h-1)));
 }
 
-bool ComboBox::listenForClick(GUI_Element** manipulatingElement){
+bool ComboBox::listenForClick(manip_Element manipulatingElement){
 
     GUI_Element::listenForClick(manipulatingElement);
 }

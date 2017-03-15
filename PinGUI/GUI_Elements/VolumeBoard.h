@@ -57,7 +57,7 @@ enum VOLUME_SPRITE{
 class VolumeBoard: public GUI_Element
 {
     private:
-        GUI_Element* _clipBoard;
+        std::shared_ptr<GUI_Element> _clipBoard;
 
         int* _var;
         int _lastVar;
@@ -72,27 +72,34 @@ class VolumeBoard: public GUI_Element
             Private methods
         **/
         void calculateRatio();
+
         void addMover(PinGUI::Rect& tmpRect);
+
         void addFill(PinGUI::Rect& tmpRect);
 
         bool needMove();
 
-
         void moveMover();
+
         void moveMover(int distance);
+
         void checkMover();
+
         void calculateFill(int& distance);
 
         int calculatePosition();
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
+
         void onClick() override;
 
-        void manipulatingMod(GUI_Element** manipulatingElement);
+        void manipulatingMod(manip_Element manipulatingElement) override;
+
         void modifyVar();
+
         void checkForColliderPosition();
     public:
-        VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, GUI_Element* clip,bool* needUpdate);
+        VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, std::shared_ptr<GUI_Element> clip,bool* needUpdate);
         ~VolumeBoard();
 
         void draw(int& pos);

@@ -26,35 +26,42 @@
 #include <iostream>
 
 TextManager::TextManager():
-_needUpdate(false),
-_moved(false)
+    _needUpdate(false),
+    _moved(false)
 {
     _fontSize = 14;
 
-    _textVBOManager = new VBO_Manager(40,true);
+    _textVBOManager = std::make_shared<VBO_Manager>(40,true);
 
     //Loading all the stuff
     loadTextInfo();
 }
 
+TextManager::TextManager(const TextManager& txt):
+    _needUpdate(txt._needUpdate),
+    _moved(txt._moved),
+    _fontSize(txt._fontSize),
+    _mainTextInfo(txt._mainTextInfo),
+    _textVBOManager(txt._textVBOManager),
+    _mainDataStorage(txt._mainDataStorage),
+    _TEXTS(txt._TEXTS),
+    _function(txt._function)
+{
+}
+
+
 TextManager::~TextManager()
 {
-    delete _textVBOManager;
-
-    if (_TEXTS.size()!=0){
-        for (std::size_t i =0; i < _TEXTS.size();i++){
-            delete _TEXTS[i];
-        }
-    }
     _TEXTS.clear();
 }
 
 //I have 2 cases, so i need to overload these functions
-Text* TextManager::writeText(const std::string& text,int x, int y){
+std::shared_ptr<Text> TextManager::writeText(const std::string& text,int x, int y){
 
     PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
 
-    _TEXTS.push_back(new Text(text,tmpVecc,&_mainTextInfo));
+    auto ptr = std::make_shared<Text>(text,tmpVecc,&_mainTextInfo);
+    _TEXTS.push_back(ptr);
 
     _needUpdate = true;
 
@@ -62,10 +69,12 @@ Text* TextManager::writeText(const std::string& text,int x, int y){
 
 }
 
-Text* TextManager::writeText(const std::string& text,int x, int y, int* var){
+std::shared_ptr<Text> TextManager::writeText(const std::string& text,int x, int y, int* var){
 
     PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
-    _TEXTS.push_back(new Text(text,tmpVecc,&_mainTextInfo,var));
+
+    auto ptr = std::make_shared<Text>(text,tmpVecc,&_mainTextInfo,var);
+    _TEXTS.push_back(ptr);
 
     _needUpdate = true;
 
@@ -162,6 +171,7 @@ void TextManager::removeData(std::size_t& position){
 }
 
 void TextManager::checkForUpdate(){
+
     for (std::size_t i=0; i <_TEXTS.size();i++){
 
         if ( _TEXTS[i] && _TEXTS[i]->isActive()){
@@ -175,11 +185,12 @@ void TextManager::checkForUpdate(){
     }
 }
 
-std::vector<Text*>* TextManager::getMainTextStorage(){
+std::vector<std::shared_ptr<Text>>* TextManager::getMainTextStorage(){
     return &_TEXTS;
 }
 
 void TextManager::updateVBOData(){
+
     if (_mainDataStorage.size()!=0)
         _mainDataStorage.clear();
 
@@ -193,11 +204,12 @@ void TextManager::setFontSize(int size){
     loadTextInfo();
 }
 
-Text* TextManager::getLastText(){
+std::shared_ptr<Text> TextManager::getLastText(){
+
     if (_TEXTS.size()>0)
         return _TEXTS.back();
     else
-        return nullptr;
+        ErrorManager::errorLog("TextManager::getLastText()", "Tried to get a lastText with nullptr");
 }
 
 void TextManager::moveTextManager(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement){
@@ -229,7 +241,7 @@ void TextManager::cropText(PinGUI::Rect& cropRect){
     for (std::size_t i = 0; i < _TEXTS.size(); i++){
 
         if (!_TEXTS[i]->isNetworked())
-            CropManager::cropSprite(_TEXTS[i]->getSprite(),cropRect);
+            CropManager::cropSprite(_TEXTS[i]->getSprite().get(),cropRect);
     }
 }
 

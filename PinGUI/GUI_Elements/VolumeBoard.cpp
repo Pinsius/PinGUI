@@ -25,7 +25,7 @@
 #include "VolumeBoard.h"
 
 
-VolumeBoard::VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, GUI_Element* clip,bool* needUpdate):
+VolumeBoard::VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, std::shared_ptr<GUI_Element> clip,bool* needUpdate):
     _clipBoard(clip),
     _var(var),
     _lastVar(*_var),
@@ -53,8 +53,6 @@ VolumeBoard::VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, GUI_Ele
 
 VolumeBoard::~VolumeBoard()
 {
-    delete _clipBoard;
-    _clipBoard = nullptr;
 }
 
 void VolumeBoard::addMover(PinGUI::Rect& tmpRect){
@@ -115,7 +113,6 @@ void VolumeBoard::moveMover(){
         _SPRITES[VOL_MOVER]->setX(calculatePosition());
     }
 
-
     _COLLIDERS[0].rect.x = _SPRITES[VOL_MOVER]->getGUIRect_P()->realRect.x;
     _COLLIDERS[0].realRect.x = _COLLIDERS[0].rect.x;
 
@@ -155,7 +152,7 @@ void VolumeBoard::onClick(){
 }
 
 
-bool VolumeBoard::listenForClick(GUI_Element** manipulatingElement){
+bool VolumeBoard::listenForClick(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
@@ -163,7 +160,8 @@ bool VolumeBoard::listenForClick(GUI_Element** manipulatingElement){
 
             PinGUI::Input_Manager::setAlreadyClick(true);
             onClick();
-            *manipulatingElement = this;
+
+            manipulatingElement = this;
         }
 
         return true;
@@ -172,12 +170,13 @@ bool VolumeBoard::listenForClick(GUI_Element** manipulatingElement){
     return false;
 }
 
-void VolumeBoard::manipulatingMod(GUI_Element** manipulatingElement){
+void VolumeBoard::manipulatingMod(manip_Element manipulatingElement){
 
     if (!PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
         modifyVar();
         _COLLIDERS[0] = _SPRITES[VOL_MOVER]->getGUIRect();
+
         endManipulatingMod(manipulatingElement);
 
         return;

@@ -51,7 +51,6 @@ namespace PinGUI{
             {
             }
 
-
             //Overloaded operator =
             Vector2<dataType>& operator=(const Vector2<dataType>& sourceVect){
                 this->x = sourceVect.x;
@@ -117,7 +116,6 @@ namespace PinGUI{
                 std::cout << "Vector info: X: " << this->x << " Y: " << this->y << std::endl;
             }
     };
-
 }
 
 #endif // PINGUI_VECTOR_HPP

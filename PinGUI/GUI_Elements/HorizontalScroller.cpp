@@ -26,18 +26,15 @@
 
 
 
-HorizontalScroller::HorizontalScroller(PinGUI::Vector2<GUIPos> pos,int value, bool* update, std::vector<GUI_Element*>* _ELEMENTS):
+HorizontalScroller::HorizontalScroller(PinGUI::Vector2<GUIPos> pos,int value, bool* update, std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS):
     Scroller(pos,update)
 {
-
     PinGUI::Rect tmpRect;
     tmpRect.initPos(pos);
 
     addSprite(tmpRect,SheetManager::createWindowScroller(value,HORIZONTAL));
 
     _collidable = false;
-
-    createArrows(_ELEMENTS);
 }
 
 HorizontalScroller::~HorizontalScroller()
@@ -45,7 +42,7 @@ HorizontalScroller::~HorizontalScroller()
     //dtor
 }
 
-void HorizontalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
+void HorizontalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS){
 
     PinGUI::basicPointer f1;
     f1._function = boost::bind(&HorizontalScroller::incScroller,this);
@@ -60,7 +57,7 @@ void HorizontalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
     tmpRect.y = getSprite()->getY() +PINGUI_WINDOW_LINE_H;
 
     //Right arrow
-    Window_Arrow* tmpArrow = new Window_Arrow(tmpRect,SheetManager::getSurface(BOARD),LEFT);
+    auto tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),LEFT);
 
     tmpArrow->setClickFunction(f2);
     _ARROWS.push_back(tmpArrow);
@@ -68,12 +65,13 @@ void HorizontalScroller::createArrows(std::vector<GUI_Element*>* _ELEMENTS){
     //Left arrow
     tmpRect.x +=  getSprite()->getW() - WINDOW_ARROW_W;
 
-    tmpArrow = new Window_Arrow(tmpRect,SheetManager::getSurface(BOARD),RIGHT);
+    tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),RIGHT);
+
     tmpArrow->setClickFunction(f1);
     _ARROWS.push_back(tmpArrow);
 
-    _ELEMENTS->push_back(this);
-    for (std::size_t i = 0; i < _ARROWS.size(); i++) _ELEMENTS->push_back(_ARROWS[i]);
+    for (auto&& arrow : _ARROWS)
+        _ELEMENTS->push_back(arrow);
 }
 
 void HorizontalScroller::calculateRatio(const int& totalValue){
@@ -121,7 +119,6 @@ void HorizontalScroller::onClick(){
     PinGUI::Input_Manager::setState(GUI);
     PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),HORIZONTAL);
     PinGUI::Input_Manager::initManipulation(_SPRITES[1],_update);
-
 }
 
 void HorizontalScroller::checkLimits(){

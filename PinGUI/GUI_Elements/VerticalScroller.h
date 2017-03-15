@@ -61,10 +61,10 @@ class VerticalScroller: public Scroller
 
 
     public:
-        VerticalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool* update, std::vector<GUI_Element*>* _ELEMENTS);
+        VerticalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool* update, std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS);
         ~VerticalScroller();
 
-        void createArrows(std::vector<GUI_Element*>* _ELEMENTS) override;
+        void createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS) override;
 };
 
 #endif // VERTICALSCROLLER_H

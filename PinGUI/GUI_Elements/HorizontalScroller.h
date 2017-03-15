@@ -70,10 +70,10 @@ class HorizontalScroller: public Scroller
         int getDiff() override;
 
     public:
-        HorizontalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool* update, std::vector<GUI_Element*>* _ELEMENTS);
+        HorizontalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool* update, std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS);
         ~HorizontalScroller();
 
-        void createArrows(std::vector<GUI_Element*>* _ELEMENTS) override;
+        void createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS) override;
 
         void modifyArrowPos() override;
 };

@@ -394,6 +394,7 @@ void GUI_Sprite::decH(int num){
 }
 
 void GUI_Sprite::setRect(PinGUI::Rect rect){
+
     if (_rect.rect != rect){
 
         _rect.rect = rect;

@@ -27,20 +27,22 @@
 CrossBox::CrossBox(int x, int y, bool* var):
     _var(var)
 {
-
     PinGUI::Rect tmp;
     tmp.x = x;
     tmp.y = y;
 
     initPosition(tmp);
 
-    if (*_var)addSprite(tmp, SheetManager::getSurface(NON_CHECKBOX));
-    else addSprite(tmp, SheetManager::getSurface(CHECKBOX));
+    if (*_var)
+        addSprite(tmp, SheetManager::getSurface(NON_CHECKBOX));
+    else
+        addSprite(tmp, SheetManager::getSurface(CHECKBOX));
 
     tmp.x += CHECKBOX_COLLIDER_X;
     tmp.y += CHECKBOX_COLLIDER_Y;
     tmp.w = _SPRITES[0]->getW()+CHECKBOX_COLLIDER_W;
     tmp.h = _SPRITES[0]->getH()+CHECKBOX_COLLIDER_H;
+
     addCollider(tmp);
 }
 
@@ -71,12 +73,14 @@ void CrossBox::setWritingAvailability(bool state){
     }
 }
 
-bool CrossBox::listenForClick(GUI_Element** manipulatingElement){
+bool CrossBox::listenForClick(manip_Element manipulatingElement){
+
     if (!PinGUI::Input_Manager::hasAlreadyClicked()){
 
         if (PinGUI::Input_Manager::clicked(SDL_BUTTON_LEFT)){
-                onClick();
-                return true;
+
+            onClick();
+            return true;
         }
         return false;
     }

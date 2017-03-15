@@ -24,9 +24,7 @@
 
 #include "ArrowBoard.h"
 
-
-
-ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, GUI_Element* clip):
+ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip):
     _clipBoard(clip),
     _var(var),
     _max(max),
@@ -44,7 +42,7 @@ ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, GUI_Element* clip):
     calculateY(rect.y,rect.h);
 }
 
-ArrowBoard::ArrowBoard(int* var, int max, GUI_Element* clip, int min, int ratio):
+ArrowBoard::ArrowBoard(int* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio):
     _var(var),
     _max(max),
     _min(min),
@@ -60,23 +58,14 @@ ArrowBoard::ArrowBoard(int* var, int max, GUI_Element* clip, int min, int ratio)
 
 ArrowBoard::~ArrowBoard()
 {
-    delete _clipBoard;
-    _clipBoard = nullptr;
-
-    for (std::size_t i = 0; i < _ARROWS.size(); i++){
-        delete _ARROWS[i];
-        _ARROWS[i] = nullptr;
-    }
+    _ARROWS.clear();
 }
 
-void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<GUI_Element*>& _ELEMENTS, manipulationState state){
-
-    Window_Arrow* tmpArrow;
+void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_Element>>& _ELEMENTS, manipulationState state){
 
     PinGUI::basicPointer f1,f2;
     f1._function = boost::bind(&ArrowBoard::incVar,this);
     f2._function = boost::bind(&ArrowBoard::decVar,this);
-
 
     switch (state){
 
@@ -85,7 +74,7 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<GUI_Element*>& _ELEME
 
             rect.x = _clipBoard->getSprite()->getX() - PINGUI_WINDOW_SCROLLER_ARROW_SIDE_W - ARROW_OFFSET;
 
-            tmpArrow = new Window_Arrow(rect,SheetManager::getSurface(BOARD),LEFT,ARROW_ONLY);
+            auto tmpArrow = std::make_shared<Window_Arrow>(rect,SheetManager::getSurface(BOARD),LEFT,ARROW_ONLY);
 
             tmpArrow->setClickFunction(f2);
             _ARROWS.push_back(tmpArrow);
@@ -93,8 +82,9 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<GUI_Element*>& _ELEME
             //Second one
             rect.x = (_clipBoard->getSprite()->getX()+_clipBoard->getSprite()->getW()) +  ARROW_OFFSET;
 
-            tmpArrow = new Window_Arrow(rect,SheetManager::getSurface(BOARD),RIGHT,ARROW_ONLY);
+            tmpArrow = std::make_shared<Window_Arrow>(rect,SheetManager::getSurface(BOARD),RIGHT,ARROW_ONLY);
             tmpArrow->setClickFunction(f1);
+
             _ARROWS.push_back(tmpArrow);
 
             break;
@@ -107,16 +97,17 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<GUI_Element*>& _ELEME
             float tmpY = rect.y;
             rect.y = calculateY(rect.y,_clipBoard->getSprite()->getH()) + HORIZONTAL_ARROWS_OFFSET;
 
-
-            tmpArrow = new Window_Arrow(rect,SheetManager::getSurface(BOARD),UP,ARROW_ONLY);
+            auto tmpArrow = std::make_shared<Window_Arrow>(rect,SheetManager::getSurface(BOARD),UP,ARROW_ONLY);
             _ARROWS.push_back(tmpArrow);
+
             tmpArrow->setClickFunction(f1);
 
             //Second one
             rect.y = calculateY(tmpY,_clipBoard->getSprite()->getH()) - HORIZONTAL_ARROWS_OFFSET;
 
-            tmpArrow = new Window_Arrow(rect,SheetManager::getSurface(BOARD),DOWN,ARROW_ONLY);
+            tmpArrow = std::make_shared<Window_Arrow>(rect,SheetManager::getSurface(BOARD),DOWN,ARROW_ONLY);
             _ARROWS.push_back(tmpArrow);
+
             tmpArrow->setClickFunction(f2);
 
             break;
@@ -136,6 +127,7 @@ float ArrowBoard::calculateY(float y, int h){
 }
 
 float ArrowBoard::calculateX(float x, int w){
+
     x = x+(ARROW_W+ARROW_OFFSET)+w+ARROW_OFFSET;
     return x;
 }
@@ -145,6 +137,7 @@ void ArrowBoard::info(){
 }
 
 void ArrowBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
+
     _clipBoard->moveElement(vect);
 
     for (std::size_t i = 0; i < _ARROWS.size(); i++)
@@ -152,11 +145,13 @@ void ArrowBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 }
 
 void ArrowBoard::incVar(){
+
     if (*_var + _ratio <= _max)
         *_var += _ratio;
 }
 
 void ArrowBoard::decVar(){
+
     if (*_var - _ratio >= _min)
         *_var -= _ratio;
 }

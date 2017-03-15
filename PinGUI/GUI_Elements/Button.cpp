@@ -73,7 +73,7 @@ void Button::initSprites(std::string name, clipboardData& data){
 
     addCollider(_position.x,_position.y,tmp_width,tmp_height);
 
-    _textStorage = new TextStorage(data.texter);
+    _textStorage = std::make_shared<TextStorage>(data.texter);
     initText();
 
     tmpSurface = SheetManager::createClipBoard(tmp_width,tmp_height);
@@ -112,7 +112,7 @@ void Button::setWritingAvailability(bool state){
     }
 }
 
-bool Button::listenForClick(GUI_Element** manipulatingElement){
+bool Button::listenForClick(manip_Element manipulatingElement){
 
     GUI_Element::listenForClick(manipulatingElement);
 }

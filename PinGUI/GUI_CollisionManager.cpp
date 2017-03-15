@@ -36,23 +36,13 @@
 
 namespace GUI_CollisionManager{
 
-    static bool colliding;
-
-    /**
-        Use this function for static objects
-    **/
-    //Function for handling the rectangular collision check between gui elements and cursor
-    static bool isColliding(PinGUI::Rect collider1, PinGUI::Rect collider2){
-        if (collider1.x < collider2.x + collider2.w && collider1.x  + collider1.w > collider2.x && collider1.y < collider2.y + collider2.h && collider1.y + collider1.h > collider2.y){
-            return true;
-        } return false;
-    }
-
     //Function for handling the rectangular collision check between gui elements and cursor
     static bool isColliding(PinGUI::Rect collider1, GUIRect collider2){
+
         if (collider1.x < collider2.rect.x + collider2.rect.w && collider1.x  + collider1.w > collider2.rect.x && collider1.y < collider2.rect.y + collider2.rect.h && collider1.y + collider1.h > collider2.rect.y){
+
             return true;
-        } return false;
+        } else return false;
     }
 
     //Normal listener for click

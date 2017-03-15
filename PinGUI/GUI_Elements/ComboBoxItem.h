@@ -27,11 +27,12 @@
 
 #include "../GUI_Elements/ClipBoard.h"
 
+
 class ComboBoxItem: public ClipBoard
 {
     private:
 
-        ComboBoxItem** _mainComboBoxItem;
+        std::shared_ptr<ComboBoxItem>* _mainComboBoxItem;
 
         //Callback function
         PinGUI::basicPointer _function;
@@ -41,7 +42,7 @@ class ComboBoxItem: public ClipBoard
     public:
         ComboBoxItem(PinGUI::Vector2<GUIPos> position,
                      std::string itemText,
-                     ComboBoxItem** mainComboBoxItem,
+                     std::shared_ptr<ComboBoxItem>* mainComboBoxItem,
                      PinGUI::basicPointer functionP,
                      int maxSize,
                      clipboardData& data);
@@ -50,7 +51,7 @@ class ComboBoxItem: public ClipBoard
 
         void onClick() override;
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
 
         void cropElement(PinGUI::Rect& rect) override;
 

@@ -34,6 +34,7 @@
 class VBO_Manager
 {
     private:
+
         int _counter;
         int _limit;
         int _staticLIMIT;

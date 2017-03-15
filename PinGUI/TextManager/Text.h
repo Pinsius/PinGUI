@@ -27,13 +27,14 @@
 
 #include <sstream>
 #include <cstdlib>
+#include <memory>
 
 #include "../GUI_Sprite.h"
 
     class Text
     {
     private:
-        GUI_Sprite* _sprite;
+        std::shared_ptr<GUI_Sprite> _sprite;
 
         PinGUI::Vector2<GUIPos> _position;
 
@@ -55,7 +56,15 @@
 
         //In case of offseting to some rect
         PinGUI::Rect _offsetRect;
+
         bool _haveOffsetRect;
+
+        /**
+            Private methods
+        **/
+        void reloadString();
+
+        void checkPositioned(bool& update);
 
     public:
 
@@ -78,7 +87,7 @@
 
         void replaceText(std::string newText);
 
-        GUI_Sprite* getSprite(){return _sprite;}
+        std::shared_ptr<GUI_Sprite> getSprite(){return _sprite;}
 
         bool isActive(){return active;}
 
@@ -104,7 +113,7 @@
         void setChar(char ch, int pos);
         void removeChar();
 
-        vboData getVBOData(){return *_sprite->getVBOData();}
+        vboData getVBOData(){return *(_sprite->getVBOData());}
 
         void calculateTextPosition();
 

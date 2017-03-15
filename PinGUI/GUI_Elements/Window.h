@@ -69,7 +69,15 @@ inline void moverWidthCalculator(int& width, int& frameWidth){
     width = frameWidth - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_W - WINDOW_MOVER_WIDTH_MINUS;
 }
 
-inline bool isScrollerActive(Scroller* scroller){
+inline bool isScrollerActive(std::shared_ptr<HorizontalScroller>& scroller){
+
+    if (scroller && scroller->getShow())
+        return true;
+    else
+        return false;
+}
+
+inline bool isScrollerActive(std::shared_ptr<VerticalScroller>& scroller){
 
     if (scroller && scroller->getShow())
         return true;
@@ -85,11 +93,18 @@ inline bool isScrollerActive(Scroller* scroller){
 class tabInfo{
 public:
     std::string tabName;
-    WindowTab* windowTab;
+    std::shared_ptr<WindowTab> windowTab;
+
+    tabInfo(std::string name, std::shared_ptr<WindowTab> tab):
+        tabName(name),
+        windowTab(tab)
+        {
+
+        }
     ~tabInfo()
-    {
-        delete windowTab;
-    }
+        {
+
+        }
 };
 
 enum windowElementType
@@ -116,19 +131,22 @@ class Window: public GUI_Element
         element_shape _shape;
 
         //Elements important for every window - they need to be unique and saved via those pointers
-        WindowMover* _windowMover;
-        WindowExit* _windowExit;
-        VerticalScroller* _verticalScroller;
-        HorizontalScroller* _horizontalScroller;
+        std::shared_ptr<WindowMover> _windowMover;
+
+        std::shared_ptr<WindowExit> _windowExit;
+
+        std::shared_ptr<VerticalScroller> _verticalScroller;
+
+        std::shared_ptr<HorizontalScroller> _horizontalScroller;
 
         //Here is my renderer for GUI
-        GUIManager* _mainGUIManager;
+        std::shared_ptr<GUIManager> _mainGUIManager;
 
         //The main windowTab that will be rendered
-        WindowTab* _mainWindowTab;
+        std::shared_ptr<WindowTab> _mainWindowTab;
 
         //Vector of tab info;
-        std::vector<tabInfo*> _TABS;
+        std::vector<std::shared_ptr<tabInfo>> _TABS;
 
         //Camera vector
         PinGUI::Vector2<GUIPos> _tabMovementChecker;
@@ -151,7 +169,7 @@ class Window: public GUI_Element
 
        void createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRect);
 
-       void nameTab(tabInfo* tab);
+       void nameTab(std::shared_ptr<tabInfo> tab);
 
        void createEmptyTabLine(PinGUI::Rect& positionRect);
 
@@ -161,9 +179,7 @@ class Window: public GUI_Element
 
        PinGUI::Rect calculateSize(int vecSize,const PinGUI::Rect& positionRect, std::size_t counter, bool nameIt = true);
 
-       void offsetTab(WindowTab*& tab);
-
-       void addElementsToManager();
+       void offsetTab(std::shared_ptr<WindowTab> tab);
 
        bool haveMover();
 
@@ -201,22 +217,24 @@ class Window: public GUI_Element
        PinGUI::scrollFuncPointer getCamRollFunction();
 
     public:
+        Window(){};
         Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape = ROUNDED);
         ~Window();
 
+        void addElementsToManager();
+
         //It return nullptr if the tab doesn´t exist
-        WindowTab* getTab(std::string tabName);
-        void normalizeTab(WindowTab* tab, const float& x, const float& y);
+        std::shared_ptr<WindowTab> getTab(std::string tabName);
+
+        void normalizeTab(std::shared_ptr<WindowTab> tab, const float& x, const float& y);
 
         void addTitle(std::string windowTitle);
 
         void render();
 
         void update(bool allowCollision = true);
-        void update(float deltaTime);
 
         void moveWindow(PinGUI::Vector2<GUIPos> vect);
-        void moveWindow(PinGUI::Vector2<GUIPos> vect, float deltaTime);
 
         void info() override;
 
@@ -224,7 +242,7 @@ class Window: public GUI_Element
 
         void onEndAim() override;
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
 
         /** Re-dimensioning the tabs **/
         void setTabDimensions(PinGUI::Vector2<int> dims, std::string tabName);
@@ -240,7 +258,7 @@ class Window: public GUI_Element
 
         elementType getElementType() override;
 
-        GUIManager* getGUI();
+        std::shared_ptr<GUIManager> getGUI();
 };
 
 #endif // WINDOW_H

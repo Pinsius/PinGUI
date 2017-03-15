@@ -44,7 +44,7 @@ class Scroller: public GUI_Element
     protected:
 
         //Scroller cooperates with arrows - it needs to keep those pointers somewhere
-        std::vector<Window_Arrow*> _ARROWS;
+        std::vector<std::shared_ptr<Window_Arrow>> _ARROWS;
 
         //Bool to alert the changed state
         bool* _update;
@@ -71,7 +71,7 @@ class Scroller: public GUI_Element
 
         virtual int useNormalizer(CHANGER change, int diff){};
 
-        virtual void createArrows(std::vector<GUI_Element*>* _ELEMENTS){};
+        virtual void createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS){};
 
         virtual void modifyArrowPos(){} ;
 
@@ -107,9 +107,9 @@ class Scroller: public GUI_Element
 
         void moveElement(const PinGUI::Vector2<GUIPos>& vect) override;
 
-        void manipulatingMod(GUI_Element** manipulatingElement) override;
+        void manipulatingMod(manip_Element manipulatingElement) override;
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
 
         void loadScrollMover(int value, int totalValue);
 

@@ -44,11 +44,12 @@ namespace PinGUI{
             static GLuint _programID;
 
             static GLuint _vertexShaderID;
+
             static GLuint _fragmentShaderID;
 
             static GLint _samplerLocation;
-            static GLint _cameraMatrixLocation;
 
+            static GLint _cameraMatrixLocation;
 
             /**
                 Private methods
@@ -60,6 +61,7 @@ namespace PinGUI{
             static void initShaders();
 
             static void compileShaders(const std::string& vertexShaderFilePath,const std::string& fragmentShaderFilePath);
+
             static void linkShaders();
 
             static void addAttribute(const std::string& attributeName);
@@ -67,10 +69,10 @@ namespace PinGUI{
             static GLuint getUniformLocation(const std::string& uniformName);
 
             static void use();
+
             static void unuse();
 
     };
 }
-
 
 #endif // SHADER_PROGRAM_H

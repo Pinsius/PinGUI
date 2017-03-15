@@ -31,8 +31,8 @@
 class WindowButton: public Button
 {
     private:
-        Window* _target;
-        bool _switchState;
+
+        std::shared_ptr<Window> _target;
 
     public:
         WindowButton(int x, int y, std::string name, clipboardData data);
@@ -42,10 +42,7 @@ class WindowButton: public Button
 
         void onClick() override;
 
-        void setWindowTarget(Window* target);
-
-        void setState(bool state);
-
+        void setWindowTarget(std::shared_ptr<Window> target);
 };
 
 #endif // WINDOWBUTTON_H

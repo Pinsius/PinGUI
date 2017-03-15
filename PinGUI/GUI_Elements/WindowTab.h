@@ -39,16 +39,16 @@ class WindowTab: public GUI_Element
 {
     private:
         //It has its own gui manager(+textmanager)
-        GUIManager* _guiManager;
+        std::shared_ptr<GUIManager> _guiManager;
 
         //Accesing the window´s main tab
-        WindowTab** _mainTab;
+        std::shared_ptr<WindowTab>* _mainTab;
 
         //Bool to alert the window
         bool* _tabChange;
 
         //So tab can acces the tabs title via this
-        Text** _tabText;
+        std::shared_ptr<Text> _tabText;
 
         PinGUI::basicPointer _function;
 
@@ -67,16 +67,14 @@ class WindowTab: public GUI_Element
         void initSprites(PinGUI::Rect& positionRect);
 
     public:
-        WindowTab(){};
-        WindowTab(PinGUI::Rect positionRect,WindowTab** mainTab, bool* tabChange);
-        WindowTab(TextManager* texter);
+        WindowTab(PinGUI::Rect positionRect, std::shared_ptr<WindowTab>* mainTab, bool* tabChange);
         ~WindowTab();
 
         void render();
 
         void update();
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
 
         void onClick() override;
 
@@ -84,9 +82,9 @@ class WindowTab: public GUI_Element
 
         void info() override;
 
-        void setMainTab(WindowTab** mainTab );
+        void setMainTab(std::shared_ptr<WindowTab>* mainTab );
 
-        void setTabText(Text* text);
+        void setTabText(std::shared_ptr<Text> text);
 
         void setRollBackFunction(PinGUI::basicPointer Function);
 
@@ -95,11 +93,10 @@ class WindowTab: public GUI_Element
         void setTabDimensions(PinGUI::Vector2<int> dims);
         void setTabHeight(int height);
         void setTabWidth(int width);
+
         PinGUI::Vector2<int> getTabDimensions();
 
-        GUIManager* getGUI();
-
-
+        std::shared_ptr<GUIManager> getGUI();
 };
 
 #endif // WINDOWTAB_H

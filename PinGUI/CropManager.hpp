@@ -25,6 +25,8 @@
 
 **/
 
+#include <memory>
+
 #include "GUI_Sprite.h"
 #include "PinGUI_Rect.hpp"
 #include "GUI_CollisionManager.cpp"
@@ -41,10 +43,7 @@ enum orientation
     RIGHT
 };
 
-
-
 class CropManager{
-
 
     private :
 
@@ -80,7 +79,6 @@ class CropManager{
 
         static void cropSpriteHorizontally(GUI_Sprite*& sprite, PinGUI::Rect& cropRect);
 
-
     public :
 
         //Cropping GUIRectangles
@@ -90,10 +88,4 @@ class CropManager{
         static void cropSprite(GUI_Sprite* sprite, PinGUI::Rect cropRect);
 
 };
-
-
-
-
-
-
 #endif // CROPMANAGER_HPP

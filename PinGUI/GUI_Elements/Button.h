@@ -52,7 +52,7 @@ class Button: public ClipBoard
 
         void setWritingAvailability(bool state) override;
 
-        bool listenForClick(GUI_Element** manipulatingElement) override;
+        bool listenForClick(manip_Element manipulatingElement) override;
 
 };
 

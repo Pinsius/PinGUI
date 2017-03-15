@@ -27,6 +27,7 @@
 
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <memory>
 
 #include "GL_Vertex.h"
 
@@ -73,5 +74,4 @@ enum element_shape{
     ROUNDED,
     RECTANGLED
 };
-
 #endif // STUFF_H

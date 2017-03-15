@@ -25,6 +25,7 @@
 
 **/
 #include <boost/bind.hpp>
+#include <memory>
 
 #include "GUI_Elements/Window.h"
 #include "../PinGUI/Shader_Program.h"
@@ -39,13 +40,13 @@ class PINGUI
 {
     private:
 
-         static std::vector<Window*> _ACTIVE_WINDOWS;
+         static std::vector<std::shared_ptr<Window>> _ACTIVE_WINDOWS;
 
-         static std::vector<Window*> _NON_ACTIVE_WINDOWS;
+         static std::vector<std::shared_ptr<Window>> _NON_ACTIVE_WINDOWS;
 
-         static Window* _mainWindow;
+         static std::shared_ptr<Window> _mainWindow;
 
-         static GUIManager* _mainGUIManager;
+         static std::shared_ptr<GUIManager> _mainGUIManager;
 
          /** Private methods **/
 
@@ -53,9 +54,11 @@ class PINGUI
 
          static void initStorage();
 
-         static bool collide(Window* win);
+         static bool collide(std::shared_ptr<Window> win);
 
     public:
+
+        static std::shared_ptr<Window> lastWindow;
 
         static void initLibrary(int screenWidth, int screenHeight);
 
@@ -63,19 +66,21 @@ class PINGUI
 
         static void destroy();
 
-        static void addWindow(Window* win);
+        static void addWindow(std::shared_ptr<Window> win);
+
+        static void createWindow(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape = ROUNDED);
 
         static void render();
 
         static void update();
 
-        static void setMainWindow(Window* win);
+        static void setMainWindow(std::shared_ptr<Window> win);
 
         static int getSizeOfActiveWindows();
 
         static void checkMainWindow();
 
-        static GUIManager* getGUI();
+        static std::shared_ptr<GUIManager> getGUI();
 
         static PinGUI::basicPointer getFunctionPointer();
 };

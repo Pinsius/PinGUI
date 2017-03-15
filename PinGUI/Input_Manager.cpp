@@ -26,6 +26,7 @@
 #include <iostream>
 
 namespace PinGUI{
+
     std::unordered_map<unsigned int, bool> Input_Manager::_KEYS;
 
     gameState Input_Manager::_currentState = GAME;
@@ -36,9 +37,9 @@ namespace PinGUI{
 
     int Input_Manager::_positionOfText = -1;
 
-    TextStorage* Input_Manager::_manipulatedText = nullptr;
+    std::shared_ptr<TextStorage> Input_Manager::_manipulatedText = nullptr;
 
-    GUI_Sprite* Input_Manager::_manipulatedSprite = nullptr;
+    std::shared_ptr<GUI_Sprite> Input_Manager::_manipulatedSprite = nullptr;
 
     bool* Input_Manager::_needUpdate = nullptr;
 
@@ -321,7 +322,7 @@ namespace PinGUI{
             _manipulatedSprite->setY(_manipulatedSprite->getY()+diff);
     }
 
-    Text* Input_Manager::chooseText(){
+    std::shared_ptr<Text> Input_Manager::chooseText(){
 
         // If its the position of text -1 i know i didnt change it so i want to use a default position (0)
         if (_positionOfText==-1)
@@ -343,7 +344,7 @@ namespace PinGUI{
         return _mainInputState;
     }
 
-    void Input_Manager::setManipulatedText(TextStorage* text){
+    void Input_Manager::setManipulatedText(std::shared_ptr<TextStorage> text){
         _manipulatedText = text;
     }
 
@@ -369,7 +370,7 @@ namespace PinGUI{
     }
 
 
-    void Input_Manager::initManipulation(GUI_Sprite* manip, bool* needUpdate){
+    void Input_Manager::initManipulation(std::shared_ptr<GUI_Sprite> manip, bool* needUpdate){
 
         SDL_SetRelativeMouseMode(SDL_TRUE);
         _manipulatedSprite = manip;
@@ -411,7 +412,7 @@ namespace PinGUI{
         return _lastVector;
     }
 
-    GUI_Sprite* Input_Manager::getManipulatedSprite(){
+    std::shared_ptr<GUI_Sprite> Input_Manager::getManipulatedSprite(){
         return _manipulatedSprite;
     }
 
@@ -419,14 +420,14 @@ namespace PinGUI{
         return &_mainEvent;
     }
 
-    void Input_Manager::setWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f){
+    void Input_Manager::setWheeledInfo(std::shared_ptr<GUI_Sprite> sprite, bool* update, PinGUI::basicPointer f){
 
         _wheelingInfo._wheeledSprite = sprite;
         _wheelingInfo._update = update;
         _wheelingInfo._function = f;
     }
 
-    void Input_Manager::setTMPWheeledInfo(GUI_Sprite* sprite, bool* update, PinGUI::basicPointer f){
+    void Input_Manager::setTMPWheeledInfo(std::shared_ptr<GUI_Sprite> sprite, bool* update, PinGUI::basicPointer f){
 
         infoStorage = _wheelingInfo;
 

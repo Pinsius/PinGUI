@@ -28,6 +28,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <functional>
+#include <memory>
 
 #include "GUI_Sprite.h"
 #include "GUI_Cursor.h"
@@ -63,12 +64,12 @@ enum CHANGER{
     PLUS
 };
 
-class GUI_Element
+class GUI_Element: public std::enable_shared_from_this<GUI_Element>
 {
     protected:
         PinGUI::Vector2<GUIPos> _position;
 
-        std::vector<GUI_Sprite*> _SPRITES;
+        std::vector<std::shared_ptr<GUI_Sprite>> _SPRITES;
 
         std::vector<GUIRect> _COLLIDERS;
 
@@ -91,6 +92,9 @@ class GUI_Element
         void initPosition(const PinGUI::Rect& rect);
 
     public:
+
+        typedef GUI_Element*& manip_Element;
+
         GUI_Element();
         virtual ~GUI_Element();
 
@@ -106,24 +110,43 @@ class GUI_Element
 
         //Virtual methods - every element can modify its own behavior via these functions
         virtual void turnOnAim();
+
         virtual void turnOffAim();
-        virtual bool collide(bool& needUpdate, GUI_Element** manipulatingElement);
-        virtual void manipulatingMod(GUI_Element** manipulatingElement){};
-        virtual void endManipulatingMod(GUI_Element** manipulatingElement);
+
+        virtual bool collide(bool& needUpdate, manip_Element manipulatingElement);
+
+        virtual void manipulatingMod(manip_Element manipulatingElement){};
+
+        virtual void endManipulatingMod(manip_Element manipulatingElement);
+
+        virtual bool listenForClick(manip_Element manipulatingElement);
+
         virtual void onClick() {};
+
         virtual void onAim();
+
         virtual void onEndAim(){};
+
         virtual void draw(int& pos);
+
         virtual bool changed(){};
-        virtual bool listenForClick(GUI_Element** manipulatingElement);
+
         virtual void info();
+
         virtual elementType getElementType();
+
         virtual void normalizeElement(const PinGUI::Vector2<GUIPos>& vect);
+
         virtual void setShow(bool state);
+
         virtual void moveElement(const PinGUI::Vector2<GUIPos>& vect);
+
         virtual void moveTo(PinGUI::Vector2<GUIPos> vect);
+
         virtual void cropElement(PinGUI::Rect& rect);
+
         virtual void doAdditionalFunc(){};
+
         virtual void setWritingAvailability(bool state){};
 
         virtual void setAllowCrop(bool state);
@@ -131,16 +154,21 @@ class GUI_Element
 
         //Normal methods
         GLuint getTexture(int pos = 0);
+
         vboData* getVBOData(int pos = 0);
 
         PinGUI::Rect* getCollider(int pos = 0);
+
         GUIRect* getGUICollider(int pos = 0);
+
         void setCollider(PinGUI::Rect rect,int pos = 0);
+
         void setCollidable(bool col){_collidable = col;}
+
         bool getCollidable();
 
         /// By default it returns first sprite, if you put -1 here, it will return the back of the container
-        GUI_Sprite* getSprite(int pos = 0);
+        std::shared_ptr<GUI_Sprite> getSprite(int pos = 0);
 
         void loadData(std::vector<vboData>* vboData);
 
@@ -150,18 +178,25 @@ class GUI_Element
         bool getShow();
 
         float getX();
+
         float getY();
+
         void setX(float x);
+
         void setY(float y);
 
         void setNetworking(bool state);
+
         bool getNetworking();
 
         void setExist(bool state);
+
         bool exist();
 
         float getTopPoint(int pos = 0);
+
         PinGUI::Vector2<GUIPos> getPositionVector();
+
         PinGUI::Vector2<GUIPos>* getPositionVector_P();
 
         bool isAiming();
