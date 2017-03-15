@@ -27,11 +27,11 @@
 #include "PinGUI/GUI_Elements/WindowButton.h"
 #include "FPS_Timer.h"
 
-
 SDL_Window* _mainWindow = nullptr;
 FPS_Timer fpsLimiter;
-
+bool a = true;
 int sliderInteger = 0;
+bool isRunning = true;
 
 /**
     Create GUI in this function
@@ -44,59 +44,65 @@ void createGUI(){
     tabs.push_back("Normal");
     tabs.push_back("Scrollable");
 
-    Window* tmpWindow = new Window(tmp,tabs,BOTH);
+    PINGUI::createWindow(tmp,tabs,BOTH);
 
-    tmpWindow->setTabWidth(400,"Scrollable");
-    tmpWindow->setTabHeight(400,"Scrollable");
-
-
-    tmpWindow->addTitle("Welcome to demo!");
-
+    PINGUI::lastWindow->setTabHeight(400,"Scrollable");
+    PINGUI::lastWindow->setTabWidth(400,"Scrollable");
+    PINGUI::lastWindow->addTitle("Demo");
 
     /**
         As everything is separated, you have to acces different functions via getters
         For text operations, you must use TextManager
         For GUI operations(such as creating clipboard), use GUI manager
     **/
-    //Creating clipboard
-    tmpWindow->getTab("Normal")->getGUI()->getTextManager()->writeText("Write some text here",105,25);
-    tmpWindow->getTab("Normal")->getGUI()->createClipBoard(55,
+    //Creating slider
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->createVolumeBoard(20,
+                                                            90,
+                                                            true,
+                                                            &sliderInteger,
+                                                            1000);
+
+    //Textbox
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->getTextManager()->writeText("Write some text here",105,25);
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->createClipBoard(55,
                                                           55,
                                                           NORMAL,
                                                           28,
                                                           ROUNDED);
-    //Creating slider
-    tmpWindow->getTab("Normal")->getGUI()->createVolumeBoard(20,
-                                                            110,
-                                                            true,
-                                                            &sliderInteger,
-                                                            1000);
+
+
     //Creating arrowboard
-    tmpWindow->getTab("Normal")->getGUI()->getTextManager()->writeText("These two elements have same variable",20,165);
-    tmpWindow->getTab("Normal")->getGUI()->createArrowBoard(65,
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->getTextManager()->writeText("These two elements have same variable",20,165);
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->createArrowBoard(65,
                                                             200,&sliderInteger,
                                                             1000,
                                                             true,
                                                             0,
                                                             HORIZONTAL);
 
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->createCheckBox(10,
+                                                          50,
+                                                          &a);
+
+
+
     /********** SECOND TAB *************/
-    tmpWindow->getTab("Scrollable")->getGUI()->createImage("dog.png",0,0,400,400);
+    PINGUI::lastWindow->getTab("Scrollable")->getGUI()->createImage("dog.png",
+                                                           0,
+                                                           0,
+                                                           400,
+                                                           400);
 
-    tmpWindow->normalize();
+    PINGUI::lastWindow->normalize();
 
-    PINGUI::addWindow(tmpWindow);
-    
-    /** Creation of "Show window" button **/
+    std::shared_ptr<WindowButton> ptr = std::make_shared<WindowButton>(15,
+                                              350,
+                                              "Start",
+                                              PINGUI::getGUI()->getClipboardData()
+                                              );
+    ptr->setWindowTarget(PINGUI::lastWindow);
 
-    WindowButton* button = new WindowButton(10,
-                                            350,
-                                            "Show window",
-                                            PINGUI::getGUI()->getClipboardData());
-    button->setWindowTarget(tmpWindow);
-    button->setState(true);
-
-    PINGUI::getGUI()->putElement(button);
+    PINGUI::getGUI()->putElement(ptr);
 }
 
 void initSDL_OGL();
@@ -114,12 +120,12 @@ int main(int argc, char** args){
 
     demoLoop();
 
+    PINGUI::destroy();
+
     return 0;
 }
 
 void demoLoop(){
-
-    bool isRunning = true;
 
     fpsLimiter.setFPS(200);
     fpsLimiter.initFPS();
@@ -141,8 +147,19 @@ void demoLoop(){
 
 void update(){
 
-    PINGUI::processInput();
+    SDL_Event e;
+
+
+    SDL_PollEvent(&e);
+
+    PINGUI::processInput(&e);
+
+    if (e.type==SDL_QUIT){
+       isRunning = false;
+    }
+
     PINGUI::update();
+
 }
 
 void render(){
