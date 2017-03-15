@@ -1,3 +1,7 @@
 Error 1 : Scroller was unable to be loaded due to a incorrect ratio
-- it means the scroller wasnt able to create the scroller because of the size of realWidth/realHeight and the fact it wasnt too big
+- It means the scroller wasnt able to create the scroller because of the size of realWidth/realHeight and the fact it wasnt too big
   for example : width 300 and realWidth 305 etc.
+  
+Error 2 : ComboboxList was cannot be loaded due to cropped area. Move it to normal area
+- Comboboxes cannot crop their lists on click. Moving it to normal area (where it cannot be cropped after popup) will fix this. 
+ Note: this doesn´t happen if you dont have a scroller active in your window tab
