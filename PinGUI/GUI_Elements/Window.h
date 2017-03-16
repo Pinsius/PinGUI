@@ -190,9 +190,9 @@ class Window: public GUI_Element
 
        void hideScrollers();
 
-       void manageScroller(manipulationState state, bool show);
+       void manageScroller(PinGUI::manipulationState state, bool show);
 
-       int calculateScrollerSize(manipulationState state);
+       int calculateScrollerSize(PinGUI::manipulationState state);
 
        void createVerticalScroller(int height);
 
@@ -200,7 +200,7 @@ class Window: public GUI_Element
 
        void createHorizontalScroller(int width);
 
-       void checkDimensions(manipulationState state, const int& value);
+       void checkDimensions(PinGUI::manipulationState state, const int& value);
 
        //This function is called everytime when you switch the tab
        void updateTab();

@@ -39,43 +39,44 @@
 #define WINDOW_CAM_SCROLLING_SPEED 6
 
 
-enum gameState{
-    GAME,
-    GUI
-};
 
-enum inputState{
-    GAMEINPUT,
-    WRITINGMOD,
-    MANIPULATINGMOD
-};
-
-enum manipulationState{
-    HORIZONTAL,
-    VERTICAL,
-    WINDOW_MOVING
-};
-
-struct writingModInfo{
-    bool intOnly;
-    int max;
-    int maxValue;
-};
-
-struct manipulatingModInfo{
-    int lastX;
-    int lastY;
-   manipulationState manipState;
-};
-
-struct wheelingInfo{
-    std::shared_ptr<GUI_Sprite> _wheeledSprite;
-    bool* _update;
-    PinGUI::basicPointer _function;
-};
 
 namespace PinGUI{
 
+    enum gameState{
+        GAME,
+        GUI
+    };
+
+    enum inputState{
+        GAMEINPUT,
+        WRITINGMOD,
+        MANIPULATINGMOD
+    };
+
+    enum manipulationState{
+        HORIZONTAL,
+        VERTICAL,
+        WINDOW_MOVING
+    };
+
+    struct writingModInfo{
+        bool intOnly;
+        int max;
+        int maxValue;
+    };
+
+    struct manipulatingModInfo{
+        int lastX;
+        int lastY;
+       manipulationState manipState;
+    };
+
+    struct wheelingInfo{
+        std::shared_ptr<GUI_Sprite> _wheeledSprite;
+        bool* _update;
+        PinGUI::basicPointer _function;
+    };
     class Input_Manager
     {
         private:

@@ -71,7 +71,7 @@ class ArrowBoard: public GUI_Element
         ArrowBoard(int* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
         ~ArrowBoard();
 
-        void addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_Element>>& _ELEMENTS, manipulationState state = VERTICAL);
+        void addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_Element>>& _ELEMENTS, PinGUI::manipulationState state = PinGUI::VERTICAL);
 
         void info() override;
 

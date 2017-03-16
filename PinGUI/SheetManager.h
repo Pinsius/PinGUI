@@ -333,7 +333,7 @@ class SheetManager
         static SDL_Surface* createClipBoard(int w, int h);
         static SDL_Surface* createWindowTab(int w, int h);
         static SDL_Surface* createWindow(int w, int h);
-        static SDL_Surface* createWindowScroller(int value, manipulationState state);
+        static SDL_Surface* createWindowScroller(int value, PinGUI::manipulationState state);
         static SDL_Surface* createVerticalScroller(const int& h);
         static SDL_Surface* createHorizontalScroller(const int& w);
 

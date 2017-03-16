@@ -187,14 +187,15 @@ PinGUI::Rect ClipBoard::getSpriteRect(const GUIPos& tmp_width, const GUIPos& tmp
 void ClipBoard::onClick(){
 
     SDL_ShowCursor(SDL_DISABLE);
+
     //Setting the input state
-    PinGUI::Input_Manager::setInputState(WRITINGMOD);
+    PinGUI::Input_Manager::setInputState(PinGUI::WRITINGMOD);
 
     //Saving the text of my clipboard to be the one that is manipulated
     PinGUI::Input_Manager::setManipulatedText(_textStorage);
 
     //Creating mod info
-    writingModInfo tmp;
+    PinGUI::writingModInfo tmp;
 
     if (_type==NORMAL)
         tmp.intOnly = false;
@@ -210,13 +211,12 @@ void ClipBoard::onClick(){
 
 void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
 
-
     if (PinGUI::Input_Manager::isKeyPressed(SDLK_ESCAPE)||PinGUI::Input_Manager::isKeyPressed(SDLK_RETURN)){
 
         manipulatingElement = nullptr;
 
         SDL_ShowCursor(SDL_ENABLE);
-        PinGUI::Input_Manager::setInputState(GAMEINPUT);
+        PinGUI::Input_Manager::setInputState(PinGUI::GAMEINPUT);
         PinGUI::Input_Manager::setAlreadyClick(false);
 
         return;

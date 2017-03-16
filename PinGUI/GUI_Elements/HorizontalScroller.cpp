@@ -32,7 +32,7 @@ HorizontalScroller::HorizontalScroller(PinGUI::Vector2<GUIPos> pos,int value, bo
     PinGUI::Rect tmpRect;
     tmpRect.initPos(pos);
 
-    addSprite(tmpRect,SheetManager::createWindowScroller(value,HORIZONTAL));
+    addSprite(tmpRect,SheetManager::createWindowScroller(value,PinGUI::HORIZONTAL));
 
     _collidable = false;
 }
@@ -115,9 +115,9 @@ void HorizontalScroller::modifyArrowPos(){
 void HorizontalScroller::onClick(){
 
     //Setting the input state
-    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
-    PinGUI::Input_Manager::setState(GUI);
-    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),HORIZONTAL);
+    PinGUI::Input_Manager::setInputState(PinGUI::MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(PinGUI::GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),PinGUI::HORIZONTAL);
     PinGUI::Input_Manager::initManipulation(_SPRITES[1],_update);
 }
 

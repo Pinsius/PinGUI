@@ -128,7 +128,7 @@ void GUIManager::createVolumeBoard(int x, int y, bool clickable, int* var, int m
     _needUpdate = true;
 }
 
-void GUIManager::createArrowBoard(int x, int y, int* var, int maxSize, bool clickable , int minSize, manipulationState state){
+void GUIManager::createArrowBoard(int x, int y, int* var, int maxSize, bool clickable , int minSize, PinGUI::manipulationState state){
 
     //Block for creating a clipboard
     {
@@ -317,7 +317,7 @@ void GUIManager::doCrop(){
 
 void GUIManager::checkCollisions(){
 
-    if (PinGUI::Input_Manager::getCurrentState() != MANIPULATINGMOD){
+    if (PinGUI::Input_Manager::getCurrentState() != PinGUI::MANIPULATINGMOD){
 
         if (!_collidingElement){
 

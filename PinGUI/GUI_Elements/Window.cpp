@@ -313,22 +313,22 @@ void Window::loadScroller(){
     if (_mainWindowTab->getTabDimensions().y > _mainFrame.h){
 
         //Setting scroller to active state
-        manageScroller(VERTICAL,true);
+        manageScroller(PinGUI::VERTICAL,true);
         _verticalScroller->attachScrollerToInput();
 
     } else{
 
         //Disabling it
-        manageScroller(VERTICAL,false);
+        manageScroller(PinGUI::VERTICAL,false);
     }
 
     /** HORIZONTAL SCROLL **/
     if (_mainWindowTab->getTabDimensions().x > _mainFrame.w){
 
-        manageScroller(HORIZONTAL,true);
+        manageScroller(PinGUI::HORIZONTAL,true);
     } else {
 
-        manageScroller(HORIZONTAL,false);
+        manageScroller(PinGUI::HORIZONTAL,false);
     }
 }
 
@@ -442,26 +442,26 @@ PinGUI::scrollFuncPointer Window::getCamRollFunction(){
 void Window::setTabDimensions(PinGUI::Vector2<int> dims, std::string tabName){
 
     getTab(tabName)->setTabDimensions(dims);
-    checkDimensions(VERTICAL,dims.y);
-    checkDimensions(HORIZONTAL,dims.x);
+    checkDimensions(PinGUI::VERTICAL,dims.y);
+    checkDimensions(PinGUI::HORIZONTAL,dims.x);
 }
 
 void Window::setTabHeight(int height, std::string tabName){
 
     getTab(tabName)->setTabHeight(height);
-    checkDimensions(VERTICAL,height);
+    checkDimensions(PinGUI::VERTICAL,height);
 }
 
 void Window::setTabWidth(int width, std::string tabName){
 
     getTab(tabName)->setTabWidth(width);
-    checkDimensions(HORIZONTAL,width);
+    checkDimensions(PinGUI::HORIZONTAL,width);
 }
 
-void Window::checkDimensions(manipulationState state, const int& value){
+void Window::checkDimensions(PinGUI::manipulationState state, const int& value){
 
     switch(state){
-        case VERTICAL : {
+        case PinGUI::VERTICAL : {
 
             //Only checking if i have to create a Scroller
             if (value>_mainFrame.h && !_verticalScroller){
@@ -471,7 +471,7 @@ void Window::checkDimensions(manipulationState state, const int& value){
 
             return;
         }
-        case HORIZONTAL : {
+        case PinGUI::HORIZONTAL : {
 
             if (value>_mainFrame.w && !_horizontalScroller){
 
@@ -482,11 +482,11 @@ void Window::checkDimensions(manipulationState state, const int& value){
     }
 }
 
-void Window::manageScroller(manipulationState state, bool show){
+void Window::manageScroller(PinGUI::manipulationState state, bool show){
 
     switch(state){
 
-        case VERTICAL : {
+        case PinGUI::VERTICAL : {
 
             if (_verticalScroller){
 
@@ -497,7 +497,7 @@ void Window::manageScroller(manipulationState state, bool show){
             }
             break;
         }
-        case HORIZONTAL : {
+        case PinGUI::HORIZONTAL : {
 
             if (_horizontalScroller){
 
@@ -513,15 +513,15 @@ void Window::manageScroller(manipulationState state, bool show){
     }
 }
 
-int Window::calculateScrollerSize(manipulationState state){
+int Window::calculateScrollerSize(PinGUI::manipulationState state){
 
     switch(state){
 
-        case VERTICAL : {
+        case PinGUI::VERTICAL : {
 
             return _mainWindowTab->getSprite()->getY() - getSprite()->getY();
         }
-        case HORIZONTAL : {
+        case PinGUI::HORIZONTAL : {
 
             return _mainFrame.w;
         }

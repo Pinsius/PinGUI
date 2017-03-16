@@ -583,14 +583,14 @@ void SheetManager::loadWindowScroller(SDL_Surface*& sourceSurface){
 
 }
 
-SDL_Surface* SheetManager::createWindowScroller(int value, manipulationState state){
+SDL_Surface* SheetManager::createWindowScroller(int value, PinGUI::manipulationState state){
 
     switch(state){
-        case VERTICAL : {
+        case PinGUI::VERTICAL : {
 
             return createVerticalScroller(value);
         }
-        case HORIZONTAL : {
+        case PinGUI::HORIZONTAL : {
 
             return createHorizontalScroller(value);
         }

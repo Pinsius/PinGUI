@@ -61,7 +61,7 @@ ArrowBoard::~ArrowBoard()
     _ARROWS.clear();
 }
 
-void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_Element>>& _ELEMENTS, manipulationState state){
+void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_Element>>& _ELEMENTS, PinGUI::manipulationState state){
 
     PinGUI::basicPointer f1,f2;
     f1._function = boost::bind(&ArrowBoard::incVar,this);
@@ -69,7 +69,7 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_E
 
     switch (state){
 
-        case HORIZONTAL : {
+        case PinGUI::HORIZONTAL : {
             rect.y = calculateY(rect.y,_clipBoard->getSprite()->getH());
 
             rect.x = _clipBoard->getSprite()->getX() - PINGUI_WINDOW_SCROLLER_ARROW_SIDE_W - ARROW_OFFSET;
@@ -90,7 +90,7 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_E
             break;
         }
 
-        case VERTICAL : {
+        case PinGUI::VERTICAL : {
 
             rect.x = (_clipBoard->getSprite()->getX()+_clipBoard->getSprite()->getW()) +  ARROW_OFFSET;
 

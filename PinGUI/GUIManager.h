@@ -110,7 +110,7 @@ class GUIManager
         void createComboBox(int x, int y, std::vector<std::string> items, int maxNumOfItems);
         void createComboBox(int x, int y, std::vector<std::string> items, int maxSize, int maxNumOfItems);
 
-        void createArrowBoard(int x, int y, int* var, int maxSize, bool clickable = true, int minSize = 0, manipulationState state = HORIZONTAL);
+        void createArrowBoard(int x, int y, int* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
 
         void createVolumeBoard(int x, int y, bool clickable, int* var, int maxSize);
 

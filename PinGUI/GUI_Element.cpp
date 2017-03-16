@@ -85,16 +85,15 @@ void GUI_Element::turnOnAim(){
 
     _aimON = true;
     setWritingAvailability(_aimON);
-    PinGUI::Input_Manager::setState(GUI);
+    PinGUI::Input_Manager::setState(PinGUI::GUI);
 }
 
 void GUI_Element::turnOffAim(){
 
     _aimON = false;
     setWritingAvailability(_aimON);
-    PinGUI::Input_Manager::setState(GAME);
+    PinGUI::Input_Manager::setState(PinGUI::GAME);
 }
-
 
 void GUI_Element::onAim(){
 
@@ -104,7 +103,7 @@ void GUI_Element::endManipulatingMod(manip_Element manipulatingElement){
 
     manipulatingElement = nullptr;
 
-    PinGUI::Input_Manager::setInputState(GAMEINPUT);
+    PinGUI::Input_Manager::setInputState(PinGUI::GAMEINPUT);
     PinGUI::Input_Manager::destroyManipulatingModInfo();
     PinGUI::Input_Manager::setAlreadyClick(false);
     SDL_SetRelativeMouseMode(SDL_FALSE);

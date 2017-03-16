@@ -60,9 +60,9 @@ void WindowMover::manipulatingMod(manip_Element manipulatingElement){
 void WindowMover::onClick(){
 
     //Setting the input state
-    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
-    PinGUI::Input_Manager::setState(GUI);
-    PinGUI::Input_Manager::createManipulatingModInfo(getSprite()->getX(),getSprite()->getY(),WINDOW_MOVING);
+    PinGUI::Input_Manager::setInputState(PinGUI::MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(PinGUI::GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite()->getX(),getSprite()->getY(),PinGUI::WINDOW_MOVING);
     PinGUI::Input_Manager::initManipulation(getSprite(),_windowUpdate);
 }
 

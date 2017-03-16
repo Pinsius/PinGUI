@@ -31,7 +31,7 @@ VerticalScroller::VerticalScroller(PinGUI::Vector2<GUIPos> pos, int value, bool*
     PinGUI::Rect tmpRect;
     tmpRect.initPos(pos);
 
-    addSprite(tmpRect,SheetManager::createWindowScroller(value,VERTICAL));
+    addSprite(tmpRect,SheetManager::createWindowScroller(value,PinGUI::VERTICAL));
 
     _collidable = false;
 }
@@ -107,9 +107,9 @@ int VerticalScroller::calculateScrollerSize(const int& value, int& totalValue){
 void VerticalScroller::onClick(){
 
     //Setting the input state
-    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
-    PinGUI::Input_Manager::setState(GUI);
-    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),VERTICAL);
+    PinGUI::Input_Manager::setInputState(PinGUI::MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(PinGUI::GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),PinGUI::VERTICAL);
     PinGUI::Input_Manager::initManipulation(_SPRITES[1],_update);
 
 }

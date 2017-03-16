@@ -109,7 +109,7 @@ bool VolumeBoard::needMove(){
 
 void VolumeBoard::moveMover(){
 
-    if (PinGUI::Input_Manager::getCurrentState()!=MANIPULATINGMOD || PinGUI::Input_Manager::getManipulatedSprite()!=_SPRITES[VOL_MOVER]){
+    if (PinGUI::Input_Manager::getCurrentState() != PinGUI::MANIPULATINGMOD || PinGUI::Input_Manager::getManipulatedSprite() != _SPRITES[VOL_MOVER]){
         _SPRITES[VOL_MOVER]->setX(calculatePosition());
     }
 
@@ -145,9 +145,9 @@ int VolumeBoard::calculatePosition(){
 void VolumeBoard::onClick(){
 
     //Setting the input state
-    PinGUI::Input_Manager::setInputState(MANIPULATINGMOD);
-    PinGUI::Input_Manager::setState(GUI);
-    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(VOL_MOVER)->getX(),getSprite(VOL_MOVER)->getY(),HORIZONTAL);
+    PinGUI::Input_Manager::setInputState(PinGUI::MANIPULATINGMOD);
+    PinGUI::Input_Manager::setState(PinGUI::GUI);
+    PinGUI::Input_Manager::createManipulatingModInfo(getSprite(VOL_MOVER)->getX(),getSprite(VOL_MOVER)->getY(),PinGUI::HORIZONTAL);
     PinGUI::Input_Manager::initManipulation(_SPRITES[VOL_MOVER],_needUpdate);
 }
 
