@@ -110,6 +110,8 @@ namespace PinGUI{
 
             static bool _haveTarget;
 
+            static bool _isOnWindow;
+
             static PinGUI::Rect _targetRect;
 
             static PinGUI::Vector2<GUIPos> _lastVector;
@@ -185,6 +187,10 @@ namespace PinGUI{
             static void setTarget(bool state);
 
             static void setClickFunction(PinGUI::basicPointer f);
+
+            static void setOnWindow(bool state);
+
+            static bool isOnWindow();
 
             /**
                 For writing mod

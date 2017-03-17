@@ -367,7 +367,6 @@ void Window::hideScrollers(){
 void Window::initTab(){
 
     _mainWindowTab->setCollidable(false);
-
 }
 
 void Window::addTitle(std::string windowTitle){
@@ -537,10 +536,11 @@ elementType Window::getElementType(){
 void Window::onAim(){
 
     if(isScrollerActive(_verticalScroller)) _verticalScroller->attachScrollerToInput();
+
+    PinGUI::Input_Manager::setOnWindow(true);
 }
 
 void Window::onEndAim(){
-
 
     if (isScrollerActive(_verticalScroller)){
 
@@ -551,9 +551,15 @@ void Window::onEndAim(){
         }
 
     }
+
+    PinGUI::Input_Manager::setOnWindow(false);
+    turnOffAim();
 }
 
 bool Window::listenForClick(manip_Element manipulatingElement){
+
+    if (PinGUI::Input_Manager::getState() != PinGUI::GUI)
+        PinGUI::Input_Manager::setState(PinGUI::GUI);
 
     if (isScrollerActive(_verticalScroller)  && !PinGUI::Input_Manager::hasTMPWheeledInfo()){
 

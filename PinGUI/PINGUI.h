@@ -28,6 +28,7 @@
 #include <memory>
 
 #include "GUI_Elements/Window.h"
+#include "GUI_Elements/WindowButton.h"
 #include "../PinGUI/Shader_Program.h"
 
 

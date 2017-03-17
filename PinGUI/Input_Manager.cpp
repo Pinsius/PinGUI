@@ -53,6 +53,8 @@ namespace PinGUI{
 
     bool Input_Manager::_tmpWheelInfo = false;
 
+    bool Input_Manager::_isOnWindow = false;
+
     manipulatingModInfo Input_Manager::_manipulatingModInfo;
 
     int Input_Manager::_screenWidth;
@@ -70,7 +72,6 @@ namespace PinGUI{
     PinGUI::basicPointer Input_Manager::_clickFunction;
 
     PinGUI::Rect Input_Manager::_targetRect;
-
 
     /**
         Storage for tmpWheel
@@ -514,6 +515,14 @@ namespace PinGUI{
 
     bool Input_Manager::hasTMPWheeledInfo(){
         return _tmpWheelInfo;
+    }
+
+    void Input_Manager::setOnWindow(bool state){
+        _isOnWindow = state;
+    }
+
+    bool Input_Manager::isOnWindow(){
+        return _isOnWindow;
     }
 }
 
