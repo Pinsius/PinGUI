@@ -128,7 +128,10 @@ namespace PinGUI{
            _mainEvent = *mainEvent;
         } else {
 
-            SDL_PollEvent(&_mainEvent);
+            SDL_Event tmpEvent;
+            SDL_PollEvent(&tmpEvent);
+
+            _mainEvent = tmpEvent;
         }
 
         switch(_mainInputState){
