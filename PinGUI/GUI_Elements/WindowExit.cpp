@@ -69,6 +69,8 @@ void WindowExit::setWritingAvailability(bool state){
 void WindowExit::onClick(){
 
     *_windowClose = false;
+    
+    PinGUI::Input_Manager::setState(PinGUI::GAME);
 }
 
 void WindowExit::draw(int& pos){
