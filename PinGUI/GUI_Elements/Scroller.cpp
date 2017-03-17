@@ -81,11 +81,14 @@ void Scroller::hideScroller(){
 }
 
 void Scroller::setWritingAvailability(bool state){
+    
+    if (_SPRITES.size()>1){
 
-    if (state){
-        getSprite(1)->setColor(200,200,200);
-    } else {
-        getSprite(1)->setColor(255,255,255);
+        if (state){
+            getSprite(1)->setColor(200,200,200);
+        } else {
+            getSprite(1)->setColor(255,255,255);
+        }
     }
 }
 
@@ -104,6 +107,7 @@ void Scroller::checkForWheelMove(){
 
     checkLimits();
     decide();
+    
     _COLLIDERS[0] = getSprite(1)->getCollider();
 }
 
