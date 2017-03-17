@@ -46,7 +46,7 @@ void createGUI(){
 
     PINGUI::createWindow(tmp,tabs,BOTH);
 
-    PINGUI::lastWindow->setTabHeight(400,"Scrollable");
+    PINGUI::lastWindow->setTabHeight(400,"Normal");
     PINGUI::lastWindow->setTabWidth(400,"Scrollable");
     PINGUI::lastWindow->addTitle("Demo");
 
@@ -69,6 +69,7 @@ void createGUI(){
                                                           NORMAL,
                                                           28,
                                                           ROUNDED);
+    PINGUI::lastWindow->getTab("Normal")->getGUI()->createComboBox(100,220,tabs,4);
 
 
     //Creating arrowboard
@@ -78,7 +79,7 @@ void createGUI(){
                                                             1000,
                                                             true,
                                                             0,
-                                                            HORIZONTAL);
+                                                            PinGUI::HORIZONTAL);
 
     PINGUI::lastWindow->getTab("Normal")->getGUI()->createCheckBox(10,
                                                           50,
