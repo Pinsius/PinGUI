@@ -275,11 +275,10 @@ void Window::createWindowExitButton(){
     positionRect.x = getSprite()->getX() + getSprite()->getW() - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_H;
     positionRect.y = getSprite()->getY() + getSprite()->getH() - PINGUI_WINDOW_EXITBUTTON_H + PINGUI_WINDOW_LINE_H;
 
-    _windowExit = std::make_shared<WindowExit>(positionRect,&_show);
+    _windowExit = std::make_shared<WindowExit>(positionRect,this);
 
     _mainGUIManager->putElement(_windowExit);
 }
-
 
 void Window::moveWindow(PinGUI::Vector2<GUIPos> vect){
 
@@ -636,7 +635,6 @@ void Window::setWindowCamRect(){
 
     //X is still the same
     _cameraRect.x = _COLLIDERS[0].rect.x;
-
 
     //Y is changing - because of horizontal scroller
     if (isScrollerActive(_horizontalScroller)){

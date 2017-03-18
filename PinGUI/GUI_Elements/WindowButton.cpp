@@ -44,7 +44,6 @@ WindowButton::WindowButton(int x, int y, std::string name, clipboardData data, P
 
 WindowButton::~WindowButton()
 {
-    //dtor
 }
 
 void WindowButton::onClick(){

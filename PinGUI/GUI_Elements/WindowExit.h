@@ -37,10 +37,10 @@
 class WindowExit: public GUI_Element
 {
     private:
-        bool* _windowClose;
+        GUI_Element* _windowElement;
 
     public:
-        WindowExit(PinGUI::Rect positionRect, bool* windowClose);
+        WindowExit(PinGUI::Rect positionRect, GUI_Element* windowElement);
         ~WindowExit();
 
         void onClick() override;
@@ -48,6 +48,8 @@ class WindowExit: public GUI_Element
         void draw(int& pos) override;
 
         void setWritingAvailability(bool state) override;
+
+        void info() override;
 
 };
 

@@ -111,6 +111,8 @@ class Scroller: public GUI_Element
 
         bool listenForClick(manip_Element manipulatingElement) override;
 
+        void info() override;
+
         void loadScrollMover(int value, int totalValue);
 
         void hideScroller();

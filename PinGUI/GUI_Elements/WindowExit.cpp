@@ -25,8 +25,8 @@
 #include "WindowExit.h"
 #include <iostream>
 
-WindowExit::WindowExit(PinGUI::Rect positionRect, bool* windowClose):
-    _windowClose(windowClose)
+WindowExit::WindowExit(PinGUI::Rect positionRect, GUI_Element* windowElement):
+    _windowElement(windowElement)
 {
     initPosition(positionRect);
 
@@ -49,7 +49,6 @@ WindowExit::WindowExit(PinGUI::Rect positionRect, bool* windowClose):
 
     //Also need to offsetTheRect
     getSprite(1)->offsetToRect(getSprite()->getCollider());
-
 }
 
 WindowExit::~WindowExit()
@@ -68,9 +67,8 @@ void WindowExit::setWritingAvailability(bool state){
 
 void WindowExit::onClick(){
 
-    *_windowClose = false;
-    
-    PinGUI::Input_Manager::setState(PinGUI::GAME);
+    _windowElement->turnOffAim();
+    _windowElement->setShow(false);
 }
 
 void WindowExit::draw(int& pos){
@@ -87,4 +85,8 @@ void WindowExit::draw(int& pos){
         pos += _SPRITES.size();
         return;
     }
+}
+
+void WindowExit::info(){
+    std::cout << "WindowExit. Address: " << this << std::endl;
 }

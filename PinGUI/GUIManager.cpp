@@ -278,6 +278,7 @@ void GUIManager::update(bool allowCollision){
     if (!_manipulatingElement){
 
         if (allowCollision){
+
             checkCollisions();
         } else {
 

@@ -81,7 +81,7 @@ void Scroller::hideScroller(){
 }
 
 void Scroller::setWritingAvailability(bool state){
-    
+
     if (_SPRITES.size()>1){
 
         if (state){
@@ -107,7 +107,6 @@ void Scroller::checkForWheelMove(){
 
     checkLimits();
     decide();
-    
     _COLLIDERS[0] = getSprite(1)->getCollider();
 }
 
@@ -193,4 +192,8 @@ void Scroller::initNormalizer(const int& totalValue, const int& numOfPixels){
         _NORMALIZER._PLUS++;
 
     _NORMALIZER._RATIO = numOfPixels/_NORMALIZER._PLUS;
+}
+
+void Scroller::info(){
+    std::cout << "Scroller. Address: " << this << std::endl;
 }
