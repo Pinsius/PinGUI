@@ -25,41 +25,22 @@
 #include "Text.h"
 #include <iostream>
 
+Text::Text(){
+
+}
+
 Text::Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info):
     text(Text),
     active(true),
-    variable(nullptr),
-    last_var(0),
     changed(false),
     positioned(false),
     _haveOffsetRect(false),
     _networkedText(false),
-    _show(true)
+    _show(true),
+    _position(pos)
 {
-    _position.x = pos.x;
-    _position.y = pos.y;
-
-    if (text.size()==0) text.push_back(' ');
-
-    _sprite = std::make_shared<GUI_Sprite>(text,pos,info);
-}
-
-Text::Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable):
-    active(true),
-    text(Text),
-    changed(false),
-    positioned(false),
-    _haveOffsetRect(false),
-    _networkedText(false),
-    _show(true)
-{
-    _position.x = pos.x;
-    _position.y = pos.y;
-
-    variable = Variable;
-    last_var = *Variable;
-
-    reloadString();
+    if (text.size()==0)
+        text.push_back(' ');
 
     _sprite = std::make_shared<GUI_Sprite>(text,pos,info);
 }
@@ -68,24 +49,19 @@ Text::~Text()
 {
 }
 
+void Text::init(std::string Text, PinGUI::Vector2<GUIPos> pos){
+    active = true;
+    text = Text;
+    changed = false;
+    positioned = false;
+    _haveOffsetRect = false;
+    _networkedText = false;
+    _show = true;
+
+    _position = pos;
+}
+
 void Text::needUpdate(textInfo* info, bool& update){
-
-    if (variable!=NULL){
-
-        if (*variable!=last_var||changed){
-
-            last_var =*variable;
-            reloadString();
-
-            getNewText(info);
-
-            update = true;
-
-            changed = false;
-
-            return;
-        }
-    }
 
     if (changed){
 
@@ -113,30 +89,12 @@ void Text::checkPositioned(bool& update){
 
 void Text::getNewText(textInfo*& info){
 
-    if (variable==NULL){
-
-        _sprite.reset();
-        _sprite = std::make_shared<GUI_Sprite>(text,_position,info);
-    }else {
-
-        last_var = *variable;
-
-        _sprite.reset();
-        _sprite = std::make_shared<GUI_Sprite>(text,_position,info);
-    }
+    _sprite.reset();
+    _sprite = std::make_shared<GUI_Sprite>(text,_position,info);
 
     if (_haveOffsetRect){
         calculateTextPosition();
     }
-}
-
-void Text::reloadString(){
-
-    std::stringstream tmpString;
-    tmpString.str("");
-    tmpString << last_var;
-
-    text = tmpString.str();
 }
 
 void Text::replaceText(std::string newText){
@@ -145,41 +103,32 @@ void Text::replaceText(std::string newText){
     changed = true;
 }
 
-void Text::addChar(char* ch){
+void Text::addChar(char* ch, bool change){
 
     if ((text[0]==' ' && text.size()==1)){
 
         text[0] = *ch;
-    } else if (variable){
-
-        *variable = (*variable*10)+(*ch-48);
-    }else {
+    } else {
 
         text += *ch;
     }
 
-    changed  = true;
+    changed  = change;
 }
 
 void Text::setChar(char ch, int pos){
 
     text[pos] = ch;
 
-    if (variable){
-        *variable = std::atoi(text.c_str());
-    }
     changed = true;
 }
 
 void Text::removeChar(){
 
-    if (variable){
-        *variable /= 10;
-    } else {
+    text.pop_back();
 
-        text.pop_back();
-        if (text.size() == 0) text.push_back(' ');
-    }
+    if (text.size() == 0)
+        text.push_back(' ');
 
     changed = true;
 }
@@ -190,6 +139,7 @@ void Text::setPos(PinGUI::Vector2<GUIPos> setPos){
     _position.y = setPos.y;
 
     _sprite->setPos(_position);
+
     positioned = true;
 }
 
@@ -203,30 +153,13 @@ void Text::calculateTextPosition(){
     setPos(pos);
 }
 
-int Text::getNumericalText(){
-    return std::atoi(text.c_str());
-}
-
-int Text::getVariableNum(){
-    return *variable;
-}
-
 int Text::getTextSize(){
     if (text[0]==' ' && text.size()==1) return 0;
     else return text.size();
 }
 
-bool Text::isZero(){
-    return text[0]=='0';
-}
-
 bool Text::isEmpty(){
     return text.size()==0;
-}
-
-bool Text::haveNum(){
-    if (variable) return true;
-    else return false;
 }
 
 bool Text::isChanged(){
@@ -294,4 +227,44 @@ PinGUI::Vector2<GUIPos> Text::getPos(){
 
 PinGUI::Vector2<GUIPos>* Text::getPos_P(){
     return &_position;
+}
+
+std::shared_ptr<GUI_Sprite> Text::getSprite(){
+    return _sprite;
+}
+
+bool Text::isActive(){
+    return active;
+}
+
+GUIPos Text::getX(){
+    return _position.x;
+}
+
+GUIPos Text::getY(){
+    return _position.y;
+}
+
+std::string Text::getString(){
+    return text;
+}
+
+void Text::setActive(bool state){
+    active = state;
+}
+
+vboData Text::getVBOData(){
+    return *(_sprite->getVBOData());
+}
+
+bool Text::isPositioned(){
+    return positioned;
+}
+
+bool Text::isZero(){
+    return text[0]=='0';
+}
+
+float Text::getCharNum(char* ch){
+    return ((*ch)-48.0f);
 }

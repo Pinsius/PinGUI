@@ -106,13 +106,17 @@ class GUIManager
         //Making methods
         void createClipBoard(int x, int y, clipboard_type type, int maxSize, element_shape shape = ROUNDED);
         void createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, element_shape shape = ROUNDED);
+        void createClipBoard(int x, int y, clipboard_type type, float* var, int maxSize, element_shape shape = ROUNDED);
+        void createClipBoard(int x, int y, clipboard_type type, std::string* var, int maxSize, element_shape shape = ROUNDED);
 
         void createComboBox(int x, int y, std::vector<std::string> items, int maxNumOfItems);
         void createComboBox(int x, int y, std::vector<std::string> items, int maxSize, int maxNumOfItems);
 
         void createArrowBoard(int x, int y, int* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
+        void createArrowBoard(int x, int y, float* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
 
         void createVolumeBoard(int x, int y, bool clickable, int* var, int maxSize);
+        void createVolumeBoard(int x, int y, bool clickable, float* var, int maxSize);
 
         void createCheckBox(int x, int y, bool* var);
 

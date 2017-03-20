@@ -33,6 +33,7 @@
 #include "../GUI_Elements/ClipBoard.h"
 #include "../GUI_Elements/Window_Arrow.h"
 #include "../SheetManager.h"
+#include "../ElementDataStorage.hpp"
 
 #define ARROW_OFFSET 3
 #define HORIZONTAL_ARROWS_OFFSET 4
@@ -50,7 +51,9 @@ class ArrowBoard: public GUI_Element
 
         std::vector<std::shared_ptr<GUI_Element>> _ARROWS;
 
-        int* _var;
+        dataType _storageType;
+
+        std::shared_ptr<ElementDataStorage> _dataStorage;
 
         int _max;
         int _min;
@@ -66,9 +69,14 @@ class ArrowBoard: public GUI_Element
         void incVar();
         void decVar();
 
+        void init();
+
     public:
         ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip);
         ArrowBoard(int* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
+        ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<GUI_Element> clip);
+        ArrowBoard(float* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
+
         ~ArrowBoard();
 
         void addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_Element>>& _ELEMENTS, PinGUI::manipulationState state = PinGUI::VERTICAL);

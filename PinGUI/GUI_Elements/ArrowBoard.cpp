@@ -26,35 +26,69 @@
 
 ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip):
     _clipBoard(clip),
-    _var(var),
     _max(max),
     _ratio(1),
-    _min(0)
+    _min(0),
+    _storageType(PINGUI_INT)
 {
-    _collidable = false;
-
-    //Create a network between this and clipboard
-    _clipBoard->setNetworking(true);
+    init();
 
     //Init pos
     initPosition(rect);
 
     calculateY(rect.y,rect.h);
+
+    _dataStorage = std::make_shared<ElementDataStorage>(var);
 }
 
 ArrowBoard::ArrowBoard(int* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio):
-    _var(var),
     _max(max),
     _min(min),
     _ratio(ratio),
-    _clipBoard(clip)
+    _clipBoard(clip),
+    _storageType(PINGUI_INT)
 {
+    init();
+
+    _dataStorage = std::make_shared<ElementDataStorage>(var);
+}
+
+ArrowBoard::ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<GUI_Element> clip):
+    _clipBoard(clip),
+    _max(max),
+    _ratio(1),
+    _min(0),
+    _storageType(PINGUI_FLOAT)
+{
+    init();
+
+    //Init pos
+    initPosition(rect);
+
+    calculateY(rect.y,rect.h);
+
+    _dataStorage = std::make_shared<ElementDataStorage>(var);
+}
+
+ArrowBoard::ArrowBoard(float* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio):
+    _max(max),
+    _min(min),
+    _ratio(ratio),
+    _clipBoard(clip),
+    _storageType(PINGUI_FLOAT)
+{
+    init();
+
+    _dataStorage = std::make_shared<ElementDataStorage>(var);
+}
+
+void ArrowBoard::init(){
+
     _collidable = false;
 
     //Create a network between this and clipboard
-    _clipBoard->setNetworking(false);
+    _clipBoard->setNetworking(true);
 }
-
 
 ArrowBoard::~ArrowBoard()
 {
@@ -70,6 +104,7 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_E
     switch (state){
 
         case PinGUI::HORIZONTAL : {
+
             rect.y = calculateY(rect.y,_clipBoard->getSprite()->getH());
 
             rect.x = _clipBoard->getSprite()->getX() - PINGUI_WINDOW_SCROLLER_ARROW_SIDE_W - ARROW_OFFSET;
@@ -146,14 +181,52 @@ void ArrowBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 
 void ArrowBoard::incVar(){
 
-    if (*_var + _ratio <= _max)
-        *_var += _ratio;
+    switch(_storageType){
+
+        case PINGUI_INT : {
+
+            auto _var = _dataStorage->getInt()->getVar_P();
+
+            if (*_var + _ratio <= _max)
+                *_var += _ratio;
+
+            break;
+        }
+        case PINGUI_FLOAT : {
+
+            auto _var = _dataStorage->getFloat()->getVar_P();
+
+            if (*_var + _ratio <= _max)
+                *_var += _ratio;
+
+            break;
+        }
+    }
 }
 
 void ArrowBoard::decVar(){
 
-    if (*_var - _ratio >= _min)
-        *_var -= _ratio;
+    switch(_storageType){
+
+        case PINGUI_INT : {
+
+            auto _var = _dataStorage->getInt()->getVar_P();
+
+            if (*_var - _ratio >= _min)
+                *_var -= _ratio;
+
+            break;
+        }
+        case PINGUI_FLOAT : {
+
+            auto _var = _dataStorage->getFloat()->getVar_P();
+
+            if (*_var - _ratio >= _min)
+                *_var -= _ratio;
+
+            break;
+        }
+    }
 }
 
 void ArrowBoard::cropElement(PinGUI::Rect& rect){

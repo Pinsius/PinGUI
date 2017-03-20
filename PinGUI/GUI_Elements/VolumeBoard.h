@@ -26,6 +26,7 @@
 **/
 
 #include "../GUI_Element.h"
+#include "../ElementDataStorage.hpp"
 
 #define VOLUMEBOARD_MOVER_OFFSET 0
 #define VOLUMEBOARD_MOVER_OFFSET_Y -1
@@ -59,8 +60,9 @@ class VolumeBoard: public GUI_Element
     private:
         std::shared_ptr<GUI_Element> _clipBoard;
 
-        int* _var;
-        int _lastVar;
+        dataType _storageType;
+
+        std::shared_ptr<ElementDataStorage> _dataStorage;
 
         int _max;
 
@@ -71,6 +73,8 @@ class VolumeBoard: public GUI_Element
         /**
             Private methods
         **/
+        void init();
+
         void calculateRatio();
 
         void addMover(PinGUI::Rect& tmpRect);
@@ -98,8 +102,12 @@ class VolumeBoard: public GUI_Element
         void modifyVar();
 
         void checkForColliderPosition();
+
+        float getVar();
+
     public:
-        VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, std::shared_ptr<GUI_Element> clip,bool* needUpdate);
+        VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, std::shared_ptr<GUI_Element> clip, bool* needUpdate);
+        VolumeBoard(PinGUI::Vector2<GUIPos> pos, float* var, int max, std::shared_ptr<GUI_Element> clip, bool* needUpdate);
         ~VolumeBoard();
 
         void draw(int& pos);

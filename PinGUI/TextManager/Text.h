@@ -31,114 +31,113 @@
 
 #include "../GUI_Sprite.h"
 
-    class Text
-    {
-    private:
-        std::shared_ptr<GUI_Sprite> _sprite;
+class Text
+{
+protected:
+    std::shared_ptr<GUI_Sprite> _sprite;
 
-        PinGUI::Vector2<GUIPos> _position;
+    PinGUI::Vector2<GUIPos> _position;
 
-        std::string text;
+    std::string text;
 
-        bool active;
+    bool active;
 
-        bool changed;
+    bool changed;
 
-        bool positioned;
+    bool positioned;
 
-        bool _networkedText;
+    bool _networkedText;
 
-        bool _show;
+    bool _show;
 
-        //In case of storing variable data
-        int* variable;
-        int last_var;
+    //In case of offseting to some rect
+    PinGUI::Rect _offsetRect;
 
-        //In case of offseting to some rect
-        PinGUI::Rect _offsetRect;
+    bool _haveOffsetRect;
 
-        bool _haveOffsetRect;
+    /**
+        Private methods
+    **/
 
-        /**
-            Private methods
-        **/
-        void reloadString();
+    void checkPositioned(bool& update);
 
-        void checkPositioned(bool& update);
+    void init(std::string Text, PinGUI::Vector2<GUIPos> pos);
 
-    public:
+    float getCharNum(char* ch);
 
-        Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info);
-        Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable);
-        ~Text();
+public:
+    Text();
+    Text(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info);
+    ~Text();
 
-        void normalizeText(const PinGUI::Vector2<GUIPos>& vect);
+    virtual void needUpdate(textInfo* info, bool& update);
 
-        void adaptToClipBoard();
+    //For creating a new copy
+    virtual void getNewText(textInfo*& info);
 
-        void moveText(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement = false);
+    virtual void addChar(char* ch, bool change = true);
 
-        void moveTo(PinGUI::Vector2<GUIPos> vect);
+    virtual void setChar(char ch, int pos);
 
-        void needUpdate(textInfo* info, bool& update);
+    virtual void removeChar();
 
-        //For creating a new copy
-        void getNewText(textInfo*& info);
+    virtual float getVariableNum(){};
 
-        void replaceText(std::string newText);
+    virtual bool checkCharAddition(char* ch, int& maxValue){return true;}
 
-        std::shared_ptr<GUI_Sprite> getSprite(){return _sprite;}
+    virtual bool isZero();
 
-        bool isActive(){return active;}
+    virtual void endInputManipulation(){};
 
-        GUIPos getX(){return _position.x;}
+    void normalizeText(const PinGUI::Vector2<GUIPos>& vect);
 
-        GUIPos getY(){return _position.y;}
+    void adaptToClipBoard();
 
-        int* getVar(){return variable;}
+    void moveText(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement = false);
 
-        PinGUI::Vector2<GUIPos> getPos();
+    void moveTo(PinGUI::Vector2<GUIPos> vect);
 
-        PinGUI::Vector2<GUIPos>* getPos_P();
+    void replaceText(std::string newText);
 
-        std::string getString(){return text;}
+    std::shared_ptr<GUI_Sprite> getSprite();
 
-        void setPos(PinGUI::Vector2<GUIPos> setPos);
+    bool isActive();
 
-        void setOffsetRect(PinGUI::Rect offsetRect);
+    GUIPos getX();
 
-        void setActive(bool state){active = state;}
+    GUIPos getY();
 
-        void addChar(char* ch);
-        void setChar(char ch, int pos);
-        void removeChar();
+    std::string getString();
 
-        vboData getVBOData(){return *(_sprite->getVBOData());}
+    void setActive(bool state);
 
-        void calculateTextPosition();
+    vboData getVBOData();
 
-        bool isPositioned(){return positioned;}
+    bool isPositioned();
 
-        bool isNetworked();
-        void setNetworked(bool state);
+    PinGUI::Vector2<GUIPos> getPos();
 
-        int getTextSize();
+    PinGUI::Vector2<GUIPos>* getPos_P();
 
-        int getNumericalText();
+    void setPos(PinGUI::Vector2<GUIPos> setPos);
 
-        int getVariableNum();
+    void setOffsetRect(PinGUI::Rect offsetRect);
 
-        bool haveNum();
+    void calculateTextPosition();
 
-        bool isZero();
+    bool isNetworked();
 
-        bool isEmpty();
+    void setNetworked(bool state);
 
-        bool isChanged();
+    int getTextSize();
 
-        bool getShow();
-        void setShow(bool state);
-    };
+    bool isEmpty();
 
+    bool isChanged();
+
+    bool getShow();
+
+    void setShow(bool state);
+};
 
 #endif // TEXT_H

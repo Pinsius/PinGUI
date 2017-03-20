@@ -27,18 +27,42 @@
 
 VolumeBoard::VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, std::shared_ptr<GUI_Element> clip,bool* needUpdate):
     _clipBoard(clip),
-    _var(var),
-    _lastVar(*_var),
     _max(max),
-    _needUpdate(needUpdate)
+    _needUpdate(needUpdate),
+    _storageType(PINGUI_INT)
 {
+    _dataStorage = std::make_shared<ElementDataStorage>(var);
+
     _position = pos;
+
+    init();
+}
+
+VolumeBoard::VolumeBoard(PinGUI::Vector2<GUIPos> pos, float* var, int max, std::shared_ptr<GUI_Element> clip, bool* needUpdate):
+    _clipBoard(clip),
+    _max(max),
+    _needUpdate(needUpdate),
+    _storageType(PINGUI_FLOAT)
+{
+    _dataStorage = std::make_shared<ElementDataStorage>(var);
+
+    _position = pos;
+
+    init();
+}
+
+VolumeBoard::~VolumeBoard()
+{
+}
+
+void VolumeBoard::init(){
+
     _clipBoard->setNetworking(true);
 
     //Create sprite
     PinGUI::Rect tmpRect;
-    tmpRect.x = pos.x;
-    tmpRect.y = pos.y;
+    tmpRect.x = _position.x;
+    tmpRect.y = _position.y;
     addSprite(tmpRect,SheetManager::getSurface(VOLUME_BACK));
 
     //calculate the ratio
@@ -51,13 +75,24 @@ VolumeBoard::VolumeBoard(PinGUI::Vector2<GUIPos> pos, int* var, int max, std::sh
     addMover(tmpRect);
 }
 
-VolumeBoard::~VolumeBoard()
-{
+float VolumeBoard::getVar(){
+
+    switch(_storageType){
+
+        case PINGUI_INT : {
+
+            return static_cast<float>(_dataStorage->getInt()->getVar());
+        }
+        case PINGUI_FLOAT : {
+
+            return _dataStorage->getFloat()->getVar();
+        }
+    }
 }
 
 void VolumeBoard::addMover(PinGUI::Rect& tmpRect){
 
-    tmpRect.x += VOLUMEBOARD_MOVER_OFFSET+((*_var)*_ratio);
+    tmpRect.x += VOLUMEBOARD_MOVER_OFFSET+(getVar()*_ratio);
 
     tmpRect.y += VOLUMEBOARD_MOVER_OFFSET_Y;
     addSprite(tmpRect,SheetManager::getSurface(VOLUME_MOVER));
@@ -75,8 +110,9 @@ void VolumeBoard::addMover(PinGUI::Rect& tmpRect){
 
 void VolumeBoard::addFill(PinGUI::Rect& tmpRect){
 
-    tmpRect.x = _SPRITES[VOL_BACKGROUND]->getX()+(VOLUMEBOARD_MOVER_OFFSET+1);
-    tmpRect.y = _SPRITES[VOL_BACKGROUND]->getY()+VOLUMEBOARD_FILL_OFFSET;
+    tmpRect.x = _SPRITES[VOL_BACKGROUND]->getX() + (VOLUMEBOARD_MOVER_OFFSET + 1);
+    tmpRect.y = _SPRITES[VOL_BACKGROUND]->getY() + VOLUMEBOARD_FILL_OFFSET;
+
     addSprite(tmpRect,SheetManager::getSurface(VOLUME_FILL));
 }
 
@@ -99,12 +135,18 @@ void VolumeBoard::draw(int& pos){
 }
 
 bool VolumeBoard::needMove(){
-    if (*_var!=_lastVar){
 
-        _lastVar = *_var;
-        return true;
+    switch(_storageType){
 
-    } else return false;
+        case PINGUI_INT : {
+
+            return _dataStorage->getInt()->changed();
+        }
+        case PINGUI_FLOAT : {
+
+            return _dataStorage->getFloat()->changed();
+        }
+    }
 }
 
 void VolumeBoard::moveMover(){
@@ -139,7 +181,7 @@ void VolumeBoard::moveMover(int distance){
 }
 
 int VolumeBoard::calculatePosition(){
-    return _SPRITES[VOL_BACKGROUND]->getGUIRect_P()->realRect.x +VOLUMEBOARD_MOVER_OFFSET+((*_var)*_ratio);
+    return _SPRITES[VOL_BACKGROUND]->getGUIRect_P()->realRect.x + VOLUMEBOARD_MOVER_OFFSET+(getVar() * _ratio);
 }
 
 void VolumeBoard::onClick(){
@@ -188,15 +230,45 @@ void VolumeBoard::manipulatingMod(manip_Element manipulatingElement){
 }
 
 void VolumeBoard::modifyVar(){
+
     int distance = getDistance();
-    *_var = distance/_ratio;
 
-    //Checking the min and max
-    if (*_var<0) *_var=0;
-    else if (*_var>_max) *_var = _max;
 
-    //Setting the last var
-    _lastVar = *_var;
+    switch(_storageType){
+
+        case PINGUI_INT : {
+
+            auto _var = _dataStorage->getInt()->getVar_P();
+
+            *_var = distance/_ratio;
+
+            //Checking the min and max
+            if (*_var<=0)
+                *_var = 0;
+            else if (*_var>_max)
+                *_var = _max;
+
+            _dataStorage->getInt()->equalVar();
+
+            break;
+        }
+        case PINGUI_FLOAT : {
+
+            auto _var = _dataStorage->getFloat()->getVar_P();
+
+            *_var = distance/_ratio;
+
+            //Checking the min and max
+            if (*_var<=0)
+                *_var = 0;
+            else if (*_var>_max)
+                *_var = _max;
+
+            _dataStorage->getFloat()->equalVar();
+
+            break;
+        }
+    }
 
     moveMover();
 }
@@ -227,6 +299,7 @@ void VolumeBoard::calculateFill(int& distance){
 }
 
 void VolumeBoard::checkMover(){
+
     int distance = getDistance();
 
     if (distance<0){

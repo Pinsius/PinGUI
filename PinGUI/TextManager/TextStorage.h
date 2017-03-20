@@ -59,13 +59,26 @@ class TextStorage
         //Pointer to an additional informations - in case of clipboards, etc.
         std::shared_ptr<additionalStorage> _additionalStorage;
 
+        /**
+            Private methods
+        **/
+        void handleIntegerInput(char*& ch, int& position, int& maxValue);
+
+        void handleFloatInput(char*& ch, int& position, int& maxValue);
+
+        bool isFloatInput(char*& ch);
+
     public:
         TextStorage(std::shared_ptr<TextManager> text);
         ~TextStorage();
 
         void addText(const std::string& text, int x, int y) ;
 
-        void addText(const std::string& text, int x, int y, int* var);
+        void addText(int x, int y, int* var);
+
+        void addText(int x, int y, float* var);
+
+        void addText(int x, int y, std::string* var);
 
         void destroyText(int position = 0);
 

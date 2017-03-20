@@ -76,7 +76,30 @@ void GUIManager::createClipBoard(int x, int y, clipboard_type type, int* var, in
     _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
+}
 
+void GUIManager::createClipBoard(int x, int y, clipboard_type type, float* var, int maxSize, element_shape shape){
+
+    clipboardData tmp;
+    tmp.texter = getTextManager();
+    PinGUI::Vector2<GUIPos> position(x,y);
+
+    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,shape);
+    _ELEMENTS.push_back(ptr);
+
+    _needUpdate = true;
+}
+
+void GUIManager::createClipBoard(int x, int y, clipboard_type type, std::string* var, int maxSize, element_shape shape){
+
+    clipboardData tmp;
+    tmp.texter = getTextManager();
+    PinGUI::Vector2<GUIPos> position(x,y);
+
+    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,shape);
+    _ELEMENTS.push_back(ptr);
+
+    _needUpdate = true;
 }
 
 void GUIManager::createComboBox(int x, int y, std::vector<std::string> items, int maxNumOfItems){
@@ -103,7 +126,6 @@ void GUIManager::createComboBox(int x, int y, std::vector<std::string> items, in
     _needUpdate = true;
 }
 
-
 void GUIManager::createVolumeBoard(int x, int y, bool clickable, int* var, int maxSize){
 
     //Block for creating a clipboard
@@ -115,6 +137,30 @@ void GUIManager::createVolumeBoard(int x, int y, bool clickable, int* var, int m
         if (clickable){
 
             createClipBoard(position.x,position.y,INT_ONLY,var,maxSize,ROUNDED);
+        } else {
+            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
+        }
+    }
+
+    PinGUI::Vector2<GUIPos> tmpPos(x,y);
+
+    auto ptr = std::make_shared<VolumeBoard>(tmpPos,var,maxSize,_ELEMENTS.back(),&_moved);
+    _ELEMENTS.push_back(ptr);
+
+    _needUpdate = true;
+}
+
+void GUIManager::createVolumeBoard(int x, int y, bool clickable, float* var, int maxSize){
+
+    //Block for creating a clipboard
+    {
+        clipboardData tmp;
+        tmp.texter = getTextManager();
+        PinGUI::Vector2<GUIPos> position(x+VOLUMEBOARD_CLIP_OFFSET_X,y+VOLUMEBOARD_CLIP_OFFSET_Y);
+
+        if (clickable){
+
+            createClipBoard(position.x,position.y,INT_FLOAT,var,maxSize,ROUNDED);
         } else {
             createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
         }
@@ -143,6 +189,33 @@ void GUIManager::createArrowBoard(int x, int y, int* var, int maxSize, bool clic
             createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
         }
     }
+
+    PinGUI::Rect tmpRect(x,y,WINDOW_ARROW_W,WINDOW_ARROW_H);
+
+    auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back());
+    ptr->addArrows(tmpRect,_ELEMENTS,state);
+
+    _ELEMENTS.push_back(ptr);
+
+    _needUpdate = true;
+}
+
+void GUIManager::createArrowBoard(int x, int y, float* var, int maxSize, bool clickable, int minSize, PinGUI::manipulationState state){
+
+    //Block for creating a clipboard
+    {
+        clipboardData tmp;
+        tmp.texter = getTextManager();
+        PinGUI::Vector2<GUIPos> position(x,y);
+
+        if (clickable){
+
+            createClipBoard(position.x,position.y,INT_FLOAT,var,maxSize,ROUNDED);
+        } else {
+            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
+        }
+    }
+
     PinGUI::Rect tmpRect(x,y,WINDOW_ARROW_W,WINDOW_ARROW_H);
 
     auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back());

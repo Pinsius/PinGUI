@@ -61,7 +61,7 @@ namespace PinGUI{
     };
 
     struct writingModInfo{
-        bool intOnly;
+        clipboard_type inputType;
         int max;
         int maxValue;
     };

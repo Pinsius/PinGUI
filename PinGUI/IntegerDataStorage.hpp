@@ -1,5 +1,5 @@
-#ifndef STUFF_H
-#define STUFF_H
+#ifndef INTEGERDATASTORAGE_HPP
+#define INTEGERDATASTORAGE_HPP
 
 /**
 
@@ -25,54 +25,58 @@
 
 **/
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <memory>
+class IntegerDataStorage
+{
+    private:
+        int* _var;
+        int _last_var;
 
-#include "GL_Vertex.h"
-
-class textInfo{
-public:
-    textInfo(TTF_Font* Font,SDL_Color Color):
-        font(Font),
-        color(Color)
+    public:
+        IntegerDataStorage():
+            _var(nullptr),
+            _last_var(0)
         {
-        };
+        }
 
-    textInfo(){};
+        IntegerDataStorage(int* var):
+            _var(var),
+            _last_var(*var)
+        {
+        }
 
-    ~textInfo(){
-        delete font;
-    }
+        ~IntegerDataStorage(){};
 
-    TTF_Font* font;
-    SDL_Color color;
+        void init(int* var){
+            _var = var;
+            _last_var = *var;
+        }
+
+        void equalVar(){
+
+            _last_var = *_var;
+        }
+
+        bool changed(){
+
+            if (_last_var != *_var){
+
+                _last_var = *_var;
+                return true;
+
+            } return false;
+        }
+
+        int getVar(){
+            return *_var;
+        }
+
+        int getLastVar(){
+            return _last_var;
+        }
+
+        int* getVar_P(){
+            return _var;
+        }
 };
 
-struct vboData{
-    PinGUI::Vertex vertices[6];
-};
-
-/**
-    Class for storing data for VBO´s (normal VBO and instances)
-**/
-class BufferData{
-public:
-    std::vector<vboData> vboDATA;
-};
-
-/**
-    Enum for different clipboards
-**/
-enum clipboard_type{
-    NORMAL,
-    INT_ONLY,
-    INT_FLOAT,
-    UNCLICKABLE
-};
-
-enum element_shape{
-    ROUNDED,
-    RECTANGLED
-};
-#endif // STUFF_H
+#endif // INTEGERDATASTORAGE_HPP

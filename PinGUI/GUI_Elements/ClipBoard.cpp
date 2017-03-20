@@ -29,7 +29,7 @@
 
 ClipBoard::ClipBoard()
 {
- _aimON = false;
+    _aimON = false;
 }
 
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape):
@@ -50,6 +50,24 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
     initText(var);
 }
 
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape):
+    _type(type),
+    _shape(shape)
+{
+    initClipBoard(maxSize,data,position);
+
+    initText(var);
+}
+
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, element_shape shape):
+    _type(type),
+    _shape(shape)
+{
+    initClipBoard(maxSize,data,position);
+
+    initText(var);
+}
+
 void ClipBoard::init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardData data, clipboard_type type, element_shape shape){
 
     _type = type;
@@ -62,8 +80,8 @@ void ClipBoard::init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardDat
 
 ClipBoard::~ClipBoard()
 {
-}
 
+}
 
 void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position){
 
@@ -101,33 +119,37 @@ void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2
 
 void ClipBoard::initText(){
 
-    if (_type==INT_ONLY||_type==UNCLICKABLE)
-        _textStorage->addText(" ",100,100);
-    else
-        _textStorage->addText(" ",100,100);
+    _textStorage->addText(" ",100,100);
 
-    _textStorage->getText(0)->setOffsetRect(*(getCollider()));
-    _textStorage->getText(0)->calculateTextPosition();
-    _textStorage->getText(0)->setNetworked(true);
-
-    _textStorage->setAdditionalInfo(getCollider(),&_type);
-
-    //Here i initialize also the collidable state
-    if (_type==UNCLICKABLE)
-        setCollidable(false);
+    initStorage();
 }
 
 void ClipBoard::initText(int* var){
 
-    std::stringstream tmp;
-    tmp.str("");
-    tmp << *var;
+    _textStorage->addText(100,100,var);
 
-     _textStorage->addText("",100,100,var);
+    initStorage();
+}
+
+void ClipBoard::initText(float* var){
+
+    _textStorage->addText(100,100,var);
+
+    initStorage();
+}
+
+void ClipBoard::initText(std::string* var){
+
+    _textStorage->addText(100,100,var);
+
+    initStorage();
+}
+
+void ClipBoard::initStorage(){
+
     _textStorage->getText(0)->setOffsetRect(*(getCollider()));
     _textStorage->getText(0)->calculateTextPosition();
     _textStorage->getText(0)->setNetworked(true);
-
     _textStorage->setAdditionalInfo(getCollider(),&_type);
 
     //Here i initialize also the collidable state
@@ -150,17 +172,31 @@ void ClipBoard::calculateMaxSize(){
 
 void ClipBoard::setMaxSize(int& maxSize){
 
-    if (_type==INT_ONLY||_type==UNCLICKABLE){
+    switch (_type){
 
-        _maxValue = maxSize;
-        calculateMaxSize();
-    } else {
+        case INT_ONLY :
+        case UNCLICKABLE : {
 
-        _maxSize = maxSize;
+            _maxValue = maxSize;
+            calculateMaxSize();
+
+            break;
+        }
+        case INT_FLOAT : {
+
+            _maxValue = maxSize;
+            calculateMaxSize();
+            _maxSize += FLOAT_TEXT_PRECISION + 1;
+            break;
+        }
+        default : {
+            _maxSize = maxSize;
+        }
     }
 }
 
 PinGUI::Rect ClipBoard::getSpriteRect(const GUIPos& tmp_width, const GUIPos& tmp_height, const PinGUI::Vector2<GUIPos> position){
+
     PinGUI::Rect tmp;
 
      //Now have to modify the collision rect
@@ -197,13 +233,10 @@ void ClipBoard::onClick(){
     //Creating mod info
     PinGUI::writingModInfo tmp;
 
-    if (_type==NORMAL)
-        tmp.intOnly = false;
-    else {
-
-        tmp.intOnly = true;
+    if (_type!=NORMAL)
         tmp.maxValue = _maxValue;
-    }
+
+    tmp.inputType = _type;
     tmp.max = _maxSize;
 
     PinGUI::Input_Manager::setWritingModInfo(tmp);
@@ -218,6 +251,8 @@ void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
         SDL_ShowCursor(SDL_ENABLE);
         PinGUI::Input_Manager::setInputState(PinGUI::GAMEINPUT);
         PinGUI::Input_Manager::setAlreadyClick(false);
+
+        _textStorage->getText()->endInputManipulation();
 
         return;
     }

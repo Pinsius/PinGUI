@@ -69,11 +69,35 @@ std::shared_ptr<Text> TextManager::writeText(const std::string& text,int x, int 
 
 }
 
-std::shared_ptr<Text> TextManager::writeText(const std::string& text,int x, int y, int* var){
+std::shared_ptr<Text> TextManager::writeText(int x, int y, int* var){
 
     PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
 
-    auto ptr = std::make_shared<Text>(text,tmpVecc,&_mainTextInfo,var);
+    auto ptr = std::make_shared<IntegerText>(tmpVecc,&_mainTextInfo,var);
+    _TEXTS.push_back(ptr);
+
+    _needUpdate = true;
+
+    return _TEXTS.back();
+}
+
+std::shared_ptr<Text> TextManager::writeText(int x, int y, float* var){
+
+    PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
+
+    auto ptr = std::make_shared<FloatText>(tmpVecc,&_mainTextInfo,var);
+    _TEXTS.push_back(ptr);
+
+    _needUpdate = true;
+
+    return _TEXTS.back();
+}
+
+std::shared_ptr<Text> TextManager::writeText(int x, int y, std::string* var){
+
+    PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
+
+    auto ptr = std::make_shared<StringText>(tmpVecc,&_mainTextInfo,var);
     _TEXTS.push_back(ptr);
 
     _needUpdate = true;

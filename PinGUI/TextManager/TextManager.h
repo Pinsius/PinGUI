@@ -33,10 +33,13 @@
 #include <algorithm>
 #include <memory>
 
-#include "../TextManager/Text.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "../TextManager/Text.h"
+#include "../TextManager/IntegerText.h"
+#include "../TextManager/FloatText.h"
+#include "../TextManager/StringText.h"
 #include "../VBO_Manager.h"
 #include "../PinGUI_Vector.hpp"
 #include "../CropManager.hpp"
@@ -96,7 +99,9 @@ class TextManager
 
         //I have 2 cases, so i need to overload these functions
         std::shared_ptr<Text> writeText(const std::string& text,int x, int y);
-        std::shared_ptr<Text> writeText(const std::string& text,int x, int y, int* var);
+        std::shared_ptr<Text> writeText(int x, int y, int* var);
+        std::shared_ptr<Text> writeText(int x, int y, float* var);
+        std::shared_ptr<Text> writeText(int x, int y, std::string* var);
 
         TTF_Font* loadFont(const std::string& fontPath, int size);
 

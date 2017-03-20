@@ -1,5 +1,5 @@
-#ifndef STUFF_H
-#define STUFF_H
+#ifndef ELEMENTDATASTORAGE_HPP
+#define ELEMENTDATASTORAGE_HPP
 
 /**
 
@@ -25,54 +25,42 @@
 
 **/
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <memory>
+#include "IntegerDataStorage.hpp"
+#include "FloatDataStorage.hpp"
 
-#include "GL_Vertex.h"
+enum dataType{
+    PINGUI_INT,
+    PINGUI_FLOAT
+};
 
-class textInfo{
-public:
-    textInfo(TTF_Font* Font,SDL_Color Color):
-        font(Font),
-        color(Color)
+class ElementDataStorage
+{
+    private:
+        IntegerDataStorage _int;
+
+        FloatDataStorage _float;
+
+    public:
+        ElementDataStorage(int* var)
+        {
+            _int.init(var);
+        }
+        ElementDataStorage(float* var)
+        {
+            _float.init(var);
+        }
+        ~ElementDataStorage()
         {
         };
 
-    textInfo(){};
+        IntegerDataStorage* getInt(){
+            return &_int;
+        }
 
-    ~textInfo(){
-        delete font;
-    }
-
-    TTF_Font* font;
-    SDL_Color color;
+        FloatDataStorage* getFloat(){
+            return &_float;
+        }
 };
 
-struct vboData{
-    PinGUI::Vertex vertices[6];
-};
+#endif // ELEMENTDATASTORAGE_HPP
 
-/**
-    Class for storing data for VBO´s (normal VBO and instances)
-**/
-class BufferData{
-public:
-    std::vector<vboData> vboDATA;
-};
-
-/**
-    Enum for different clipboards
-**/
-enum clipboard_type{
-    NORMAL,
-    INT_ONLY,
-    INT_FLOAT,
-    UNCLICKABLE
-};
-
-enum element_shape{
-    ROUNDED,
-    RECTANGLED
-};
-#endif // STUFF_H

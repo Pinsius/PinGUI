@@ -42,7 +42,7 @@
 #define CLIPBOARD_COLLIDER_W 2
 #define CLIPBOARD_COLLIDER_H 1
 
-#define CLIPBOARD_RECTANGLE_COLLIDER
+#define CLIPBOARD_FLOAT_SIZE 7
 
 struct clipboardData{
     std::shared_ptr<TextManager> texter;
@@ -51,6 +51,7 @@ struct clipboardData{
 class ClipBoard: public GUI_Element
 {
     protected:
+
         //Type of clipboard
         clipboard_type _type;
 
@@ -82,16 +83,27 @@ class ClipBoard: public GUI_Element
         void writingMod();
 
         void initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position);
+
         void initText();
         void initText(int* var);
+        void initText(float* var);
+        void initText(std::string* var);
+
+        void initStorage();
 
         void fakeInputText(int& width, int& height, const clipboardData& data);
 
     public:
 
         ClipBoard();
+
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape = ROUNDED);
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape = ROUNDED);
+
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, element_shape shape = ROUNDED);
+
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, element_shape shape = ROUNDED);
+
         void init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardData data, clipboard_type type = NORMAL, element_shape shape = ROUNDED);
 
         void onClick() override;

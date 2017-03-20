@@ -1,5 +1,5 @@
-#ifndef STUFF_H
-#define STUFF_H
+#ifndef INTEGERTEXT_H
+#define INTEGERTEXT_H
 
 /**
 
@@ -25,54 +25,45 @@
 
 **/
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <memory>
+#include "Text.h"
 
-#include "GL_Vertex.h"
+class IntegerText: public Text
+{
+    private:
 
-class textInfo{
-public:
-    textInfo(TTF_Font* Font,SDL_Color Color):
-        font(Font),
-        color(Color)
-        {
-        };
+        //In case of storing variable data
+        int* _variable;
 
-    textInfo(){};
+        int _last_var;
 
-    ~textInfo(){
-        delete font;
-    }
+        bool _tmpInput;
 
-    TTF_Font* font;
-    SDL_Color color;
+        int _tmpInteger;
+
+        /**
+            Private methods
+        **/
+        void reloadString();
+
+    public:
+        IntegerText(PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable);
+        ~IntegerText();
+
+        void needUpdate(textInfo* info, bool& update) override;
+
+        void getNewText(textInfo*& info) override;
+
+        void addChar(char* ch, bool change = true) override;
+
+        void setChar(char ch, int pos) override;
+
+        void removeChar() override;
+
+        float getVariableNum() override;
+
+        bool checkCharAddition(char* ch, int& maxValue) override;
+
+        void endInputManipulation() override;
 };
 
-struct vboData{
-    PinGUI::Vertex vertices[6];
-};
-
-/**
-    Class for storing data for VBO´s (normal VBO and instances)
-**/
-class BufferData{
-public:
-    std::vector<vboData> vboDATA;
-};
-
-/**
-    Enum for different clipboards
-**/
-enum clipboard_type{
-    NORMAL,
-    INT_ONLY,
-    INT_FLOAT,
-    UNCLICKABLE
-};
-
-enum element_shape{
-    ROUNDED,
-    RECTANGLED
-};
-#endif // STUFF_H
+#endif // INTEGERTEXT_H

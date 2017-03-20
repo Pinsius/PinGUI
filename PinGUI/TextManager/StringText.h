@@ -1,5 +1,5 @@
-#ifndef STUFF_H
-#define STUFF_H
+#ifndef STRINGTEXT_H
+#define STRINGTEXT_H
 
 /**
 
@@ -25,54 +25,33 @@
 
 **/
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <memory>
+#include "Text.h"
 
-#include "GL_Vertex.h"
+class StringText: public Text
+{
+    private:
 
-class textInfo{
-public:
-    textInfo(TTF_Font* Font,SDL_Color Color):
-        font(Font),
-        color(Color)
-        {
-        };
+        //In case of storing variable data
+        std::string* _variable;
 
-    textInfo(){};
+        /**
+            Private methods
+        **/
+        void reloadString();
 
-    ~textInfo(){
-        delete font;
-    }
+    public:
+        StringText(PinGUI::Vector2<GUIPos> pos, textInfo* info, std::string* Variable);
+        ~StringText();
 
-    TTF_Font* font;
-    SDL_Color color;
+        void needUpdate(textInfo* info, bool& update) override;
+
+        void getNewText(textInfo*& info) override;
+
+        void addChar(char* ch, bool change = true) override;
+
+        void setChar(char ch, int pos) override;
+
+        void removeChar() override;
 };
 
-struct vboData{
-    PinGUI::Vertex vertices[6];
-};
-
-/**
-    Class for storing data for VBO´s (normal VBO and instances)
-**/
-class BufferData{
-public:
-    std::vector<vboData> vboDATA;
-};
-
-/**
-    Enum for different clipboards
-**/
-enum clipboard_type{
-    NORMAL,
-    INT_ONLY,
-    INT_FLOAT,
-    UNCLICKABLE
-};
-
-enum element_shape{
-    ROUNDED,
-    RECTANGLED
-};
-#endif // STUFF_H
+#endif // STRINGTEXT_H

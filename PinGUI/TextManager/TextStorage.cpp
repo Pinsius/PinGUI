@@ -46,8 +46,16 @@ void TextStorage::addText(const std::string& text, int x, int y){
     _TEXTS.push_back(texter->writeText(text,x,y));
 }
 
-void TextStorage::addText(const std::string& text, int x, int y, int* var){
-    _TEXTS.push_back(texter->writeText(text,x,y,var));
+void TextStorage::addText(int x, int y, int* var){
+    _TEXTS.push_back(texter->writeText(x,y,var));
+}
+
+void TextStorage::addText(int x, int y, float* var){
+    _TEXTS.push_back(texter->writeText(x,y,var));
+}
+
+void TextStorage::addText(int x, int y, std::string* var){
+    _TEXTS.push_back(texter->writeText(x,y,var));
 }
 
 void TextStorage::destroyText(int position){
@@ -58,43 +66,62 @@ void TextStorage::destroyText(int position){
 
 void TextStorage::addChar(char* ch, int position, int maxValue){
 
-    if (*(_additionalStorage->type)==INT_ONLY){
-        if (_TEXTS[position]->haveNum()){
+    switch (*(_additionalStorage->type)){
 
-            //In case that the clipboard contains a variable
-            if ((_TEXTS[position]->getVariableNum()*10) + (*ch-48)<=maxValue){
-                if (_TEXTS[position]->isZero()){
-                  _TEXTS[position]->removeChar();
-                }
-                _TEXTS[position]->addChar(ch);
-                return;
-            }
-        } else {
+        case NORMAL : {
 
-            //In case of normal clipboard with int text
-            if (_TEXTS[position]->isZero()){
-                _TEXTS[position]->removeChar();
-            }
             _TEXTS[position]->addChar(ch);
+            break;
         }
-    } else {
-        //Normal text clipboard
-        _TEXTS[position]->addChar(ch);
+        case INT_ONLY : {
+
+            handleIntegerInput(ch,position,maxValue);
+            break;
+        }
+        case INT_FLOAT : {
+
+            handleFloatInput(ch,position,maxValue);
+            break;
+        }
     }
+}
+
+void TextStorage::handleIntegerInput(char*& ch, int& position, int& maxValue){
+
+    //In case that the clipboard contains a variable
+    if ( isdigit(*ch) && _TEXTS[position]->checkCharAddition(ch,maxValue) ){
+
+        if (_TEXTS[position]->isZero()){
+
+            _TEXTS[position]->removeChar();
+        }
+
+        _TEXTS[position]->addChar(ch);
+
+        return;
+    }
+}
+
+void TextStorage::handleFloatInput(char*& ch, int& position, int& maxValue){
+
+    //In case that the clipboard contains a variable
+    if ( isFloatInput(ch) && _TEXTS[position]->checkCharAddition(ch,maxValue) ){
+
+        _TEXTS[position]->addChar(ch);
+
+        return;
+    }
+}
+
+bool TextStorage::isFloatInput(char*& ch){
+
+    if (isdigit(*ch) || (*ch == '.')) return true;
+    else return false;
 }
 
 void TextStorage::removeChar(int position){
 
-    if (*(_additionalStorage->type)==INT_ONLY){
-
-        if (_TEXTS[position]->getTextSize()==1)
-            _TEXTS[position]->setChar('0',0);
-        else
-            _TEXTS[position]->removeChar();
-    } else {
-
-        _TEXTS[position]->removeChar();
-    }
+    _TEXTS[position]->removeChar();
 }
 
 std::shared_ptr<Text> TextStorage::getText(int position){

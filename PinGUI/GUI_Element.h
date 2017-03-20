@@ -150,6 +150,7 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
         virtual void setWritingAvailability(bool state){};
 
         virtual void setAllowCrop(bool state);
+
         bool isAllowedCrop();
 
         //Normal methods

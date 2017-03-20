@@ -292,13 +292,13 @@ namespace PinGUI{
         convertScreenToWorld(tmpX,tmpY);
 
         //Moving the sprite in horizontal line
-        if (_manipulatingModInfo.manipState==HORIZONTAL||_manipulatingModInfo.manipState==WINDOW_MOVING){
+        if ((_manipulatingModInfo.manipState == HORIZONTAL) || (_manipulatingModInfo.manipState == WINDOW_MOVING)){
 
             moveHorizontal(tmpX,tmpY);
         }
 
         //Moving the sprite in vertical line
-        if (_manipulatingModInfo.manipState==VERTICAL||_manipulatingModInfo.manipState==WINDOW_MOVING){
+        if ((_manipulatingModInfo.manipState == VERTICAL) || (_manipulatingModInfo.manipState == WINDOW_MOVING)){
 
             moveVertical(tmpX,tmpY);
         }
@@ -312,7 +312,7 @@ namespace PinGUI{
 
         _lastVector.x = diff;
 
-        if (_manipulatingModInfo.manipState!=WINDOW_MOVING)
+        if (_manipulatingModInfo.manipState != WINDOW_MOVING)
             _manipulatedSprite->setX(_manipulatedSprite->getX()+diff);
     }
 
@@ -355,25 +355,14 @@ namespace PinGUI{
 
     bool Input_Manager::canWrite(char* ch){
 
-        if (_writingModInfo.intOnly){
-
-            if (isdigit(*ch)&&chooseText()->getTextSize()+1<=_writingModInfo.max&&((*ch - 48)+(chooseText()->getNumericalText()*10)<=_writingModInfo.maxValue)){
-                return true;
-            } else
-                return false;
-        } else {
-
-            if (chooseText()->getTextSize()+1<=_writingModInfo.max){
-                return true;
-            }
-
-        } return false;
+        if ((chooseText()->getTextSize()+1) <= _writingModInfo.max){
+            return true;
+        } else return false;
     }
 
     void Input_Manager::setWritingModInfo(writingModInfo newMod){
         _writingModInfo = newMod;
     }
-
 
     void Input_Manager::initManipulation(std::shared_ptr<GUI_Sprite> manip, bool* needUpdate){
 
