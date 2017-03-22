@@ -122,7 +122,7 @@ bool FloatText::findPoint(){
 
 void FloatText::addChar(char* ch, bool change){
 
-    if ((text[0]=='0' && text.size()==1)){
+    if ((text[0]=='0' && text.size()==1) && *ch != '.'){
 
         text[0] = *ch;
         _tmpInput = true;
