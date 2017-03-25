@@ -112,6 +112,8 @@ namespace PinGUI{
 
             static bool _isOnWindow;
 
+            static bool _tmpState;
+
             static PinGUI::Rect _targetRect;
 
             static PinGUI::Vector2<GUIPos> _lastVector;
@@ -191,6 +193,8 @@ namespace PinGUI{
             static void setOnWindow(bool state);
 
             static bool isOnWindow();
+
+            static void turnOnTMPState();
 
             /**
                 For writing mod

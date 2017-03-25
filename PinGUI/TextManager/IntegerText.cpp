@@ -27,8 +27,7 @@
 IntegerText::IntegerText(PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable):
     _variable(Variable),
     _last_var(*Variable),
-    _tmpInteger(0),
-    _tmpInput(false)
+    _tmpInteger(*Variable)
 {
     reloadString();
 
@@ -74,12 +73,8 @@ void IntegerText::getNewText(textInfo*& info){
 
     if (!_tmpInput){
 
-        if (changed && _tmpInteger!=0){
-
+        if (changed)
             *_variable = _tmpInteger;
-            _tmpInteger = 0;
-        }
-
 
         _last_var = *_variable;
 

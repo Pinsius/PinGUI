@@ -31,7 +31,7 @@ FloatText::FloatText(PinGUI::Vector2<GUIPos> pos, textInfo* info, float* Variabl
     _variable(Variable),
     _last_var(*Variable),
     _tmpInput(false),
-    _tmpFloat(0)
+    _tmpFloat(*Variable)
 {
     _construct.numOfFloatingNums = 0;
     _construct.pointNum = 0;
@@ -81,12 +81,8 @@ void FloatText::getNewText(textInfo*& info){
 
     if (!_tmpInput){
 
-        if (changed && _tmpFloat!=0){
-
+        if (changed)
             *_variable = _tmpFloat;
-            _tmpFloat = 0;
-        }
-
 
         _last_var = *_variable;
 
@@ -122,7 +118,7 @@ bool FloatText::findPoint(){
 
 void FloatText::addChar(char* ch, bool change){
 
-    if ((text[0]=='0' && text.size()==1) && *ch != '.'){
+    if ((text[0]=='0' && text.size()==1)){
 
         text[0] = *ch;
         _tmpInput = true;

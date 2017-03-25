@@ -208,7 +208,6 @@ void Window::update(bool allowCollision){
             updateTab();
         }
 
-
         if (_needCrop && _mainWindowTab->getGUI()->getUpdate()){
             cropTabArea();
         }

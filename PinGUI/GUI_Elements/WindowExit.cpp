@@ -67,7 +67,7 @@ void WindowExit::setWritingAvailability(bool state){
 
 void WindowExit::onClick(){
 
-    _windowElement->turnOffAim();
+    PinGUI::Input_Manager::turnOnTMPState();
     _windowElement->setShow(false);
 }
 
