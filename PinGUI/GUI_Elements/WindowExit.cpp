@@ -71,22 +71,6 @@ void WindowExit::onClick(){
     _windowElement->setShow(false);
 }
 
-void WindowExit::draw(int& pos){
-
-    if (_show){
-        for (std::size_t i = 0; i < _SPRITES.size(); i++){
-
-            glBindTexture(GL_TEXTURE_2D,getTexture(i));
-            glDrawArrays(GL_TRIANGLES,pos*6,6);
-            pos++;
-        }
-    } else {
-
-        pos += _SPRITES.size();
-        return;
-    }
-}
-
 void WindowExit::info(){
     std::cout << "WindowExit. Address: " << this << std::endl;
 }

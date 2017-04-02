@@ -124,6 +124,8 @@ void TextManager::renderText(){
     }
 
     glBindVertexArray(0);
+
+    glBindTexture(GL_TEXTURE_2D,0);
 }
 
 void TextManager::updateText(){
