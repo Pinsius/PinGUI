@@ -73,6 +73,8 @@ namespace PinGUI{
 
     PinGUI::Rect Input_Manager::_targetRect;
 
+    bool Input_Manager::_tmpState = false;
+
     /**
         Storage for tmpWheel
     **/
@@ -114,6 +116,7 @@ namespace PinGUI{
     }
 
     void Input_Manager::setState(gameState newState){
+
         _currentState = newState;
     }
 
@@ -151,6 +154,12 @@ namespace PinGUI{
                 manipulatingMod();
                 break;
             }
+        }
+
+        if (_tmpState){
+
+           _tmpState = false;
+           _currentState = PinGUI::GAME;
         }
 
         GUI_Cursor::updateCursor();
@@ -241,7 +250,7 @@ namespace PinGUI{
                 _clFunction.exec();
 
                 //I add the char to a manipulated text
-                _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo);
+                _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo.maxValue);
 
                 return;
             }
@@ -379,6 +388,7 @@ namespace PinGUI{
     }
 
     void Input_Manager::destroyManipulatingModInfo(){
+
         _manipulatedSprite = nullptr;
         _needUpdate = nullptr;
     }
@@ -451,6 +461,7 @@ namespace PinGUI{
 
                 _wheelingInfo._wheeledSprite->setY(_wheelingInfo._wheeledSprite->getY()-WINDOW_CAM_SCROLLING_SPEED);
             }
+
             *_wheelingInfo._update = true;
             _wheelingInfo._function.exec();
         }
@@ -516,6 +527,10 @@ namespace PinGUI{
 
     bool Input_Manager::isOnWindow(){
         return _isOnWindow;
+    }
+
+    void Input_Manager::turnOnTMPState(){
+        _tmpState = true;
     }
 }
 

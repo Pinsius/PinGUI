@@ -45,8 +45,6 @@ class WindowExit: public GUI_Element
 
         void onClick() override;
 
-        void draw(int& pos) override;
-
         void setWritingAvailability(bool state) override;
 
         void info() override;

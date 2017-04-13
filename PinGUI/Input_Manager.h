@@ -34,7 +34,6 @@
 #include "GUI_Cursor.h"
 #include "PinGUI_Vector.hpp"
 #include "clFunction.hpp"
-#include "stuff.h"
 
 #define STATES_NUM 3
 #define WINDOW_CAM_SCROLLING_SPEED 6
@@ -44,12 +43,40 @@
 
 namespace PinGUI{
 
+    enum gameState{
+        GAME,
+        GUI
+    };
+
+    enum inputState{
+        GAMEINPUT,
+        WRITINGMOD,
+        MANIPULATINGMOD
+    };
+
+    enum manipulationState{
+        HORIZONTAL,
+        VERTICAL,
+        WINDOW_MOVING
+    };
+
+    struct writingModInfo{
+        clipboard_type inputType;
+        int max;
+        int maxValue;
+    };
+
+    struct manipulatingModInfo{
+        int lastX;
+        int lastY;
+       manipulationState manipState;
+    };
+
     struct wheelingInfo{
         std::shared_ptr<GUI_Sprite> _wheeledSprite;
         bool* _update;
         PinGUI::basicPointer _function;
     };
-
     class Input_Manager
     {
         private:
@@ -84,6 +111,8 @@ namespace PinGUI{
             static bool _haveTarget;
 
             static bool _isOnWindow;
+
+            static bool _tmpState;
 
             static PinGUI::Rect _targetRect;
 
@@ -164,6 +193,8 @@ namespace PinGUI{
             static void setOnWindow(bool state);
 
             static bool isOnWindow();
+
+            static void turnOnTMPState();
 
             /**
                 For writing mod
