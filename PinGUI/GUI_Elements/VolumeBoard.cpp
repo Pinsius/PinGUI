@@ -132,8 +132,6 @@ void VolumeBoard::draw(int& pos){
         glDrawArrays(GL_TRIANGLES,pos*6,6);
         pos++;
     }
-
-    glBindTexture(GL_TEXTURE_2D,0);
 }
 
 bool VolumeBoard::needMove(){

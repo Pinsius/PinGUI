@@ -72,10 +72,8 @@ class ArrowBoard: public GUI_Element
         void init();
 
     public:
-        ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip);
-        ArrowBoard(int* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
-        ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<GUI_Element> clip);
-        ArrowBoard(float* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
+        ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
+        ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<GUI_Element> clip, int min = 0, int ratio = 1);
 
         ~ArrowBoard();
 

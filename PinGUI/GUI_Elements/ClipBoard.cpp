@@ -34,16 +34,18 @@ ClipBoard::ClipBoard()
 
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape):
     _type(type),
-    _shape(shape)
+    _shape(shape),
+    _negativeInput(true)
 {
     initClipBoard(maxSize,data,position);
 
     initText();
 }
 
-ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, element_shape shape):
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, bool negativeInput, element_shape shape):
     _type(type),
-    _shape(shape)
+    _shape(shape),
+    _negativeInput(negativeInput)
 {
     initClipBoard(maxSize,data,position);
 
@@ -52,16 +54,18 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
 
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape):
     _type(type),
-    _shape(shape)
+    _shape(shape),
+    _negativeInput(true)
 {
     initClipBoard(maxSize,data,position);
 
     initText(var);
 }
 
-ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, element_shape shape):
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, bool negativeInput, element_shape shape):
     _type(type),
-    _shape(shape)
+    _shape(shape),
+    _negativeInput(negativeInput)
 {
     initClipBoard(maxSize,data,position);
 
@@ -84,6 +88,8 @@ ClipBoard::~ClipBoard()
 }
 
 void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position){
+
+    _minValue = 0;
 
     _position = position;
 
@@ -178,15 +184,24 @@ void ClipBoard::setMaxSize(int& maxSize){
         case UNCLICKABLE : {
 
             _maxValue = maxSize;
+
             calculateMaxSize();
+
+            if (_negativeInput)
+                _maxSize++;
 
             break;
         }
         case INT_FLOAT : {
 
             _maxValue = maxSize;
+
             calculateMaxSize();
             _maxSize += FLOAT_TEXT_PRECISION + 1;
+
+            if (_negativeInput)
+                _maxSize++;
+
             break;
         }
         default : {
@@ -238,6 +253,8 @@ void ClipBoard::onClick(){
 
     tmp.inputType = _type;
     tmp.max = _maxSize;
+    tmp.minValue = _minValue;
+    tmp.negativeInput = _negativeInput;
 
     PinGUI::Input_Manager::setWritingModInfo(tmp);
 }
@@ -366,4 +383,8 @@ void ClipBoard::cropElement(PinGUI::Rect& rect){
     GUI_Element::cropElement(rect);
 
     CropManager::cropSprite(_textStorage->getText()->getSprite().get(),rect);
+}
+
+void ClipBoard::setMinValue(int minV){
+    _minValue = minV;
 }

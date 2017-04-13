@@ -64,7 +64,7 @@ void TextStorage::destroyText(int position){
     _TEXTS.erase(_TEXTS.begin()+ position);
 }
 
-void TextStorage::addChar(char* ch, int position, int maxValue){
+void TextStorage::addChar(char* ch, int position, PinGUI::writingModInfo& info){
 
     switch (*(_additionalStorage->type)){
 
@@ -75,26 +75,26 @@ void TextStorage::addChar(char* ch, int position, int maxValue){
         }
         case INT_ONLY : {
 
-            handleIntegerInput(ch,position,maxValue);
+            handleIntegerInput(ch,position,info);
             break;
         }
         case INT_FLOAT : {
 
-            handleFloatInput(ch,position,maxValue);
+            handleFloatInput(ch,position,info);
             break;
         }
     }
 }
 
-void TextStorage::handleIntegerInput(char*& ch, int& position, int& maxValue){
+void TextStorage::handleIntegerInput(char*& ch, int& position, PinGUI::writingModInfo& info){
+
+    if (info.negativeInput && checkNegativeInput(ch,position)){
+        _TEXTS[position]->turnOnNegative();
+        return;
+    }
 
     //In case that the clipboard contains a variable
-    if ( isdigit(*ch) && _TEXTS[position]->checkCharAddition(ch,maxValue) ){
-
-        if (_TEXTS[position]->isZero()){
-
-            _TEXTS[position]->removeChar();
-        }
+    if ( isdigit(*ch) && _TEXTS[position]->checkCharAddition(ch,info.maxValue,info.minValue) ){
 
         _TEXTS[position]->addChar(ch);
 
@@ -102,20 +102,44 @@ void TextStorage::handleIntegerInput(char*& ch, int& position, int& maxValue){
     }
 }
 
-void TextStorage::handleFloatInput(char*& ch, int& position, int& maxValue){
+void TextStorage::handleFloatInput(char*& ch, int& position, PinGUI::writingModInfo& info){
+
+    if (info.negativeInput && checkNegativeInput(ch,position)){
+        _TEXTS[position]->turnOnNegative();
+        return;
+    }
 
     //In case that the clipboard contains a variable
-    if ( isFloatInput(ch) && _TEXTS[position]->checkCharAddition(ch,maxValue) ){
+    if ( isFloatInput(ch) && _TEXTS[position]->checkCharAddition(ch,info.maxValue,info.minValue) ){
 
         _TEXTS[position]->addChar(ch);
 
         return;
     }
+}
+
+bool TextStorage::checkNegativeInput(char*& ch, int& position){
+
+
+    if (isNegativeInput(ch))
+        if (_TEXTS[position]->canAcceptNegativeInput()){
+
+            _TEXTS[position]->addChar(ch);
+            return true;
+        }
+
+    return false;
 }
 
 bool TextStorage::isFloatInput(char*& ch){
 
     if (isdigit(*ch) || (*ch == '.')) return true;
+    else return false;
+}
+
+bool TextStorage::isNegativeInput(char*& ch){
+
+    if ((*ch == '-')) return true;
     else return false;
 }
 

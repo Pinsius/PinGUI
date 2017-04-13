@@ -183,8 +183,6 @@ void GUI_Element::draw(int& pos){
         pos += _SPRITES.size();
         return;
     }
-
-    glBindTexture(GL_TEXTURE_2D,0);
 }
 
 GLuint GUI_Element::getTexture(int pos){
