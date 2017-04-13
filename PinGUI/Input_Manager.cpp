@@ -250,7 +250,7 @@ namespace PinGUI{
                 _clFunction.exec();
 
                 //I add the char to a manipulated text
-                _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo.maxValue);
+                _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo);
 
                 return;
             }
