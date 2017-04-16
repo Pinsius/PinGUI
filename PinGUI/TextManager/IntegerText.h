@@ -40,10 +40,14 @@ class IntegerText: public Text
 
         int _tmpInteger;
 
+        bool _negative;
+
         /**
             Private methods
         **/
         void reloadString();
+
+        void findNegative();
 
     public:
         IntegerText(PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable);
@@ -61,9 +65,11 @@ class IntegerText: public Text
 
         float getVariableNum() override;
 
-        bool checkCharAddition(char* ch, int& maxValue) override;
+        bool checkCharAddition(char* ch, int& maxValue, int& minValue) override;
 
         void endInputManipulation() override;
+
+        void turnOnNegative() override;
 };
 
 #endif // INTEGERTEXT_H

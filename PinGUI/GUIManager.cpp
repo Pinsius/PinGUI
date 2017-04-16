@@ -66,25 +66,25 @@ void GUIManager::createClipBoard(int x, int y, clipboard_type type, int maxSize,
     _needUpdate = true;
 }
 
-void GUIManager::createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, element_shape shape){
+void GUIManager::createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, bool negativeInput, element_shape shape){
 
     clipboardData tmp;
     tmp.texter = getTextManager();
     PinGUI::Vector2<GUIPos> position(x,y);
 
-    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,shape);
+    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,negativeInput,shape);
     _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
-void GUIManager::createClipBoard(int x, int y, clipboard_type type, float* var, int maxSize, element_shape shape){
+void GUIManager::createClipBoard(int x, int y, clipboard_type type, float* var, int maxSize, bool negativeInput,element_shape shape){
 
     clipboardData tmp;
     tmp.texter = getTextManager();
     PinGUI::Vector2<GUIPos> position(x,y);
 
-    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,shape);
+    auto ptr = std::make_shared<ClipBoard>(position,maxSize,type,tmp,var,negativeInput,shape);
     _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
@@ -182,17 +182,23 @@ void GUIManager::createArrowBoard(int x, int y, int* var, int maxSize, bool clic
         tmp.texter = getTextManager();
         PinGUI::Vector2<GUIPos> position(x,y);
 
+        bool neg = true;
+
+        if (minSize>=0)
+            neg = false;
+
         if (clickable){
 
-            createClipBoard(position.x,position.y,INT_ONLY,var,maxSize,ROUNDED);
+            createClipBoard(position.x,position.y,INT_ONLY,var,maxSize,neg,ROUNDED);
         } else {
-            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
+            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,neg,ROUNDED);
         }
     }
+    std::static_pointer_cast<ClipBoard>(_ELEMENTS.back())->setMinValue(minSize);
 
     PinGUI::Rect tmpRect(x,y,WINDOW_ARROW_W,WINDOW_ARROW_H);
 
-    auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back());
+    auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back(),minSize);
     ptr->addArrows(tmpRect,_ELEMENTS,state);
 
     _ELEMENTS.push_back(ptr);
@@ -208,17 +214,23 @@ void GUIManager::createArrowBoard(int x, int y, float* var, int maxSize, bool cl
         tmp.texter = getTextManager();
         PinGUI::Vector2<GUIPos> position(x,y);
 
+        bool neg = true;
+
+        if (minSize>=0)
+            neg = false;
+
         if (clickable){
 
-            createClipBoard(position.x,position.y,INT_FLOAT,var,maxSize,ROUNDED);
+            createClipBoard(position.x,position.y,INT_FLOAT,var,maxSize,neg,ROUNDED);
         } else {
-            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,ROUNDED);
+            createClipBoard(position.x,position.y,UNCLICKABLE,var,maxSize,neg,ROUNDED);
         }
     }
+    std::static_pointer_cast<ClipBoard>(_ELEMENTS.back())->setMinValue(minSize);
 
     PinGUI::Rect tmpRect(x,y,WINDOW_ARROW_W,WINDOW_ARROW_H);
 
-    auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back());
+    auto ptr = std::make_shared<ArrowBoard>(tmpRect,var,maxSize,_ELEMENTS.back(),minSize);
     ptr->addArrows(tmpRect,_ELEMENTS,state);
 
     _ELEMENTS.push_back(ptr);

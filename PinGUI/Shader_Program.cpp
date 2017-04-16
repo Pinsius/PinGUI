@@ -170,8 +170,6 @@ namespace PinGUI{
 
         glUseProgram(_programID);
 
-        glDisable(GL_DEPTH_TEST);
-
         for (int i=0;i<_attributes;i++){
             glEnableVertexAttribArray(i);
         }

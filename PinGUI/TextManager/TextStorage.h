@@ -62,11 +62,15 @@ class TextStorage
         /**
             Private methods
         **/
-        void handleIntegerInput(char*& ch, int& position, int& maxValue);
+        void handleIntegerInput(char*& ch, int& position, PinGUI::writingModInfo& info);
 
-        void handleFloatInput(char*& ch, int& position, int& maxValue);
+        void handleFloatInput(char*& ch, int& position, PinGUI::writingModInfo& info);
+
+        bool checkNegativeInput(char*& ch, int& position);
 
         bool isFloatInput(char*& ch);
+
+        bool isNegativeInput(char*& ch);
 
     public:
         TextStorage(std::shared_ptr<TextManager> text);
@@ -82,7 +86,7 @@ class TextStorage
 
         void destroyText(int position = 0);
 
-        void addChar(char* ch, int position, int maxValue);
+        void addChar(char* ch, int position, PinGUI::writingModInfo& info);
 
         void removeChar(int position);
 

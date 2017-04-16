@@ -75,4 +75,38 @@ enum element_shape{
     ROUNDED,
     RECTANGLED
 };
+
+namespace PinGUI{
+    enum gameState{
+        GAME,
+        GUI
+    };
+
+    enum inputState{
+        GAMEINPUT,
+        WRITINGMOD,
+        MANIPULATINGMOD
+    };
+
+    enum manipulationState{
+        HORIZONTAL,
+        VERTICAL,
+        WINDOW_MOVING
+    };
+
+    struct writingModInfo{
+        clipboard_type inputType;
+        int max;
+        int maxValue;
+        int minValue;
+        bool negativeInput;
+    };
+
+    struct manipulatingModInfo{
+        int lastX;
+        int lastY;
+        manipulationState manipState;
+    };
+}
+
 #endif // STUFF_H

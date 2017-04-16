@@ -43,35 +43,6 @@
 
 namespace PinGUI{
 
-    enum gameState{
-        GAME,
-        GUI
-    };
-
-    enum inputState{
-        GAMEINPUT,
-        WRITINGMOD,
-        MANIPULATINGMOD
-    };
-
-    enum manipulationState{
-        HORIZONTAL,
-        VERTICAL,
-        WINDOW_MOVING
-    };
-
-    struct writingModInfo{
-        clipboard_type inputType;
-        int max;
-        int maxValue;
-    };
-
-    struct manipulatingModInfo{
-        int lastX;
-        int lastY;
-       manipulationState manipState;
-    };
-
     struct wheelingInfo{
         std::shared_ptr<GUI_Sprite> _wheeledSprite;
         bool* _update;

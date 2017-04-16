@@ -55,8 +55,11 @@ class ClipBoard: public GUI_Element
         //Type of clipboard
         clipboard_type _type;
 
-        //Max int value
+        //Max value
         int _maxValue;
+
+        //Min value
+        int _minValue;
 
         //Max size of chars (or ints if its INT only clipboard)
         int _maxSize;
@@ -66,6 +69,8 @@ class ClipBoard: public GUI_Element
 
         //This indicates if i have rounded or rectangle shape (important for collisions)
         element_shape _shape;
+
+        bool _negativeInput;
 
         /**
             Private methods
@@ -100,9 +105,9 @@ class ClipBoard: public GUI_Element
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape = ROUNDED);
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape = ROUNDED);
 
-        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, element_shape shape = ROUNDED);
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, bool negativeInput = true,element_shape shape = ROUNDED);
 
-        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, element_shape shape = ROUNDED);
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, bool negativeInput = true,element_shape shape = ROUNDED);
 
         void init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardData data, clipboard_type type = NORMAL, element_shape shape = ROUNDED);
 
@@ -124,6 +129,8 @@ class ClipBoard: public GUI_Element
 
         void setClipboardText(std::string text);
         void setClipboardText(std::string text, PinGUI::Rect collider);
+
+        void setMinValue(int minV);
 
         bool changed();
 

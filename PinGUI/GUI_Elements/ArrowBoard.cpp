@@ -24,11 +24,11 @@
 
 #include "ArrowBoard.h"
 
-ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip):
+ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio ):
     _clipBoard(clip),
     _max(max),
-    _ratio(1),
-    _min(0),
+    _ratio(ratio),
+    _min(min),
     _storageType(PINGUI_INT)
 {
     init();
@@ -41,23 +41,11 @@ ArrowBoard::ArrowBoard(PinGUI::Rect rect, int* var, int max, std::shared_ptr<GUI
     _dataStorage = std::make_shared<ElementDataStorage>(var);
 }
 
-ArrowBoard::ArrowBoard(int* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio):
+ArrowBoard::ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio):
+    _clipBoard(clip),
     _max(max),
-    _min(min),
     _ratio(ratio),
-    _clipBoard(clip),
-    _storageType(PINGUI_INT)
-{
-    init();
-
-    _dataStorage = std::make_shared<ElementDataStorage>(var);
-}
-
-ArrowBoard::ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<GUI_Element> clip):
-    _clipBoard(clip),
-    _max(max),
-    _ratio(1),
-    _min(0),
+    _min(min),
     _storageType(PINGUI_FLOAT)
 {
     init();
@@ -66,18 +54,6 @@ ArrowBoard::ArrowBoard(PinGUI::Rect rect, float* var, int max, std::shared_ptr<G
     initPosition(rect);
 
     calculateY(rect.y,rect.h);
-
-    _dataStorage = std::make_shared<ElementDataStorage>(var);
-}
-
-ArrowBoard::ArrowBoard(float* var, int max, std::shared_ptr<GUI_Element> clip, int min, int ratio):
-    _max(max),
-    _min(min),
-    _ratio(ratio),
-    _clipBoard(clip),
-    _storageType(PINGUI_FLOAT)
-{
-    init();
 
     _dataStorage = std::make_shared<ElementDataStorage>(var);
 }

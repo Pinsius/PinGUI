@@ -27,8 +27,9 @@
 IntegerText::IntegerText(PinGUI::Vector2<GUIPos> pos, textInfo* info, int* Variable):
     _variable(Variable),
     _last_var(*Variable),
-    _tmpInteger(0),
-    _tmpInput(false)
+    _tmpInteger(EMPTY_TMP_INPUT),
+    _tmpInput(false),
+    _negative(false)
 {
     reloadString();
 
@@ -74,10 +75,10 @@ void IntegerText::getNewText(textInfo*& info){
 
     if (!_tmpInput){
 
-        if (changed && (_tmpInteger != 0)){
+        if (changed && (_tmpInteger != EMPTY_TMP_INPUT)){
 
             *_variable = _tmpInteger;
-            _tmpInteger = 0;
+            _tmpInteger = EMPTY_TMP_INPUT;
         }
 
         _last_var = *_variable;
@@ -97,7 +98,7 @@ void IntegerText::getNewText(textInfo*& info){
 
 void IntegerText::addChar(char* ch, bool change){
 
-    if ((text[0]=='0' && text.size()==1)){
+    if ((text[0]==' ' && text.size()==1)){
 
         text[0] = *ch;
         _tmpInput = true;
@@ -122,10 +123,13 @@ void IntegerText::setChar(char ch, int pos){
 
 void IntegerText::removeChar(){
 
+    if (text.back() == '-' && _negative)
+        _negative = false;
+
     text.pop_back();
 
     if (text.size()==0)
-        text.push_back('0');
+        text.push_back(' ');
 
     _tmpInput = true;
 
@@ -136,14 +140,35 @@ float IntegerText::getVariableNum(){
     return _tmpInteger;
 }
 
-bool IntegerText::checkCharAddition(char* ch, int& maxValue){
+bool IntegerText::checkCharAddition(char* ch, int& maxValue, int& minValue){
 
-    if ((getVariableNum()*10) + getCharNum(ch) <= maxValue) return true;
-    else return false;
+    findNegative();
+
+    if (_negative){
+
+        std::string tmpText(text);
+        tmpText.push_back(*ch);
+
+        if (std::atoi(tmpText.c_str()) >= minValue)
+            return true;
+    } else {
+        if ((getVariableNum()*10) + getCharNum(ch) <= maxValue) return true;
+    }
+    return false;
 }
 
 void IntegerText::endInputManipulation(){
 
     _tmpInput = false;
     changed = true;
+}
+
+void IntegerText::turnOnNegative(){
+    _negative = true;
+}
+
+void IntegerText::findNegative(){
+
+    if (std::atof(text.c_str())<0) _negative = true;
+    else _negative = false;
 }
