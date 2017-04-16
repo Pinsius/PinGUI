@@ -129,6 +129,8 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
 
         virtual void draw(int& pos);
 
+        virtual void update(){};
+
         virtual bool changed(){};
 
         virtual void info();

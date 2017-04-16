@@ -110,9 +110,10 @@ class VolumeBoard: public GUI_Element
         VolumeBoard(PinGUI::Vector2<GUIPos> pos, float* var, int max, std::shared_ptr<GUI_Element> clip, bool* needUpdate);
         ~VolumeBoard();
 
-        void draw(int& pos);
+        void update() override;
 
         void moveElement(const PinGUI::Vector2<GUIPos>& vect) override;
+
         void cropElement(PinGUI::Rect& rect) override;
 
         void info() override;

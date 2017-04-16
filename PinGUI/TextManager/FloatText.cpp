@@ -31,8 +31,7 @@ FloatText::FloatText(PinGUI::Vector2<GUIPos> pos, textInfo* info, float* Variabl
     _variable(Variable),
     _last_var(*Variable),
     _tmpInput(false),
-    _negative(false),
-    _tmpFloat(EMPTY_TMP_INPUT)
+    _tmpFloat(0)
 {
     _construct.numOfFloatingNums = 0;
     _construct.pointNum = 0;
@@ -82,12 +81,11 @@ void FloatText::getNewText(textInfo*& info){
 
     if (!_tmpInput){
 
-        if (changed && (_tmpFloat != EMPTY_TMP_INPUT)){
+        if (changed && (_tmpFloat != 0)){
 
             *_variable = _tmpFloat;
-            _tmpFloat = EMPTY_TMP_INPUT;
+            _tmpFloat = 0;
         }
-
 
         _last_var = *_variable;
 
@@ -123,7 +121,7 @@ bool FloatText::findPoint(){
 
 void FloatText::addChar(char* ch, bool change){
 
-    if ((text[0]==' ' && text.size()==1) && *ch != '.'){
+    if ((text[0]=='0' && text.size()==1) && *ch != '.'){
 
         text[0] = *ch;
         _tmpInput = true;
@@ -149,12 +147,10 @@ void FloatText::setChar(char ch, int pos){
 
 void FloatText::removeChar(){
 
-    if (text.back() == '-' && _negative)
-        _negative = false;
     text.pop_back();
 
     if (text.size()==0)
-        text.push_back(' ');
+        text.push_back('0');
 
     _tmpInput = true;
 
@@ -197,32 +193,20 @@ float FloatText::calculateAddition(char*& ch){
     }
 }
 
-bool FloatText::checkCharAddition(char* ch, int& maxValue, int& minValue){
-
-    findNegative();
+bool FloatText::checkCharAddition(char* ch, int& maxValue){
 
     if (isPoint(ch)){
 
         return (!findPoint());
     }
 
-    if (_negative){
-
-        std::string tmpText(text);
-        tmpText.push_back(*ch);
-
-        if (std::atof(tmpText.c_str()) < minValue)
-            return false;
-
-    } else {
-
-        if (((std::atof(text.c_str()) + calculateAddition(ch) ) > maxValue))
-            return false;
+    if (((std::atof(text.c_str()) + calculateAddition(ch) ) > maxValue))
+        return false;
+    else {
+        if (canWritePoint())
+            return true;
+        else return false;
     }
-
-    if (canWritePoint())
-        return true;
-    else return false;
 }
 
 bool FloatText::canWritePoint(){
@@ -246,7 +230,7 @@ bool FloatText::canWritePoint(){
 
     pointNum++;
 
-    if ((pointNum <= FLOAT_TEXT_PRECISION))
+    if (pointNum <= FLOAT_TEXT_PRECISION)
         return true;
     else
         return false;
@@ -257,18 +241,6 @@ bool FloatText::isPoint(char* ch){
 }
 
 void FloatText::endInputManipulation(){
-
     _tmpInput = false;
-
     changed = true;
-}
-
-void FloatText::turnOnNegative(){
-    _negative = true;
-}
-
-void FloatText::findNegative(){
-
-    if (std::atof(text.c_str())<0) _negative = true;
-    else _negative = false;
 }

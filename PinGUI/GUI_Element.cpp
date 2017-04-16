@@ -170,6 +170,8 @@ GUIRect* GUI_Element::getGUICollider(int pos){
 
 void GUI_Element::draw(int& pos){
 
+    update();
+
     if (_show){
 
         for (std::size_t i = 0; i < _SPRITES.size(); i++){
@@ -183,6 +185,8 @@ void GUI_Element::draw(int& pos){
         pos += _SPRITES.size();
         return;
     }
+
+    glBindTexture(GL_TEXTURE_2D,0);
 }
 
 GLuint GUI_Element::getTexture(int pos){

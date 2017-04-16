@@ -25,7 +25,8 @@
 #include "CrossBox.h"
 
 CrossBox::CrossBox(int x, int y, bool* var):
-    _var(var)
+    _var(var),
+    _last_var(*_var)
 {
     PinGUI::Rect tmp;
     tmp.x = x;
@@ -62,6 +63,8 @@ void CrossBox::onClick(){
         *_var = true;
         _SPRITES[0]->changeTexture(SheetManager::getSurface(NON_CHECKBOX));
     }
+
+    _last_var = *_var;
 }
 
 void CrossBox::setWritingAvailability(bool state){
@@ -73,20 +76,32 @@ void CrossBox::setWritingAvailability(bool state){
     }
 }
 
-bool CrossBox::listenForClick(manip_Element manipulatingElement){
-
-    if (!PinGUI::Input_Manager::hasAlreadyClicked()){
-
-        if (PinGUI::Input_Manager::clicked(SDL_BUTTON_LEFT)){
-
-            onClick();
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
-
 void CrossBox::info(){
     std::cout << "Crossbox element. Address: " << this << std::endl;
+}
+
+bool CrossBox::hasChanged(){
+    return (_last_var!=*_var);
+}
+
+void CrossBox::update(){
+
+    if (hasChanged())
+        change();
+}
+
+void CrossBox::change(){
+    _last_var = *_var;
+
+    switch(_last_var){
+
+        case true : {
+            _SPRITES[0]->changeTexture(SheetManager::getSurface(NON_CHECKBOX));
+            break;
+        }
+        case false : {
+            _SPRITES[0]->changeTexture(SheetManager::getSurface(CHECKBOX));
+            break;
+        }
+    }
 }

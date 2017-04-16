@@ -31,8 +31,6 @@
 
 #include "../GUI_Sprite.h"
 
-#define EMPTY_TMP_INPUT -1
-
 class Text
 {
 protected:
@@ -85,13 +83,11 @@ public:
 
     virtual float getVariableNum(){};
 
-    virtual bool checkCharAddition(char* ch, int& maxValue, int& minValue){return true;}
+    virtual bool checkCharAddition(char* ch, int& maxValue){return true;}
 
     virtual bool isZero();
 
     virtual void endInputManipulation(){};
-
-    virtual void turnOnNegative() {};
 
     void normalizeText(const PinGUI::Vector2<GUIPos>& vect);
 
@@ -104,8 +100,6 @@ public:
     void replaceText(std::string newText);
 
     std::shared_ptr<GUI_Sprite> getSprite();
-
-    bool canAcceptNegativeInput();
 
     bool isActive();
 

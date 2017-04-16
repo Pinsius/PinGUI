@@ -64,7 +64,7 @@ void TextStorage::destroyText(int position){
     _TEXTS.erase(_TEXTS.begin()+ position);
 }
 
-void TextStorage::addChar(char* ch, int position, PinGUI::writingModInfo& info){
+void TextStorage::addChar(char* ch, int position, int maxValue){
 
     switch (*(_additionalStorage->type)){
 
@@ -75,71 +75,47 @@ void TextStorage::addChar(char* ch, int position, PinGUI::writingModInfo& info){
         }
         case INT_ONLY : {
 
-            handleIntegerInput(ch,position,info);
+            handleIntegerInput(ch,position,maxValue);
             break;
         }
         case INT_FLOAT : {
 
-            handleFloatInput(ch,position,info);
+            handleFloatInput(ch,position,maxValue);
             break;
         }
     }
 }
 
-void TextStorage::handleIntegerInput(char*& ch, int& position, PinGUI::writingModInfo& info){
-
-    if (info.negativeInput && checkNegativeInput(ch,position)){
-        _TEXTS[position]->turnOnNegative();
-        return;
-    }
+void TextStorage::handleIntegerInput(char*& ch, int& position, int& maxValue){
 
     //In case that the clipboard contains a variable
-    if ( isdigit(*ch) && _TEXTS[position]->checkCharAddition(ch,info.maxValue,info.minValue) ){
+    if ( isdigit(*ch) && _TEXTS[position]->checkCharAddition(ch,maxValue) ){
 
-        _TEXTS[position]->addChar(ch);
+        if (_TEXTS[position]->isZero()){
 
-        return;
-    }
-}
-
-void TextStorage::handleFloatInput(char*& ch, int& position, PinGUI::writingModInfo& info){
-
-    if (info.negativeInput && checkNegativeInput(ch,position)){
-        _TEXTS[position]->turnOnNegative();
-        return;
-    }
-
-    //In case that the clipboard contains a variable
-    if ( isFloatInput(ch) && _TEXTS[position]->checkCharAddition(ch,info.maxValue,info.minValue) ){
-
-        _TEXTS[position]->addChar(ch);
-
-        return;
-    }
-}
-
-bool TextStorage::checkNegativeInput(char*& ch, int& position){
-
-
-    if (isNegativeInput(ch))
-        if (_TEXTS[position]->canAcceptNegativeInput()){
-
-            _TEXTS[position]->addChar(ch);
-            return true;
+            _TEXTS[position]->removeChar();
         }
 
-    return false;
+        _TEXTS[position]->addChar(ch);
+
+        return;
+    }
+}
+
+void TextStorage::handleFloatInput(char*& ch, int& position, int& maxValue){
+
+    //In case that the clipboard contains a variable
+    if ( isFloatInput(ch) && _TEXTS[position]->checkCharAddition(ch,maxValue) ){
+
+        _TEXTS[position]->addChar(ch);
+
+        return;
+    }
 }
 
 bool TextStorage::isFloatInput(char*& ch){
 
     if (isdigit(*ch) || (*ch == '.')) return true;
-    else return false;
-}
-
-bool TextStorage::isNegativeInput(char*& ch){
-
-    if ((*ch == '-')) return true;
     else return false;
 }
 

@@ -268,9 +268,3 @@ bool Text::isZero(){
 float Text::getCharNum(char* ch){
     return ((*ch)-48.0f);
 }
-
-bool Text::canAcceptNegativeInput(){
-    if (text[0]==' ' && text.size()==1)
-        return true;
-    else return false;
-}

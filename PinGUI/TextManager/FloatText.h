@@ -55,8 +55,6 @@ class FloatText: public Text
 
         floatTextConstruction _construct;
 
-        bool _negative;
-
         /**
             Private methods
         **/
@@ -69,8 +67,6 @@ class FloatText: public Text
         bool canWritePoint();
 
         float calculateAddition(char*& ch);
-
-        void findNegative();
 
     public:
         FloatText(PinGUI::Vector2<GUIPos> pos, textInfo* info, float* Variable);
@@ -88,11 +84,9 @@ class FloatText: public Text
 
         float getVariableNum() override;
 
-        bool checkCharAddition(char* ch, int& maxValue, int& minValue) override;
+        bool checkCharAddition(char* ch, int& maxValue) override;
 
         void endInputManipulation() override;
-
-        void turnOnNegative() override;
 };
 
 #endif // FLOATTEXT_H

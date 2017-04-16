@@ -121,16 +121,10 @@ void VolumeBoard::calculateRatio(){
     _ratio = (float)(VOLUMEBOARD_BAR_LENGTH - VOLUME_MOVER_W)/(float)_max;
 }
 
-void VolumeBoard::draw(int& pos){
+void VolumeBoard::update(){
 
     if (needMove()){
         moveMover();
-    }
-
-    for (std::size_t i = 0; i < _SPRITES.size(); i++){
-        glBindTexture(GL_TEXTURE_2D,getTexture(i));
-        glDrawArrays(GL_TRIANGLES,pos*6,6);
-        pos++;
     }
 }
 
@@ -201,6 +195,7 @@ bool VolumeBoard::listenForClick(manip_Element manipulatingElement){
         if (PinGUI::Input_Manager::isKeyPressed(SDL_BUTTON_LEFT)){
 
             PinGUI::Input_Manager::setAlreadyClick(true);
+
             onClick();
 
             manipulatingElement = this;

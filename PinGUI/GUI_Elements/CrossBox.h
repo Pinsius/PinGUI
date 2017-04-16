@@ -40,19 +40,25 @@ class CrossBox: public GUI_Element
 
         bool* _var;
 
+        bool _last_var;
+
         /**
             Private methods
         **/
         void onClick() override;
 
-        bool listenForClick(manip_Element manipulatingElement) override;
-
         void setWritingAvailability(bool state) override;
+
+        bool hasChanged();
+
+        void change();
     public:
         CrossBox(int x, int y, bool* var);
         ~CrossBox();
 
         void info() override;
+
+        void update() override;
 };
 
 #endif // CROSSBOX_H
