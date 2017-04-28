@@ -38,8 +38,9 @@ This library was developed primary for learning purposes but now i consider it t
 to handle also the GUI in my projects ( even if it still needs lot of improvements).
 
 Things I´m still working on :
-- Documentation/or at least simple manual
+- Documentation/or at least simple manual[x]
 - Update render system (so it will use benefit of matrices)
 - Support of multiple resolutions
+- Add new elements and improve old
 
 More info will be provided soon 
