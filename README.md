@@ -39,7 +39,8 @@ to handle also the GUI in my projects ( even if it still needs lot of improvemen
 
 Things I´m still working on :
 - Documentation/or at least simple manual[x]
-- Update render system (so it will use benefit of matrices)
+- Update render system (so it will use benefit of matrices) to improve efficiency
+- Implement own allocators (the biggest need is for text - when it changes frequently, because dynamic allocations for sprites are slowing the speed down)
 - Support of multiple resolutions
 - Add new elements and improve old
 
