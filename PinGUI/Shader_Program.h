@@ -49,8 +49,6 @@ namespace PinGUI{
 
             static GLint _samplerLocation;
 
-            static GLint _cameraMatrixLocation;
-
             /**
                 Private methods
             **/

@@ -29,42 +29,38 @@
     GLM is included in here
 **/
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "GUI_Sprite.h"
 
 namespace PinGUI{
 
+    enum cameraType{
+        PROJECTION,
+    };
+
     class CameraManager
     {
         private:
-            static float* _staticCamera;
 
-            static GLint _matrixLocation;
+            static GLint _matricesLocations[1];
+
+            static glm::mat4 _staticCameraMatrix;
 
             static int _screenWidth;
 
             static int _screenHeight;
-
-            /**
-            For GUI elements
-            static and dynamic matrices.
-            **/
-            static glm::mat4 _staticCameraMatrix;
-
-            //Orthomatrix
-            static glm::mat4 _orthoMatrix;
 
         public:
 
             //sets up the orthographic matrix and screen dimensions
             static void init(int screenWidth, int screenHeight);
 
-            static float* getCamera();
-
             static glm::mat4 getCameraMatrix();
 
-            static void setMatrixLocation(GLint location);
-            static GLint getMatrixLocation();
+            static void setMatrixLocation(cameraType type, GLint location);
+
+            static GLint getMatrixLocation(cameraType type);
     };
 }
 

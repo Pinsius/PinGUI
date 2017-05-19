@@ -25,6 +25,7 @@
 **/
 
 namespace PinGUI{
+
     int Shader_Program::_attributes = 0;
 
     GLuint Shader_Program::_programID = 0;
@@ -34,8 +35,6 @@ namespace PinGUI{
     GLuint Shader_Program::_fragmentShaderID = 0;
 
     GLint Shader_Program::_samplerLocation = 0;
-
-    GLint Shader_Program::_cameraMatrixLocation = 0;
 
     void Shader_Program::initShaders(){
 
@@ -51,9 +50,7 @@ namespace PinGUI{
         //Link the shaders
         linkShaders();
 
-        _cameraMatrixLocation = Shader_Program::getUniformLocation("P");
-
-        PinGUI::CameraManager::setMatrixLocation(_cameraMatrixLocation);
+        PinGUI::CameraManager::setMatrixLocation(PROJECTION,Shader_Program::getUniformLocation("P"));
 
         _samplerLocation = Shader_Program::getUniformLocation("mySampler");
     }
@@ -78,7 +75,6 @@ namespace PinGUI{
 
     void Shader_Program::compileShader(const std::string& filePath,GLuint id){
 
-        //Now i need to read the file to load the shader
         std::ifstream vertexFile(filePath);
 
         if (vertexFile.fail()){
@@ -110,46 +106,39 @@ namespace PinGUI{
             std::vector<GLchar> errorLog(maxLength);
             glGetShaderInfoLog(id, maxLength, &maxLength, &errorLog[0]);
 
-            // Provide the infolog in whatever manor you deem best.
-            // Exit with failure.
-            glDeleteShader(id); // Don't leak the shader.
+            glDeleteShader(id);
 
-            //Print error log and quit
             ErrorManager::systemError( &(errorLog[0]));
         }
-
-        //*****************************************
-        //Fragment shader
     }
 
     void Shader_Program::linkShaders(){
 
-        //Vertex and fragment shaders are successfully compiled.
-        //Now time to link them together into a program.
-        //Get a program object.
 
-        //Attach our shaders to our program
+
+        //Attach shaders to program
         glAttachShader(_programID, _vertexShaderID);
         glAttachShader(_programID, _fragmentShaderID);
 
         //Link our program
         glLinkProgram(_programID);
 
-        //Note the different functions here: glGetProgram* instead of glGetShader*.
         GLint isLinked = 0;
         glGetProgramiv(_programID, GL_LINK_STATUS, (int *)&isLinked);
+
+        //In case of fail
         if(isLinked == GL_FALSE)
         {
             GLint maxLength = 0;
             glGetProgramiv(_programID, GL_INFO_LOG_LENGTH, &maxLength);
 
-            //The maxLength includes the NULL character
             std::vector<GLchar> infoLog(maxLength);
             glGetProgramInfoLog(_programID, maxLength, &maxLength, &infoLog[0]);
 
-            //We don't need the program anymore.
+            //Delete program
             glDeleteProgram(_programID);
-            //Don't leak shaders either.
+
+            //Delete shaders
             glDeleteShader(_vertexShaderID);
             glDeleteShader(_fragmentShaderID);
             ErrorManager::systemError(&(infoLog[0]));
@@ -178,8 +167,9 @@ namespace PinGUI{
 
         glUniform1i(_samplerLocation, 0);
 
-        glm::mat4 cameraMatrix = PinGUI::CameraManager::getCameraMatrix();
-        glUniformMatrix4fv(_cameraMatrixLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+        //Projection matrix
+        glUniformMatrix4fv(PinGUI::CameraManager::getMatrixLocation(PROJECTION), 1, GL_FALSE, glm::value_ptr(PinGUI::CameraManager::getCameraMatrix()));
+
     }
 
     void Shader_Program::unuse(){
