@@ -61,7 +61,7 @@ class CropManager{
         //Normal checking
         static void repairRect(int& var, const int& maxVar);
 
-        static bool doCropping(PinGUI::Rect& cropRect, GUIRect& dstRect);
+        static void doCropping(PinGUI::Rect& cropRect, GUIRect& dstRect);
 
         static void cropHorizontally(PinGUI::Rect& cropRect, GUIRect& dstRect);
 

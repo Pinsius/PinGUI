@@ -69,23 +69,6 @@ inline void moverWidthCalculator(int& width, int& frameWidth){
     width = frameWidth - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_W - WINDOW_MOVER_WIDTH_MINUS;
 }
 
-inline bool isScrollerActive(std::shared_ptr<HorizontalScroller>& scroller){
-
-    if (scroller && scroller->getShow())
-        return true;
-    else
-        return false;
-}
-
-inline bool isScrollerActive(std::shared_ptr<VerticalScroller>& scroller){
-
-    if (scroller && scroller->getShow())
-        return true;
-    else
-        return false;
-}
-
-
 /**
     tabName for easily controling the tab choose with just typping the name of the window tab
 **/
@@ -159,6 +142,8 @@ class Window: public GUI_Element
         // Bool to keep if the tabs was changed (so i can refresh the scrollbar)
         bool _tabChange;
 
+        bool _enabledScrollerManagement;
+
         //Moving vector
         PinGUI::Vector2<GUIPos> _movingVect;
 
@@ -185,21 +170,6 @@ class Window: public GUI_Element
 
        bool haveExit();
 
-       //Scroller functions
-       void loadScroller();
-
-       void hideScrollers();
-
-       void manageScroller(PinGUI::manipulationState state, bool show);
-
-       int calculateScrollerSize(PinGUI::manipulationState state);
-
-       void createVerticalScroller(int height);
-
-       void adjustHorizontalScrollerWidth();
-
-       void createHorizontalScroller(int width);
-
        void checkDimensions(PinGUI::manipulationState state, const int& value);
 
        //This function is called everytime when you switch the tab
@@ -210,11 +180,13 @@ class Window: public GUI_Element
 
        void setWindowCamRect();
 
-       void rollbackTabCamera();
-
        void cropTabArea();
 
        PinGUI::scrollFuncPointer getCamRollFunction();
+
+       bool isScrollerActive(std::shared_ptr<HorizontalScroller>& scroller);
+
+       bool isScrollerActive(std::shared_ptr<VerticalScroller>& scroller);
 
     public:
         Window(){};
@@ -222,6 +194,14 @@ class Window: public GUI_Element
         ~Window();
 
         void addElementsToManager();
+
+        int calculateScrollerSize(PinGUI::manipulationState state);
+
+        void createVerticalScroller(int height);
+
+        void adjustHorizontalScrollerWidth();
+
+        void createHorizontalScroller(int width);
 
         //It return nullptr if the tab doesn´t exist
         std::shared_ptr<WindowTab> getTab(std::string tabName);
@@ -249,6 +229,17 @@ class Window: public GUI_Element
         void setTabHeight(int height, std::string tabName);
         void setTabWidth(int width, std::string tabName);
 
+        //Scroller functions
+        void loadScroller();
+
+        void reloadScroller(GUIPos diff, PinGUI::manipulationState state);
+
+        void hideScrollers();
+
+        void manageScroller(PinGUI::manipulationState state, bool show);
+
+        void rollbackTabCamera();
+
         /**
             [0,0] is for this function the left corner of window, so [10,5] means windowPosX+10,windowPosY+5
             Manage it via macros WINDOW_TITLE_X_OFFSET + WINDOW_TITLE_Y_OFFSET
@@ -256,9 +247,19 @@ class Window: public GUI_Element
 
         void normalize();
 
+        void setScrollerManagement(bool state);
+
         elementType getElementType() override;
 
         std::shared_ptr<GUIManager> getGUI();
+
+        std::shared_ptr<Scroller> getScroller(PinGUI::manipulationState state);
+
+        PinGUI::Rect getCropRect();
+
+        PinGUI::Rect* getCropRect_P();
+
+        PinGUI::Vector2<GUIPos> getRollbackVector();
 };
 
 #endif // WINDOW_H

@@ -105,6 +105,7 @@ class GUIManager
 
         //Making methods
         void createClipBoard(int x, int y, clipboard_type type, int maxSize, element_shape shape = ROUNDED);
+        void createClipBoard(int x, int y, clipboard_type type, int maxSize, int width, element_shape shape = ROUNDED);
         void createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, bool negativeInput = true, element_shape shape = ROUNDED);
         void createClipBoard(int x, int y, clipboard_type type, float* var, int maxSize, bool negativeInput = true, element_shape shape = ROUNDED);
         void createClipBoard(int x, int y, clipboard_type type, std::string* var, int maxSize, element_shape shape = ROUNDED);

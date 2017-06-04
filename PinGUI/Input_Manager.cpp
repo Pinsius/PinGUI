@@ -217,41 +217,43 @@ namespace PinGUI{
 
     void Input_Manager::writingMod(){
 
-        if(_mainEvent.type==SDL_QUIT){
+        switch (_mainEvent.type){
+            case SDL_QUIT : {
+                Input_Manager::pressKey(SDL_QUIT);
+                return;
+            }
+            case SDL_KEYDOWN : {
 
-            Input_Manager::pressKey(SDL_QUIT);
-            return;
-        }
+                switch(_mainEvent.key.keysym.sym){
+                    case SDLK_BACKSPACE: {
 
-        if (_mainEvent.type==SDL_KEYDOWN){
+                        _clFunction.exec();
 
-            switch(_mainEvent.key.keysym.sym){
-                case SDLK_BACKSPACE: {
+                        _manipulatedText->removeChar(0);
+                        return;
+                    }
+                    case SDLK_RETURN :
+                    case SDLK_KP_ENTER :
+                    case SDLK_ESCAPE : {
 
+                        Input_Manager::pressKey(_mainEvent.key.keysym.sym);
+                        return;
+                    }
+                }
+                return;
+            }
+            case SDL_TEXTINPUT : {
+
+                if (canWrite(_mainEvent.text.text) && (_mainEvent.key.repeat == 0)){
+
+                    //Also call callback
                     _clFunction.exec();
 
-                    _manipulatedText->removeChar(0);
+                    //I add the char to a manipulated text
+                    _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo);
+
                     return;
                 }
-                case SDLK_RETURN :
-                case SDLK_KP_ENTER :
-                case SDLK_ESCAPE : {
-
-                    Input_Manager::pressKey(_mainEvent.key.keysym.sym);
-                    return;
-                }
-            }
-        }
-        if (_mainEvent.type==SDL_TEXTINPUT && _mainEvent.key.repeat == 0){
-
-            if (canWrite(_mainEvent.text.text)){
-
-                //Also call callback
-                _clFunction.exec();
-
-                //I add the char to a manipulated text
-                _manipulatedText->addChar(_mainEvent.text.text,0,_writingModInfo);
-
                 return;
             }
         }
@@ -531,6 +533,11 @@ namespace PinGUI{
 
     void Input_Manager::turnOnTMPState(){
         _tmpState = true;
+    }
+
+    void Input_Manager::clearEnterKey(){
+        setKey(SDLK_RETURN,false);
+        setKey(SDLK_KP_ENTER,false);
     }
 }
 

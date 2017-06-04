@@ -70,7 +70,7 @@ inline bool isIn(PinGUI::Rect& cropRect, PinGUI::Rect dstRect){
         return false;
 }
 
-bool CropManager::doCropping(PinGUI::Rect& cropRect, GUIRect& dstRect){
+void CropManager::doCropping(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
     if (_lastCropRect != cropRect)
         _lastCropRect = cropRect;

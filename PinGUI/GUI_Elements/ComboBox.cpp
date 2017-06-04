@@ -322,7 +322,7 @@ void ComboBox::loadScroller(){
 
 bool ComboBox::listenForClick(manip_Element manipulatingElement){
 
-    GUI_Element::listenForClick(manipulatingElement);
+    return GUI_Element::listenForClick(manipulatingElement);
 }
 
 void ComboBox::hideContent(){

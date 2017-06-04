@@ -64,13 +64,21 @@ class ClipBoard: public GUI_Element
         //Max size of chars (or ints if its INT only clipboard)
         int _maxSize;
 
+        int _widthPerChar;
+
         //Text storage unit
         std::shared_ptr<TextStorage> _textStorage;
 
         //This indicates if i have rounded or rectangle shape (important for collisions)
         element_shape _shape;
 
+        //Bool to check the negative values
         bool _negativeInput;
+
+        bool _exitAtEnter;
+
+        //Function that activates after you hit "Enter" in writing mode
+        PinGUI::stringFuncPointer _func;
 
         /**
             Private methods
@@ -87,7 +95,7 @@ class ClipBoard: public GUI_Element
 
         void writingMod();
 
-        void initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position);
+        void initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position, int width = 0);
 
         void initText();
         void initText(int* var);
@@ -98,17 +106,30 @@ class ClipBoard: public GUI_Element
 
         void fakeInputText(int& width, int& height, const clipboardData& data);
 
+        bool pressedEnter();
+
+        bool pressedESC();
+
     public:
 
         ClipBoard();
 
+        //Basic textbox for text input
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape = ROUNDED);
+
+        //Textbox with fixed sprite width
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int width, int maxSize, clipboard_type type, clipboardData data, element_shape shape = ROUNDED);
+
+        //String variable textbox
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape = ROUNDED);
 
+        //Integer
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, bool negativeInput = true,element_shape shape = ROUNDED);
 
+        //Float
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, bool negativeInput = true,element_shape shape = ROUNDED);
 
+        //Init of sprites etc.
         void init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardData data, clipboard_type type = NORMAL, element_shape shape = ROUNDED);
 
         void onClick() override;
@@ -133,6 +154,12 @@ class ClipBoard: public GUI_Element
         void setMinValue(int minV);
 
         bool changed();
+
+        void setEnterFunc(PinGUI::stringFuncPointer f);
+
+        void clearClipBoard();
+
+        void setExitAtEnter(bool state);
 
 };
 

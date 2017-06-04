@@ -83,7 +83,7 @@ public:
 
     virtual void removeChar();
 
-    virtual float getVariableNum(){};
+	virtual float getVariableNum() { return 0.0f; }
 
     virtual bool checkCharAddition(char* ch, int& maxValue, int& minValue){return true;}
 

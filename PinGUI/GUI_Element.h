@@ -25,7 +25,7 @@
 
 **/
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <vector>
 #include <functional>
 #include <memory>
@@ -41,8 +41,10 @@
 #include "clFunction.hpp"
 #include "CropManager.hpp"
 
+class GUIManager;
+
 enum elementType{
-    BLANK,
+    UNDEFINED,
     CLIPBOARD,
     ARROWBOX,
     VOLUMEBOARD,
@@ -108,6 +110,8 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
         void deleteSprite(int pos);
         void deleteCollider(int pos);
 
+        std::size_t getCollidersCount();
+
         //Virtual methods - every element can modify its own behavior via these functions
         virtual void turnOnAim();
 
@@ -131,7 +135,7 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
 
         virtual void update(){};
 
-        virtual bool changed(){};
+		virtual bool changed() { return false;}
 
         virtual void info();
 
@@ -152,6 +156,8 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
         virtual void setWritingAvailability(bool state){};
 
         virtual void setAllowCrop(bool state);
+
+        virtual void putElementToManager(std::shared_ptr<GUIManager> m);
 
         bool isAllowedCrop();
 

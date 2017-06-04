@@ -24,12 +24,15 @@
     3. This notice may not be removed or altered from any source distribution.
 
 **/
+#define BLANK "Blank"
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <memory>
 
 #include "GL_Vertex.h"
+
+
 
 class textInfo{
 public:

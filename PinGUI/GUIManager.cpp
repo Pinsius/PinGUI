@@ -66,6 +66,19 @@ void GUIManager::createClipBoard(int x, int y, clipboard_type type, int maxSize,
     _needUpdate = true;
 }
 
+void GUIManager::createClipBoard(int x, int y, clipboard_type type, int maxSize, int width, element_shape shape){
+
+    clipboardData tmp;
+    tmp.texter = getTextManager();
+
+    PinGUI::Vector2<GUIPos> position(x,y);
+
+    auto ptr = std::make_shared<ClipBoard>(position, width, maxSize, type, tmp,shape);
+    _ELEMENTS.push_back(ptr);
+
+    _needUpdate = true;
+}
+
 void GUIManager::createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, bool negativeInput, element_shape shape){
 
     clipboardData tmp;
@@ -360,11 +373,13 @@ void GUIManager::renderText(){
 
 void GUIManager::update(bool allowCollision){
 
+
     if (!_manipulatingElement){
 
         if (allowCollision){
 
             checkCollisions();
+
         } else {
 
             for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
@@ -380,7 +395,6 @@ void GUIManager::update(bool allowCollision){
 
         _manipulatingElement->manipulatingMod(_manipulatingElement);
     }
-
     checkCrop();
 }
 

@@ -67,7 +67,7 @@ void SheetManager::loadAllTextures(){
     loadWindowTextures();
 }
 
-GLuint SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface){
+void SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface){
 
     //Rect to store the cropped area pos and dimensions
     SDL_Rect tmp;

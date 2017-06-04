@@ -31,8 +31,8 @@
 #include "GUI_Elements/WindowButton.h"
 #include "../PinGUI/Shader_Program.h"
 
-
 #define WINDOW_STORAGE_SIZE 200
+
 /**
     The main singleton for whole library
 **/

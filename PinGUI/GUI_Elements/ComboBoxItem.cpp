@@ -71,7 +71,7 @@ void ComboBoxItem::onClick(){
 }
 
 bool ComboBoxItem::listenForClick(manip_Element manipulatingElement){
-    GUI_Element::listenForClick(manipulatingElement);
+    return GUI_Element::listenForClick(manipulatingElement);
 }
 
 void ComboBoxItem::cropElement(PinGUI::Rect& rect){

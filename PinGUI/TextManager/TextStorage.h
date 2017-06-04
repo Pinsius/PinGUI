@@ -31,14 +31,12 @@
 class additionalStorage{
 
     public:
-        PinGUI::Rect* offsetRect;
         clipboard_type* type;
 
         additionalStorage()
         {
         };
-        additionalStorage(PinGUI::Rect* rect, clipboard_type* Type):
-            offsetRect(rect),
+        additionalStorage(clipboard_type* Type):
             type(Type)
         {
 
@@ -54,7 +52,7 @@ class TextStorage
         //It is holding pointers to texts and also a pointer to the textmanager
         std::vector<std::shared_ptr<Text>> _TEXTS;
 
-        std::shared_ptr<TextManager> texter;
+        std::shared_ptr<TextManager> _texter;
 
         //Pointer to an additional informations - in case of clipboards, etc.
         std::shared_ptr<additionalStorage> _additionalStorage;
@@ -94,7 +92,9 @@ class TextStorage
 
         std::vector<std::shared_ptr<Text>>* getVector();
 
-        void setAdditionalInfo(PinGUI::Rect* OffsetRect, clipboard_type* Type);
+        std::shared_ptr<TextManager> getTextManager();
+
+        void setAdditionalInfo(clipboard_type* Type);
 
         void setShow(bool state);
 };

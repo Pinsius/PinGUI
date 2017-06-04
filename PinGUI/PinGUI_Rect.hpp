@@ -25,7 +25,7 @@
 
 **/
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <iostream>
 
 #include "PinGUI_Vector.hpp"

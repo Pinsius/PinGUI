@@ -23,6 +23,7 @@
 **/
 
 #include "GUI_Element.h"
+#include "GUIManager.h"
 
 GUI_Element::GUI_Element():
     _collidable(true),
@@ -67,6 +68,7 @@ bool GUI_Element::collide(bool& needUpdate, manip_Element manipulatingElement){
         } else if (_aimON){
 
             turnOffAim();
+
             needUpdate = true;
 
             //Every element can modify something else via this function
@@ -74,7 +76,6 @@ bool GUI_Element::collide(bool& needUpdate, manip_Element manipulatingElement){
 
             return false;
         }
-
         doAdditionalFunc();
     }
 
@@ -205,12 +206,13 @@ void GUI_Element::loadData(std::vector<vboData>* vboData){
 
 std::shared_ptr<GUI_Sprite> GUI_Element::getSprite(int pos){
 
-    if (pos!=-1)
+    if (pos!=-1 && (pos>=0 && pos<_SPRITES.size()))
         return _SPRITES[pos];
     else if (pos==-1 && _SPRITES.size()>0 )
         return _SPRITES.back();
     else
-        ErrorManager::systemError("Trying to: GUI_Element getSprite a non existing sprite");
+        //ErrorManager::systemError("Trying to: GUI_Element getSprite a non existing sprite");
+        return nullptr;
 }
 
 void GUI_Element::setCollider(PinGUI::Rect rect,int pos){
@@ -277,8 +279,12 @@ void GUI_Element::deleteCollider(int pos){
     _COLLIDERS.erase(_COLLIDERS.begin()+pos);
 }
 
+std::size_t GUI_Element::getCollidersCount(){
+    return _COLLIDERS.size();
+}
+
 elementType GUI_Element::getElementType(){
-    return BLANK;
+    return UNDEFINED;
 }
 
 void GUI_Element::setX(float x){
@@ -373,4 +379,8 @@ bool GUI_Element::isAiming(){
 
 void GUI_Element::setAim(bool state){
     _aimON = state;
+}
+
+void GUI_Element::putElementToManager(std::shared_ptr<GUIManager> m){
+    m->putElement(shared_from_this());
 }

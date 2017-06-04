@@ -33,8 +33,8 @@
 #include <algorithm>
 #include <memory>
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #include "../TextManager/Text.h"
 #include "../TextManager/IntegerText.h"
@@ -90,6 +90,7 @@ class TextManager
             Manipulation with VBOs etc.
         **/
         void loadVBO();
+
         void updateVBOData();
 
     public:
@@ -97,11 +98,11 @@ class TextManager
         TextManager(const TextManager& txt);
         ~TextManager();
 
-        //I have 2 cases, so i need to overload these functions
-        std::shared_ptr<Text> writeText(const std::string& text,int x, int y);
-        std::shared_ptr<Text> writeText(int x, int y, int* var);
-        std::shared_ptr<Text> writeText(int x, int y, float* var);
-        std::shared_ptr<Text> writeText(int x, int y, std::string* var);
+        //For writing text lines
+        std::shared_ptr<Text> writeText(const std::string& text,GUIPos x, GUIPos y);
+        std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, int* var);
+        std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, float* var);
+        std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, std::string* var);
 
         TTF_Font* loadFont(const std::string& fontPath, int size);
 

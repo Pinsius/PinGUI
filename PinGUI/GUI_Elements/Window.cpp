@@ -31,6 +31,7 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
     _windowUpdate(false),
     _tabChange(true),
     _needCrop(true),
+    _enabledScrollerManagement(true),
     _mainWindowTab(nullptr),
     _verticalScroller(nullptr),
     _horizontalScroller(nullptr),
@@ -111,7 +112,7 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
 
         //Setting stuff
         _TABS.back()->windowTab->setTabText(_mainGUIManager->getTextManager()->getLastText());
-        _TABS.back()->windowTab->setTabDimensions(_mainFrame);
+        _TABS.back()->windowTab->setTabDimensions(_cameraRect);
 
         PinGUI::basicPointer tmpF;
         tmpF._function = boost::bind(&Window::cropTabArea,this);
@@ -129,14 +130,14 @@ void Window::createEmptyTabLine(PinGUI::Rect& positionRect){
                                               &_mainWindowTab,
                                               &_tabChange);
 
-    auto ptr = std::make_shared<tabInfo>("Blank",winTab);
+    auto ptr = std::make_shared<tabInfo>(BLANK,winTab);
 
     _TABS.push_back(ptr);
 
     _TABS.back()->windowTab->getSprite()->setH(SINGLE_WINDOWTAB_HEIGHT);
     _TABS.back()->windowTab->getSprite()->setColor(95,95,95);
 
-    _TABS.back()->windowTab->setTabDimensions(_mainFrame);
+    _TABS.back()->windowTab->setTabDimensions(_cameraRect);
 
     PinGUI::basicPointer tmpF;
     tmpF._function = boost::bind(&Window::cropTabArea,this);
@@ -207,7 +208,6 @@ void Window::update(bool allowCollision){
         if (_tabChange){
             updateTab();
         }
-
 
         if (_needCrop && _mainWindowTab->getGUI()->getUpdate()){
             cropTabArea();
@@ -308,11 +308,12 @@ bool Window::haveExit(){
 void Window::loadScroller(){
 
     /** VERTICAL SCROLL **/
-    //Here is IF statement for verticall scrolling, if the height is bigger than windows height, i load it , if not im not showing anything
-    if (_mainWindowTab->getTabDimensions().y > _mainFrame.h){
+    //Here is IF statement for vertical scrolling, if the height is bigger than windows height, i load it , if not im not showing anything
+    if (_mainWindowTab->getTabDimensions().y > _cameraRect.h){
 
         //Setting scroller to active state
         manageScroller(PinGUI::VERTICAL,true);
+
         _verticalScroller->attachScrollerToInput();
 
     } else{
@@ -322,7 +323,7 @@ void Window::loadScroller(){
     }
 
     /** HORIZONTAL SCROLL **/
-    if (_mainWindowTab->getTabDimensions().x > _mainFrame.w){
+    if (_mainWindowTab->getTabDimensions().x > _cameraRect.w){
 
         manageScroller(PinGUI::HORIZONTAL,true);
     } else {
@@ -342,13 +343,15 @@ void Window::updateTab(){
 
     _mainGUIManager->setUpdate(true);
 
-    hideScrollers();
-
-    loadScroller();
+    if (_enabledScrollerManagement){
+        hideScrollers();
+        loadScroller();
+    }
 
     setWindowCamRect();
 
-    if (!isScrollerActive(_verticalScroller)) PinGUI::Input_Manager::setAllowWheel(false);
+    if (!isScrollerActive(_verticalScroller))
+        PinGUI::Input_Manager::setAllowWheel(false);
 
     cropTabArea();
 }
@@ -548,11 +551,26 @@ void Window::onEndAim(){
             if (PinGUI::Input_Manager::getWheelInfo()._wheeledSprite == _verticalScroller->getSprite(1))
                 PinGUI::Input_Manager::setAllowWheel(false);
         }
-
     }
 
     PinGUI::Input_Manager::setOnWindow(false);
     turnOffAim();
+}
+
+bool Window::isScrollerActive(std::shared_ptr<HorizontalScroller>& scroller){
+
+    if (scroller && scroller->getShow() && scroller->getSprite(1))
+        return true;
+    else
+        return false;
+}
+
+bool Window::isScrollerActive(std::shared_ptr<VerticalScroller>& scroller){
+
+    if (scroller && scroller->getShow() && scroller->getSprite(1))
+        return true;
+    else
+        return false;
 }
 
 bool Window::listenForClick(manip_Element manipulatingElement){
@@ -577,9 +595,7 @@ void Window::adjustHorizontalScrollerWidth(){
 
         _horizontalScroller->getSprite()->setW(_mainFrame.w + (PINGUI_WINDOW_LINE_W*2));
     }
-
     _horizontalScroller->modifyArrowPos();
-
 }
 
 void Window::normalize(){
@@ -666,4 +682,50 @@ void Window::setWindowCamRect(){
 
 std::shared_ptr<GUIManager> Window::getGUI(){
     return _mainGUIManager;
+}
+
+std::shared_ptr<Scroller> Window::getScroller(PinGUI::manipulationState state){
+
+    switch(state){
+
+        case PinGUI::HORIZONTAL : {
+            return _horizontalScroller;
+        }
+        case PinGUI::VERTICAL : {
+            return _verticalScroller;
+        }
+    }
+}
+
+void Window::setScrollerManagement(bool state){
+    _enabledScrollerManagement = state;
+}
+
+PinGUI::Rect Window::getCropRect(){
+    return _cameraRect;
+}
+
+PinGUI::Rect* Window::getCropRect_P(){
+    return &_cameraRect;
+}
+
+void Window::reloadScroller(GUIPos diff,PinGUI::manipulationState state){
+
+    switch (state){
+        case PinGUI::HORIZONTAL : {
+
+            break;
+        }
+        case PinGUI::VERTICAL : {
+
+            _verticalScroller->reloadScroller(_mainFrame.h,_mainWindowTab->getTabDimensions().y);
+
+            updateTabCamera(PinGUI::Vector2<GUIPos>(0,diff));
+            break;
+        }
+    }
+}
+
+PinGUI::Vector2<GUIPos> Window::getRollbackVector(){
+    return _tabMovementChecker;
 }

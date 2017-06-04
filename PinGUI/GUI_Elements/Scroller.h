@@ -69,7 +69,7 @@ class Scroller: public GUI_Element
         /** Private methods **/
         virtual void initNormalizer(const int& totalValue, const int& numOfPixels);
 
-        virtual int useNormalizer(CHANGER change, int diff){};
+		virtual int useNormalizer(CHANGER change, int diff) { return 0; }
 
         virtual void createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS){};
 
@@ -77,7 +77,7 @@ class Scroller: public GUI_Element
 
         virtual void checkLimits(){};
 
-        virtual int calculateScrollerSize(const int& value, int& totalValue){};
+		virtual int calculateScrollerSize(const int& value, int& totalValue) { return 0; }
 
         virtual void manageScrollerFill(const int& value){};
 
@@ -93,7 +93,7 @@ class Scroller: public GUI_Element
 
         virtual void moveOldPos(const PinGUI::Vector2<GUIPos>& vect){};
 
-        virtual int getDiff(){};
+		virtual int getDiff() { return 0; }
 
         void manageFunctionality();
 
@@ -114,6 +114,8 @@ class Scroller: public GUI_Element
         void info() override;
 
         void loadScrollMover(int value, int totalValue);
+
+        virtual void reloadScroller(int value, int totalValue){};
 
         void hideScroller();
 

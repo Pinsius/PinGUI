@@ -65,6 +65,8 @@ class VerticalScroller: public Scroller
         ~VerticalScroller();
 
         void createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS) override;
+
+        void reloadScroller(int value, int totalValue) override;
 };
 
 #endif // VERTICALSCROLLER_H

@@ -104,6 +104,15 @@ int VerticalScroller::calculateScrollerSize(const int& value, int& totalValue){
     return tmpLength*windowPercentage;
 }
 
+void VerticalScroller::reloadScroller(int value, int totalValue){
+
+    GUIPos oldPos = getSprite(1)->getY() + getSprite(1)->getH();
+
+    loadScrollMover(value,totalValue);
+
+    getSprite(1)->setY(oldPos - (getSprite(1)->getH()));
+}
+
 void VerticalScroller::onClick(){
 
     //Setting the input state
@@ -111,7 +120,6 @@ void VerticalScroller::onClick(){
     PinGUI::Input_Manager::setState(PinGUI::GUI);
     PinGUI::Input_Manager::createManipulatingModInfo(getSprite(1)->getX(),getSprite(1)->getY(),PinGUI::VERTICAL);
     PinGUI::Input_Manager::initManipulation(_SPRITES[1],_update);
-
 }
 
 void VerticalScroller::checkLimits(){
@@ -123,7 +131,6 @@ void VerticalScroller::checkLimits(){
 
         getSprite(1)->setY(_ARROWS[1]->getSprite()->getY() - getSprite(1)->getH());
     }
-
 }
 
 void VerticalScroller::decide(){
@@ -164,15 +171,23 @@ void VerticalScroller::initOldPos(){
 }
 
 void VerticalScroller::incScroller(){
-    getSprite(1)->setY(getSprite(1)->getY() - WINDOW_SCROLLER_ARROW_MOVEMENT);
 
-    manageFunctionality();
+    if (_SPRITES.size()>1){
+
+        getSprite(1)->setY(getSprite(1)->getY() - WINDOW_SCROLLER_ARROW_MOVEMENT);
+
+        manageFunctionality();
+    }
 }
 
 void VerticalScroller::decScroller(){
-    getSprite(1)->setY(getSprite(1)->getY() + WINDOW_SCROLLER_ARROW_MOVEMENT);
 
-    manageFunctionality();
+    if (_SPRITES.size()>1){
+
+        getSprite(1)->setY(getSprite(1)->getY() + WINDOW_SCROLLER_ARROW_MOVEMENT);
+
+        manageFunctionality();
+    }
 }
 
 int VerticalScroller::getDiff(){

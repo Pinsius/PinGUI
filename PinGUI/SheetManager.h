@@ -25,8 +25,8 @@
 
 **/
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL.h>
+#include <SDL_image.h>
+#include <SDL.h>
 #include <vector>
 
 #include "ErrorManager.h"
@@ -283,7 +283,7 @@ class SheetManager
         /**
             Public Methods
         **/
-        static GLuint loadSurface(enum surfaceType,SDL_Surface* wholeSurface);
+        static void loadSurface(enum surfaceType,SDL_Surface* wholeSurface);
 
         static void loadAllTextures();
 

@@ -25,7 +25,7 @@
 
 **/
 
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 #include "PinGUI_Rect.hpp"
 #include "Input_Manager.h"

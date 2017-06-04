@@ -26,7 +26,7 @@
 **/
 
 #include <unordered_map>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <ctype.h>
 
 #include "TextManager/TextStorage.h"
@@ -43,11 +43,21 @@
 
 namespace PinGUI{
 
-    struct wheelingInfo{
+    class wheelingInfo{
+    public:
         std::shared_ptr<GUI_Sprite> _wheeledSprite;
         bool* _update;
         PinGUI::basicPointer _function;
+
+        wheelingInfo():
+            _wheeledSprite(nullptr),
+            _update(nullptr)
+            {
+
+            }
     };
+
+
     class Input_Manager
     {
         private:
@@ -124,6 +134,8 @@ namespace PinGUI{
             static bool clicked(unsigned int keyID);
 
             static void setState(gameState newState);
+
+            static void clearEnterKey();
 
             static gameState getState();
 

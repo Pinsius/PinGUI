@@ -114,5 +114,5 @@ void Button::setWritingAvailability(bool state){
 
 bool Button::listenForClick(manip_Element manipulatingElement){
 
-    GUI_Element::listenForClick(manipulatingElement);
+    return GUI_Element::listenForClick(manipulatingElement);
 }

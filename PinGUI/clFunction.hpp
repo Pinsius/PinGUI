@@ -72,6 +72,19 @@ namespace PinGUI{
             }
     };
 
+    class stringFuncPointer{
+          public :
+            std::function<void(std::string text)> _function;
+
+            void exec(std::string text){
+
+                if (_function){
+
+                    _function(text);
+                }
+            }
+    };
+
 }
 
 

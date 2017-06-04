@@ -170,6 +170,15 @@ void HorizontalScroller::incScroller(){
     manageFunctionality();
 }
 
+void HorizontalScroller::reloadScroller(int value, int totalValue){
+
+    GUIPos oldPos = getSprite(1)->getX();
+
+    loadScrollMover(value,totalValue);
+
+    getSprite(1)->setX(oldPos);
+}
+
 void HorizontalScroller::decScroller(){
     getSprite(1)->setX(getSprite(1)->getX() - WINDOW_SCROLLER_ARROW_MOVEMENT);
 

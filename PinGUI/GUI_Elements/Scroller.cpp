@@ -45,25 +45,24 @@ void Scroller::loadScrollMover(int value, int totalValue){
     tmpRect.y = _ARROWS[1]->getSprite()->getY();
 
     addSprite(tmpRect,SheetManager::getSurface(WINDOW_SCROLLER_FILL));
-
     manageScrollerFill(calculateScrollerSize(value,totalValue));
-    addCollider(getSprite(1)->getCollider());
-
-    initOldPos();
-
-    _collidable = true;
-    *_update = true;
-
-    _oldDiff = 0;
-
     calculateRatio(totalValue - value);
 
      // In case the realSize was not big enough to load the scroller
-    if (_ratio<=0){
+    if (_ratio>0){
 
-        ErrorManager::infoLog("PINGUI err.1","Scroller was unable to be loaded due to a incorrect ratio");
-        _show = false;
-        _collidable = false;
+        addCollider(getSprite(1)->getCollider());
+
+        initOldPos();
+
+        _collidable = true;
+        *_update = true;
+
+        _oldDiff = 0;
+    } else {
+
+        deleteSprite(1);
+        ErrorManager::infoLog("Scroller info:","Scroller was unable to load due to small ratio");
     }
 }
 
@@ -71,10 +70,10 @@ void Scroller::hideScroller(){
 
     //Need to delete the actual sprite and collider
     if (_SPRITES.size()>1) deleteSprite(1);
-    if (_COLLIDERS.size()>0){
+        if (_COLLIDERS.size()>0){
 
-        deleteCollider(0);
-    }
+            deleteCollider(0);
+        }
 
     *_update = true;
     setShow(false);

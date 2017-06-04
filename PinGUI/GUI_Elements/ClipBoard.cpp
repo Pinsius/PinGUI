@@ -35,9 +35,21 @@ ClipBoard::ClipBoard()
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape):
     _type(type),
     _shape(shape),
-    _negativeInput(true)
+    _negativeInput(true),
+    _exitAtEnter(true)
 {
     initClipBoard(maxSize,data,position);
+
+    initText();
+}
+
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int width, int maxSize, clipboard_type type, clipboardData data, element_shape shape):
+    _type(type),
+    _shape(shape),
+    _negativeInput(true),
+    _exitAtEnter(true)
+{
+    initClipBoard(maxSize,data,position,width);
 
     initText();
 }
@@ -45,7 +57,8 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, bool negativeInput, element_shape shape):
     _type(type),
     _shape(shape),
-    _negativeInput(negativeInput)
+    _negativeInput(negativeInput),
+    _exitAtEnter(true)
 {
     initClipBoard(maxSize,data,position);
 
@@ -55,7 +68,8 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape):
     _type(type),
     _shape(shape),
-    _negativeInput(true)
+    _negativeInput(true),
+    _exitAtEnter(true)
 {
     initClipBoard(maxSize,data,position);
 
@@ -65,7 +79,8 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, bool negativeInput, element_shape shape):
     _type(type),
     _shape(shape),
-    _negativeInput(negativeInput)
+    _negativeInput(negativeInput),
+    _exitAtEnter(true)
 {
     initClipBoard(maxSize,data,position);
 
@@ -77,6 +92,8 @@ void ClipBoard::init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardDat
     _type = type;
     _shape = shape;
 
+    _exitAtEnter = true;
+
     initClipBoard(maxSize,data,position);
 
     initText();
@@ -87,7 +104,7 @@ ClipBoard::~ClipBoard()
 
 }
 
-void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position){
+void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position, int width){
 
     _minValue = 0;
 
@@ -103,6 +120,10 @@ void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2
 
     //Calculating the width and height of the clipboard
     fakeInputText(tmp_width,tmp_height,data);
+
+    //Check if I need to have fixed clipboard width
+    if (width != 0)
+        tmp_width = width;
 
     //Creating the GUI sprite (the whole sprite of the clipboard)
     SDL_Surface* tmpSurface;
@@ -156,7 +177,7 @@ void ClipBoard::initStorage(){
     _textStorage->getText(0)->setOffsetRect(*(getCollider()));
     _textStorage->getText(0)->calculateTextPosition();
     _textStorage->getText(0)->setNetworked(true);
-    _textStorage->setAdditionalInfo(getCollider(),&_type);
+    _textStorage->setAdditionalInfo(&_type);
 
     //Here i initialize also the collidable state
     if (_type==UNCLICKABLE)
@@ -261,7 +282,23 @@ void ClipBoard::onClick(){
 
 void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
 
-    if (PinGUI::Input_Manager::isKeyPressed(SDLK_ESCAPE)||PinGUI::Input_Manager::isKeyPressed(SDLK_RETURN)){
+    bool tmp = false;
+
+    if (pressedEnter()){
+
+        _func.exec(_textStorage->getText()->getString());
+
+        if (_exitAtEnter)
+            tmp = true;
+        else
+            PinGUI::Input_Manager::clearEnterKey();
+
+    } else if (pressedESC()){
+
+        tmp = true;
+    }
+
+    if (tmp){
 
         manipulatingElement = nullptr;
 
@@ -273,6 +310,14 @@ void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
 
         return;
     }
+}
+
+bool ClipBoard::pressedEnter(){
+    return (PinGUI::Input_Manager::isKeyPressed(SDLK_RETURN)||PinGUI::Input_Manager::isKeyPressed(SDLK_KP_ENTER));
+}
+
+bool ClipBoard::pressedESC(){
+    return (PinGUI::Input_Manager::isKeyPressed(SDLK_ESCAPE));
 }
 
 void ClipBoard::setWritingAvailability(bool state){
@@ -304,6 +349,8 @@ void ClipBoard::fakeInputText(int& width, int& height, const clipboardData& data
 
     width = tmpSprite->getW() + CLIPBOARD_WIDTH_OFFSET;
     height = tmpSprite->getH() + CLIPBOARD_HEIGHT_OFFSET;
+
+    _widthPerChar = tmpSprite->getW()/_maxSize;
 }
 
 void ClipBoard::normalizeElement(const PinGUI::Vector2<GUIPos>& vect){
@@ -360,7 +407,7 @@ void ClipBoard::setClipboardText(std::string text){
 
 void ClipBoard::setClipboardText(std::string text, PinGUI::Rect collider){
 
-    //Destroy the text if it exist(ofc it will exist everytime
+    //Destroy the text if it exist(ofc it will exist everytime but to be absolute sure)
     if (_textStorage->getText())
         _textStorage->destroyText();
 
@@ -370,7 +417,7 @@ void ClipBoard::setClipboardText(std::string text, PinGUI::Rect collider){
     _textStorage->getText(0)->calculateTextPosition();
     _textStorage->getText(0)->setNetworked(true);
 
-    _textStorage->setAdditionalInfo(getCollider(),&_type);
+    _textStorage->setAdditionalInfo(&_type);
 }
 
 void ClipBoard::setShow(bool state){
@@ -387,4 +434,16 @@ void ClipBoard::cropElement(PinGUI::Rect& rect){
 
 void ClipBoard::setMinValue(int minV){
     _minValue = minV;
+}
+
+void ClipBoard::setEnterFunc(PinGUI::stringFuncPointer f){
+    _func = f;
+}
+
+void ClipBoard::clearClipBoard(){
+    setClipboardText("");
+}
+
+void ClipBoard::setExitAtEnter(bool state){
+    _exitAtEnter = state;
 }

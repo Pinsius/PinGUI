@@ -76,6 +76,8 @@ class HorizontalScroller: public Scroller
         void createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS) override;
 
         void modifyArrowPos() override;
+
+        void reloadScroller(int value, int totalValue) override;
 };
 
 #endif // HORIZONTALSCROLLER_H

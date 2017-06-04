@@ -56,9 +56,9 @@ TextManager::~TextManager()
 }
 
 //I have 2 cases, so i need to overload these functions
-std::shared_ptr<Text> TextManager::writeText(const std::string& text,int x, int y){
+std::shared_ptr<Text> TextManager::writeText(const std::string& text,GUIPos x, GUIPos y){
 
-    PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
+    PinGUI::Vector2<GUIPos> tmpVecc(x,y);
 
     auto ptr = std::make_shared<Text>(text,tmpVecc,&_mainTextInfo);
     _TEXTS.push_back(ptr);
@@ -69,9 +69,9 @@ std::shared_ptr<Text> TextManager::writeText(const std::string& text,int x, int 
 
 }
 
-std::shared_ptr<Text> TextManager::writeText(int x, int y, int* var){
+std::shared_ptr<Text> TextManager::writeText(GUIPos x, GUIPos y, int* var){
 
-    PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
+    PinGUI::Vector2<GUIPos> tmpVecc(x,y);
 
     auto ptr = std::make_shared<IntegerText>(tmpVecc,&_mainTextInfo,var);
     _TEXTS.push_back(ptr);
@@ -81,9 +81,9 @@ std::shared_ptr<Text> TextManager::writeText(int x, int y, int* var){
     return _TEXTS.back();
 }
 
-std::shared_ptr<Text> TextManager::writeText(int x, int y, float* var){
+std::shared_ptr<Text> TextManager::writeText(GUIPos x, GUIPos y, float* var){
 
-    PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
+    PinGUI::Vector2<GUIPos> tmpVecc(x,y);
 
     auto ptr = std::make_shared<FloatText>(tmpVecc,&_mainTextInfo,var);
     _TEXTS.push_back(ptr);
@@ -93,9 +93,9 @@ std::shared_ptr<Text> TextManager::writeText(int x, int y, float* var){
     return _TEXTS.back();
 }
 
-std::shared_ptr<Text> TextManager::writeText(int x, int y, std::string* var){
+std::shared_ptr<Text> TextManager::writeText(GUIPos x, GUIPos y, std::string* var){
 
-    PinGUI::Vector2<GUIPos> tmpVecc((float)x,(float)y);
+    PinGUI::Vector2<GUIPos> tmpVecc(x,y);
 
     auto ptr = std::make_shared<StringText>(tmpVecc,&_mainTextInfo,var);
     _TEXTS.push_back(ptr);
@@ -188,8 +188,11 @@ void TextManager::loadTextInfo(){
 
 void TextManager::removeData(std::size_t& position){
 
-    _TEXTS.erase(_TEXTS.begin()+position);
-    _mainDataStorage.erase(_mainDataStorage.begin()+position);
+	if (_TEXTS.size()>0)
+		_TEXTS.erase(_TEXTS.begin()+position);
+
+	if (_mainDataStorage.size()>0)
+		_mainDataStorage.erase(_mainDataStorage.begin()+position);
 
     _needUpdate = true;
 }

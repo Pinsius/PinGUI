@@ -27,9 +27,9 @@
 
 
 TextStorage::TextStorage(std::shared_ptr<TextManager> text):
-    _additionalStorage(nullptr)
+    _additionalStorage(nullptr),
+    _texter(text)
 {
-    texter = text;
 }
 
 TextStorage::~TextStorage()
@@ -43,19 +43,19 @@ TextStorage::~TextStorage()
 }
 
 void TextStorage::addText(const std::string& text, int x, int y){
-    _TEXTS.push_back(texter->writeText(text,x,y));
+    _TEXTS.push_back(_texter->writeText(text,x,y));
 }
 
 void TextStorage::addText(int x, int y, int* var){
-    _TEXTS.push_back(texter->writeText(x,y,var));
+    _TEXTS.push_back(_texter->writeText(x,y,var));
 }
 
 void TextStorage::addText(int x, int y, float* var){
-    _TEXTS.push_back(texter->writeText(x,y,var));
+    _TEXTS.push_back(_texter->writeText(x,y,var));
 }
 
 void TextStorage::addText(int x, int y, std::string* var){
-    _TEXTS.push_back(texter->writeText(x,y,var));
+    _TEXTS.push_back(_texter->writeText(x,y,var));
 }
 
 void TextStorage::destroyText(int position){
@@ -154,14 +154,11 @@ std::shared_ptr<Text> TextStorage::getText(int position){
         return _TEXTS[position];
     else
         return nullptr;
-
 }
 
-void TextStorage::setAdditionalInfo(PinGUI::Rect* OffsetRect, clipboard_type* Type){
+void TextStorage::setAdditionalInfo(clipboard_type* Type){
 
-    _additionalStorage.reset();
-
-    _additionalStorage = std::make_shared<additionalStorage>(OffsetRect,Type);
+    _additionalStorage = std::make_shared<additionalStorage>(Type);
 }
 
 std::vector<std::shared_ptr<Text>>* TextStorage::getVector(){
@@ -174,4 +171,8 @@ void TextStorage::setShow(bool state){
 
         txt->setShow(state);
     }
+}
+
+std::shared_ptr<TextManager> TextStorage::getTextManager(){
+    return _texter;
 }

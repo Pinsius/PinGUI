@@ -98,9 +98,10 @@ void Text::getNewText(textInfo*& info){
 }
 
 void Text::replaceText(std::string newText){
-
+    std::cout << "replaced start";
     text = newText;
     changed = true;
+    std::cout << "replaced";
 }
 
 void Text::addChar(char* ch, bool change){
