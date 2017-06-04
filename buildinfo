@@ -1,7 +1,7 @@
 Link against:
 SDL2.lib
 SDL2main.lib
-SDL2_mixer.lib
+//SDL2_mixer.lib - no need as it has no sound yet
 SDL2_image.lib
 SDL2_ttf.lib
 glew32.lib
