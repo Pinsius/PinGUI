@@ -1,0 +1,12 @@
+Link against:
+SDL2.lib
+SDL2main.lib
+SDL2_mixer.lib
+SDL2_image.lib
+SDL2_ttf.lib
+glew32.lib
+opengl32.lib
+
+Another dependencies you need to incluse:
+boost
+glm
