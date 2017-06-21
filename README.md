@@ -43,5 +43,6 @@ Things I´m still working on :
 - Implement own allocators (the biggest need is for text - when it changes frequently, because dynamic allocations for sprites are slowing the speed down)
 - Support of multiple resolutions
 - Add new elements and improve old
+- Also add support to define GUI layout via XML
 
 More info will be provided soon 
