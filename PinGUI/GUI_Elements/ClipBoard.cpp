@@ -32,44 +32,53 @@ ClipBoard::ClipBoard()
     _aimON = false;
 }
 
-ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape):
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position,
+					 int maxSize,
+					 clipboard_type type,
+					 clipboardData data,
+					 unsigned int maxSizeOfAdjustText,
+					 element_shape shape,
+					 bool delegated):
     _type(type),
     _shape(shape),
     _negativeInput(true),
     _exitAtEnter(true)
 {
-    initClipBoard(maxSize,data,position);
 
-    initText();
+	if (!delegated) {
+
+		initClipBoard(maxSize,data,position);
+
+		initText(_maxSize, maxSizeOfAdjustText);
+	}
 }
 
-ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int width, int maxSize, clipboard_type type, clipboardData data, element_shape shape):
-    _type(type),
-    _shape(shape),
-    _negativeInput(true),
-    _exitAtEnter(true)
+ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position,
+					 int width,
+					 int maxSize,
+					 clipboard_type type,
+					 clipboardData data,
+					 unsigned int maxSizeOfAdjustText,
+					 element_shape shape):
+    ClipBoard(position,maxSize,type,data,maxSizeOfAdjustText,shape,true)
 {
     initClipBoard(maxSize,data,position,width);
 
-    initText();
+    initText(_maxSize, maxSizeOfAdjustText);
 }
 
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, int* var, bool negativeInput, element_shape shape):
-    _type(type),
-    _shape(shape),
-    _negativeInput(negativeInput),
-    _exitAtEnter(true)
+	ClipBoard(position, maxSize, type, data, 0, shape, true)
 {
+	_negativeInput = negativeInput;
+
     initClipBoard(maxSize,data,position);
 
     initText(var);
 }
 
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape):
-    _type(type),
-    _shape(shape),
-    _negativeInput(true),
-    _exitAtEnter(true)
+	ClipBoard(position, maxSize, type, data, 0, shape, true)
 {
     initClipBoard(maxSize,data,position);
 
@@ -77,11 +86,10 @@ ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_ty
 }
 
 ClipBoard::ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, float* var, bool negativeInput, element_shape shape):
-    _type(type),
-    _shape(shape),
-    _negativeInput(negativeInput),
-    _exitAtEnter(true)
+	ClipBoard(position, maxSize, type, data, 0, shape, true)
 {
+	_negativeInput = negativeInput;
+
     initClipBoard(maxSize,data,position);
 
     initText(var);
@@ -144,11 +152,16 @@ void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2
     _textStorage = std::make_shared<TextStorage>(data.texter);
 }
 
-void ClipBoard::initText(){
+void ClipBoard::initText(unsigned int sizeOfAdjustText, unsigned int maxSizeOfAdjustText){
 
-    _textStorage->addText(" ",100,100);
+	if (_type != ADJUSTABLE) {
+		_textStorage->addText(" ",100,100);
+	}
+	else {
+		_textStorage->addAdjustableText(" ", 100, 100, sizeOfAdjustText, maxSizeOfAdjustText);
+	}
 
-    initStorage();
+	initStorage();
 }
 
 void ClipBoard::initText(int* var){
@@ -273,11 +286,17 @@ void ClipBoard::onClick(){
         tmp.maxValue = _maxValue;
 
     tmp.inputType = _type;
-    tmp.max = _maxSize;
+
+	if (_type != ADJUSTABLE)
+		tmp.max = _maxSize;
+	else
+		tmp.max = std::static_pointer_cast<AdjustableText>(_textStorage->getText())->getMaxRealTextSize();
+
     tmp.minValue = _minValue;
     tmp.negativeInput = _negativeInput;
 
     PinGUI::Input_Manager::setWritingModInfo(tmp);
+	_textStorage->getText()->startInputManipulation();
 }
 
 void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
@@ -286,7 +305,12 @@ void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
 
     if (pressedEnter()){
 
+		/*
+		This can be applied as a functor to be called for getting the input
+		It calls a function with 1 string parameter  after user uses ENTER
+		*/
         _func.exec(_textStorage->getText()->getString());
+
 
         if (_exitAtEnter)
             tmp = true;
@@ -298,6 +322,7 @@ void ClipBoard::manipulatingMod(manip_Element manipulatingElement){
         tmp = true;
     }
 
+	//Exit from the writing mode
     if (tmp){
 
         manipulatingElement = nullptr;

@@ -40,6 +40,8 @@
 #include "../TextManager/IntegerText.h"
 #include "../TextManager/FloatText.h"
 #include "../TextManager/StringText.h"
+#include "../TextManager/AdjustableText.h"
+
 #include "../VBO_Manager.h"
 #include "../PinGUI_Vector.hpp"
 #include "../CropManager.hpp"
@@ -78,12 +80,6 @@ class TextManager
         //Functions for adding new text
         void checkForUpdate();
 
-        void update();
-
-        void createText();
-
-        void replaceText(int& position);
-
         void removeData(std::size_t& position);
 
         /**
@@ -103,6 +99,7 @@ class TextManager
         std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, int* var);
         std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, float* var);
         std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, std::string* var);
+		std::shared_ptr<Text> writeAdjustableText(const std::string& text, GUIPos x, GUIPos y, unsigned int size, unsigned int maxSize);
 
         TTF_Font* loadFont(const std::string& fontPath, int size);
 

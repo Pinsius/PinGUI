@@ -74,13 +74,15 @@ class TextStorage
         TextStorage(std::shared_ptr<TextManager> text);
         ~TextStorage();
 
-        void addText(const std::string& text, int x, int y) ;
+        void addText(const std::string& text, GUIPos x, GUIPos y) ;
 
-        void addText(int x, int y, int* var);
+        void addText(GUIPos x, GUIPos y, int* var);
 
-        void addText(int x, int y, float* var);
+        void addText(GUIPos x, GUIPos y, float* var);
 
-        void addText(int x, int y, std::string* var);
+        void addText(GUIPos x, GUIPos y, std::string* var);
+
+		void addAdjustableText(const std::string& text, GUIPos x, GUIPos y, unsigned int size, unsigned int maxSize);
 
         void destroyText(int position = 0);
 

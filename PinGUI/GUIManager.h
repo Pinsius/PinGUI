@@ -104,28 +104,28 @@ class GUIManager
         ~GUIManager();
 
         //Making methods
-        void createClipBoard(int x, int y, clipboard_type type, int maxSize, element_shape shape = ROUNDED);
-        void createClipBoard(int x, int y, clipboard_type type, int maxSize, int width, element_shape shape = ROUNDED);
-        void createClipBoard(int x, int y, clipboard_type type, int* var, int maxSize, bool negativeInput = true, element_shape shape = ROUNDED);
-        void createClipBoard(int x, int y, clipboard_type type, float* var, int maxSize, bool negativeInput = true, element_shape shape = ROUNDED);
-        void createClipBoard(int x, int y, clipboard_type type, std::string* var, int maxSize, element_shape shape = ROUNDED);
+        void createClipBoard(GUIPos x, GUIPos y, clipboard_type type, int maxSize, element_shape shape = ROUNDED, unsigned int adjTextSize = 0);
+        void createClipBoard(GUIPos x, GUIPos y, clipboard_type type, int maxSize, int width, element_shape shape = ROUNDED, unsigned int adjTextSize = 0);
+        void createClipBoard(GUIPos x, GUIPos y, clipboard_type type, int* var, int maxSize, bool negativeInput = true, element_shape shape = ROUNDED);
+        void createClipBoard(GUIPos x, GUIPos y, clipboard_type type, float* var, int maxSize, bool negativeInput = true, element_shape shape = ROUNDED);
+        void createClipBoard(GUIPos x, GUIPos y, clipboard_type type, std::string* var, int maxSize, element_shape shape = ROUNDED);
 
-        void createComboBox(int x, int y, std::vector<std::string> items, int maxNumOfItems);
-        void createComboBox(int x, int y, std::vector<std::string> items, int maxSize, int maxNumOfItems);
+        void createComboBox(GUIPos x, GUIPos y, std::vector<std::string> items, int maxNumOfItems);
+        void createComboBox(GUIPos x, GUIPos y, std::vector<std::string> items, int maxSize, int maxNumOfItems);
 
-        void createArrowBoard(int x, int y, int* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
-        void createArrowBoard(int x, int y, float* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
+        void createArrowBoard(GUIPos x, GUIPos y, int* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
+        void createArrowBoard(GUIPos x, GUIPos y, float* var, int maxSize, bool clickable = true, int minSize = 0, PinGUI::manipulationState state = PinGUI::HORIZONTAL);
 
-        void createVolumeBoard(int x, int y, bool clickable, int* var, int maxSize);
-        void createVolumeBoard(int x, int y, bool clickable, float* var, int maxSize);
+        void createVolumeBoard(GUIPos x, GUIPos y, bool clickable, int* var, int maxSize);
+        void createVolumeBoard(GUIPos x, GUIPos y, bool clickable, float* var, int maxSize);
 
-        void createCheckBox(int x, int y, bool* var);
+        void createCheckBox(GUIPos x, GUIPos y, bool* var);
 
-        void createImage(std::string filePath, int x, int y);
-        void createImage(std::string filePath, int x, int y, int width, int height);
+        void createImage(std::string filePath, GUIPos x, GUIPos y);
+        void createImage(std::string filePath, GUIPos x, GUIPos y, int width, int height);
 
-        void createButton(int x, int y, std::string name, PinGUI::basicPointer f);
-        void createButton(int x, int y, std::string name, PinGUI::basicPointer f, int maxSize);
+        void createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f);
+        void createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, int maxSize);
 
         void moveGUI(PinGUI::Vector2<GUIPos> vect, bool croppedMovement = false);
         void moveGUITo(PinGUI::Vector2<GUIPos> vect);

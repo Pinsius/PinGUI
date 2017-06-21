@@ -42,19 +42,24 @@ TextStorage::~TextStorage()
     _TEXTS.clear();
 }
 
-void TextStorage::addText(const std::string& text, int x, int y){
-    _TEXTS.push_back(_texter->writeText(text,x,y));
+void TextStorage::addAdjustableText(const std::string& text, GUIPos x, GUIPos y, unsigned int size, unsigned int maxSize) {
+	_TEXTS.push_back(_texter->writeAdjustableText(text, x, y, size, maxSize));
 }
 
-void TextStorage::addText(int x, int y, int* var){
+void TextStorage::addText(const std::string& text, GUIPos x, GUIPos y){
+
+	 _TEXTS.push_back(_texter->writeText(text,x,y));
+}
+
+void TextStorage::addText(GUIPos x, GUIPos y, int* var){
     _TEXTS.push_back(_texter->writeText(x,y,var));
 }
 
-void TextStorage::addText(int x, int y, float* var){
+void TextStorage::addText(GUIPos x, GUIPos y, float* var){
     _TEXTS.push_back(_texter->writeText(x,y,var));
 }
 
-void TextStorage::addText(int x, int y, std::string* var){
+void TextStorage::addText(GUIPos x, GUIPos y, std::string* var){
     _TEXTS.push_back(_texter->writeText(x,y,var));
 }
 
@@ -67,7 +72,7 @@ void TextStorage::destroyText(int position){
 void TextStorage::addChar(char* ch, int position, PinGUI::writingModInfo& info){
 
     switch (*(_additionalStorage->type)){
-
+		case ADJUSTABLE :
         case NORMAL : {
 
             _TEXTS[position]->addChar(ch);

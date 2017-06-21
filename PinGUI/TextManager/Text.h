@@ -85,17 +85,17 @@ public:
 
 	virtual float getVariableNum() { return 0.0f; }
 
-    virtual bool checkCharAddition(char* ch, int& maxValue, int& minValue){return true;}
+	virtual bool checkCharAddition(char* ch, int& maxValue, int& minValue) { return true; }
 
     virtual bool isZero();
 
     virtual void endInputManipulation(){};
 
+	virtual void startInputManipulation() {};
+
     virtual void turnOnNegative() {};
 
     void normalizeText(const PinGUI::Vector2<GUIPos>& vect);
-
-    void adaptToClipBoard();
 
     void moveText(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement = false);
 

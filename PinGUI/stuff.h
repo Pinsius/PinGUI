@@ -32,8 +32,6 @@
 
 #include "GL_Vertex.h"
 
-
-
 class textInfo{
 public:
     textInfo(TTF_Font* Font,SDL_Color Color):
@@ -69,6 +67,7 @@ public:
 **/
 enum clipboard_type{
     NORMAL,
+	ADJUSTABLE,
     INT_ONLY,
     INT_FLOAT,
     UNCLICKABLE

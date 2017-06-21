@@ -93,11 +93,9 @@ class ClipBoard: public GUI_Element
 
         void setWritingAvailability(bool state);
 
-        void writingMod();
-
         void initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position, int width = 0);
 
-        void initText();
+        void initText(unsigned int sizeOfAdjustText = 0, unsigned int maxSizeOfAdjustText = 0);
         void initText(int* var);
         void initText(float* var);
         void initText(std::string* var);
@@ -115,10 +113,10 @@ class ClipBoard: public GUI_Element
         ClipBoard();
 
         //Basic textbox for text input
-        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, element_shape shape = ROUNDED);
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, unsigned int maxSizeOfAdjustText = 0,  element_shape shape = ROUNDED, bool delegated = false);
 
         //Textbox with fixed sprite width
-        ClipBoard(PinGUI::Vector2<GUIPos> position, int width, int maxSize, clipboard_type type, clipboardData data, element_shape shape = ROUNDED);
+        ClipBoard(PinGUI::Vector2<GUIPos> position, int width, int maxSize, clipboard_type type, clipboardData data, unsigned int maxSizeOfAdjustText = 0, element_shape shape = ROUNDED);
 
         //String variable textbox
         ClipBoard(PinGUI::Vector2<GUIPos> position, int maxSize, clipboard_type type, clipboardData data, std::string* var, element_shape shape = ROUNDED);

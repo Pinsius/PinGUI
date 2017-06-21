@@ -366,7 +366,7 @@ namespace PinGUI{
 
     bool Input_Manager::canWrite(char* ch){
 
-        if ((chooseText()->getTextSize()+1) <= _writingModInfo.max){
+        if (((chooseText()->getTextSize()+1) <= _writingModInfo.max)){
             return true;
         } else return false;
     }

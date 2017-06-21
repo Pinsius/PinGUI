@@ -55,7 +55,6 @@ TextManager::~TextManager()
     _TEXTS.clear();
 }
 
-//I have 2 cases, so i need to overload these functions
 std::shared_ptr<Text> TextManager::writeText(const std::string& text,GUIPos x, GUIPos y){
 
     PinGUI::Vector2<GUIPos> tmpVecc(x,y);
@@ -66,7 +65,18 @@ std::shared_ptr<Text> TextManager::writeText(const std::string& text,GUIPos x, G
     _needUpdate = true;
 
     return _TEXTS.back();
+}
 
+std::shared_ptr<Text> TextManager::writeAdjustableText(const std::string& text, GUIPos x, GUIPos y, unsigned int size, unsigned int maxSize) {
+
+	PinGUI::Vector2<GUIPos> tmpVecc(x, y);
+
+	auto ptr = std::make_shared<AdjustableText>(text, tmpVecc, &_mainTextInfo, size, maxSize);
+	_TEXTS.push_back(ptr);
+
+	_needUpdate = true;
+
+	return _TEXTS.back();
 }
 
 std::shared_ptr<Text> TextManager::writeText(GUIPos x, GUIPos y, int* var){
