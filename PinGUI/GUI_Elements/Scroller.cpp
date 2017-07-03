@@ -95,8 +95,7 @@ void Scroller::attachScrollerToInput(){
 
     if (_SPRITES.size()>1){
 
-        PinGUI::basicPointer f;
-        f._function = boost::bind(&Scroller::checkForWheelMove,this);
+        PinGUI::basicPointer f(boost::bind(&Scroller::checkForWheelMove,this));
 
         PinGUI::Input_Manager::setWheeledInfo(getSprite(1),_update,f);
     }

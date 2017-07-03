@@ -60,8 +60,10 @@ Window::Window(windowDef* winDef):
 
         addCollider(tmpPositionRect);
 
+		std::cout << "ide create tabs" << std::endl;
         //Now need to create the tabs
         createTabs(winDef->tabs,tmpPositionRect);
+
     }
 
     _mainWindowTab = _TABS[0]->windowTab;
@@ -70,10 +72,9 @@ Window::Window(windowDef* winDef):
     if (_mainWindowTab)
         initTab();
 
-    PinGUI::basicPointer tmpFunction;
-    tmpFunction._function = boost::bind(&Window::rollbackTabCamera,this);
+    PinGUI::basicPointer tmpFunction(boost::bind(&Window::rollbackTabCamera,this));
 
-    for (auto&& tab : _TABS){
+    for (const auto& tab : _TABS){
 
         tab->windowTab->setRollBackFunction(tmpFunction);
     }
@@ -115,10 +116,9 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
         _TABS.back()->windowTab->setTabText(_mainGUIManager->getTextManager()->getLastText());
         _TABS.back()->windowTab->setTabDimensions(_cameraRect);
 
-        PinGUI::basicPointer tmpF;
-        tmpF._function = boost::bind(&Window::cropTabArea,this);
-        _TABS.back()->windowTab->getGUI()->setFunction(tmpF);
+        PinGUI::basicPointer tmpF(boost::bind(&Window::cropTabArea,this));
 
+        _TABS.back()->windowTab->getGUI()->setFunction(tmpF);
     }
 
     if (_TABS.size()==1)
@@ -140,8 +140,8 @@ void Window::createEmptyTabLine(PinGUI::Rect& positionRect){
 
     _TABS.back()->windowTab->setTabDimensions(_cameraRect);
 
-    PinGUI::basicPointer tmpF;
-    tmpF._function = boost::bind(&Window::cropTabArea,this);
+    PinGUI::basicPointer tmpF(boost::bind(&Window::cropTabArea, this));
+
     _TABS.back()->windowTab->getGUI()->setFunction(tmpF);
 
     offsetTab(_TABS.back()->windowTab);
@@ -199,6 +199,7 @@ void Window::render(){
 
 void Window::update(bool allowCollision){
 
+
     if (_windowUpdate)
         moveWindow(PinGUI::Input_Manager::getLastVector());
 
@@ -207,6 +208,7 @@ void Window::update(bool allowCollision){
     if (_mainWindowTab){
 
         if (_tabChange){
+
             updateTab();
         }
 
@@ -306,13 +308,12 @@ void Window::loadScroller(){
 
     /** VERTICAL SCROLL **/
     //Here is IF statement for vertical scrolling, if the height is bigger than windows height, i load it , if not im not showing anything
-    if (_mainWindowTab->getTabDimensions().y > _cameraRect.h){
+    if ((_mainWindowTab->getTabDimensions().y > _cameraRect.h) && (_cameraRect.h > 0)){
 
         //Setting scroller to active state
         manageScroller(PinGUI::VERTICAL,true);
 
         _verticalScroller->attachScrollerToInput();
-
     } else{
 
         //Disabling it
@@ -320,7 +321,7 @@ void Window::loadScroller(){
     }
 
     /** HORIZONTAL SCROLL **/
-    if (_mainWindowTab->getTabDimensions().x > _cameraRect.w){
+    if ((_mainWindowTab->getTabDimensions().x > _cameraRect.w) && (_cameraRect.w > 0)){
 
         manageScroller(PinGUI::HORIZONTAL,true);
     } else {
@@ -341,6 +342,7 @@ void Window::updateTab(){
     _mainGUIManager->setUpdate(true);
 
     if (_enabledScrollerManagement){
+
         hideScrollers();
         loadScroller();
     }
