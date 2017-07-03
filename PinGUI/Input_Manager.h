@@ -210,7 +210,7 @@ namespace PinGUI{
 
             static void initManipulation(std::shared_ptr<GUI_Sprite> manip, bool* needUpdate);
 
-            static void createManipulatingModInfo(int x, int y, manipulationState state);
+            static void createManipulatingModInfo(GUIPos x, GUIPos y, manipulationState state);
 
             static void destroyManipulatingModInfo();
 

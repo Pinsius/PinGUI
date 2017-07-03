@@ -52,7 +52,7 @@ namespace PinGUI{
 
         PinGUI::CameraManager::setMatrixLocation(PROJECTION,Shader_Program::getUniformLocation("P"));
 
-        _samplerLocation = Shader_Program::getUniformLocation("mySampler");
+        _samplerLocation = Shader_Program::getUniformLocation("sampler");
     }
 
     void Shader_Program::compileShaders(const std::string& vertexShaderFilePath,const std::string& fragmentShaderFilePath){
@@ -113,8 +113,6 @@ namespace PinGUI{
     }
 
     void Shader_Program::linkShaders(){
-
-
 
         //Attach shaders to program
         glAttachShader(_programID, _vertexShaderID);
@@ -193,6 +191,8 @@ namespace PinGUI{
                 ErrorManager::systemError("Uniform failed to load to shader. " + uniformName);
         }
         else return loc;
+
+		return 0;
     }
 }
 

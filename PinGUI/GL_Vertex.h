@@ -59,7 +59,7 @@ namespace PinGUI{
             float x;
             float y;
             VertexPosition();
-            VertexPosition(int X, int Y):
+            VertexPosition(float X, float Y):
                 x(X),
                 y(Y){
                 };

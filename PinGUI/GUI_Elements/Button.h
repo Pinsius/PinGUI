@@ -39,9 +39,9 @@ class Button: public ClipBoard
         void initSprites(std::string name, clipboardData& data);
 
     public:
-        Button(int x, int y, std::string name, clipboardData data);
-        Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboardData data);
-        Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize);
+        Button(GUIPos x, GUIPos y, std::string name, clipboardData data);
+        Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data);
+        Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize);
         ~Button();
 
         void onClick() override;

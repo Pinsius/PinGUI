@@ -44,17 +44,14 @@ HorizontalScroller::~HorizontalScroller()
 
 void HorizontalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS){
 
-    PinGUI::basicPointer f1;
-    f1._function = boost::bind(&HorizontalScroller::incScroller,this);
+    PinGUI::basicPointer f1(boost::bind(&HorizontalScroller::incScroller, this));
 
-    PinGUI::basicPointer f2;
-    f2._function = boost::bind(&HorizontalScroller::decScroller,this);
+    PinGUI::basicPointer f2(boost::bind(&HorizontalScroller::decScroller, this));
 
-    PinGUI::Rect tmpRect;
-    tmpRect.w = WINDOW_ARROW_W;
-    tmpRect.h = WINDOW_ARROW_H;
-    tmpRect.x = getSprite()->getX()+PINGUI_WINDOW_LINE_W;
-    tmpRect.y = getSprite()->getY() +PINGUI_WINDOW_LINE_H;
+    PinGUI::Rect tmpRect(getSprite()->getX() + PINGUI_WINDOW_LINE_W,
+						 getSprite()->getY() + PINGUI_WINDOW_LINE_H,
+						 WINDOW_ARROW_WIDTH,
+					   	 WINDOW_ARROW_HEIGHT);
 
     //Right arrow
     auto tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),LEFT);
@@ -63,22 +60,22 @@ void HorizontalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>*
     _ARROWS.push_back(tmpArrow);
 
     //Left arrow
-    tmpRect.x +=  getSprite()->getW() - WINDOW_ARROW_W;
+    tmpRect.x +=  getSprite()->getW() - WINDOW_ARROW_WIDTH;
 
     tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),RIGHT);
 
     tmpArrow->setClickFunction(f1);
     _ARROWS.push_back(tmpArrow);
 
-    for (auto&& arrow : _ARROWS)
+    for (const auto& arrow : _ARROWS)
         _ELEMENTS->push_back(arrow);
 }
 
 void HorizontalScroller::calculateRatio(const int& totalValue){
 
-    int numOfManipulationPixels =  _ARROWS[1]->getSprite()->getX() - (getSprite(1)->getX() + getSprite(1)->getW());
+    int numOfManipulationPixels =  int(_ARROWS[1]->getSprite()->getX() - (getSprite(1)->getX() + getSprite(1)->getW()));
 
-    _ratio = static_cast<float>(totalValue)/numOfManipulationPixels;
+    _ratio = int(static_cast<float>(totalValue)/numOfManipulationPixels);
 
     initNormalizer(totalValue,numOfManipulationPixels);
 }
@@ -101,14 +98,14 @@ int HorizontalScroller::calculateScrollerSize(const int& value, int& totalValue)
     //Now need the possible length of scroller fill
     int tmpLength = 0;
 
-    tmpLength = _ARROWS[1]->getSprite()->getX()-(_ARROWS[0]->getSprite()->getX()-WINDOW_ARROW_W);
+    tmpLength = int(_ARROWS[1]->getSprite()->getX()-(_ARROWS[0]->getSprite()->getX()-WINDOW_ARROW_WIDTH));
 
-   return tmpLength*windowPercentage;
+   return int(tmpLength*windowPercentage);
 }
 
 void HorizontalScroller::modifyArrowPos(){
 
-    _ARROWS[1]->setX(getSprite()->getX() + getSprite()->getW() - WINDOW_ARROW_W);
+    _ARROWS[1]->setX(getSprite()->getX() + getSprite()->getW() - WINDOW_ARROW_WIDTH);
     _ARROWS[1]->getSprite(-1)->offsetToRect(*(_ARROWS[1]->getCollider()));
 }
 
@@ -152,7 +149,7 @@ void HorizontalScroller::decide(){
         else
             diff += useNormalizer(MINUS,diff);
 
-        PinGUI::Vector2<GUIPos> tmpVec(diff,0);
+        PinGUI::Vector2<GUIPos> tmpVec(float(diff),0.0f);
         _cameraRoll.exec(tmpVec);
 
         _oldPos = getSprite(1)->getX();
@@ -249,5 +246,5 @@ int HorizontalScroller::useNormalizer(CHANGER change, int diff){
 
 int HorizontalScroller::getDiff(){
 
-    return (getSprite(1)->getX() - (_ARROWS[0]->getSprite()->getX()+_ARROWS[0]->getSprite()->getW()));
+    return int(getSprite(1)->getX() - (_ARROWS[0]->getSprite()->getX()+_ARROWS[0]->getSprite()->getW()));
 }

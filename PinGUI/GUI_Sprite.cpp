@@ -34,7 +34,7 @@ GUI_Sprite::GUI_Sprite(PinGUI::Rect rect, SDL_Surface* source,SDL_Color color):
     _color.r = color.r;
     _color.g = color.g;
     _color.b = color.b;
-    _color.a = color.a;
+    _color.a = color.a; 
 
     //Create texture from the source texture
     createTexture(source);
@@ -356,7 +356,7 @@ void GUI_Sprite::setPos(PinGUI::Vector2<GUIPos> pos){
     updatePositions();
 }
 
-void GUI_Sprite::setColor(float R, float G, float B){
+void GUI_Sprite::setColor(Uint8 R, Uint8 G, Uint8 B){
 
     _color.r = R;
     _color.g = G;

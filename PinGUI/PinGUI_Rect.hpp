@@ -92,8 +92,8 @@ namespace PinGUI{
 
         //Initializing the rect from the vector
         void initPos(const PinGUI::Vector2<int>& vect){
-            this->x = vect.x;
-            this->y = vect.y;
+            this->x = float(vect.x);
+            this->y = float(vect.y);
         }
         //Initializing the rect
         void initPos(PinGUI::Rect& rect){
@@ -208,19 +208,19 @@ class GUIRect{
 
         }
 
-        int getRH(){
+        float getRH(){
             return realRect.y;
         }
 
-        void setRH(int newH){
+        void setRH(float newH){
             realRect.y = newH;
         }
 
-        int getRW(){
+        float getRW(){
             return realRect.x;
         }
 
-        void setRW(int newW){
+        void setRW(float newW){
             realRect.x = newW;
         }
 

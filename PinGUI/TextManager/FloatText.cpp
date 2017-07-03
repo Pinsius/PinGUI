@@ -36,7 +36,7 @@ FloatText::FloatText(PinGUI::Vector2<GUIPos> pos, textInfo* info, float* Variabl
 {
     _construct.numOfFloatingNums = 0;
     _construct.pointNum = 0;
-    _construct.baseInt = static_cast<float>((*Variable));
+    _construct.baseInt = static_cast<int>((*Variable));
 
     reloadString();
 
@@ -64,7 +64,7 @@ void FloatText::needUpdate(textInfo* info, bool& update){
     if ((*_variable != _last_var) || changed){
 
         if (_tmpInput)
-            _tmpFloat = std::atof(text.c_str());
+            _tmpFloat = float(std::atof(text.c_str()));
 
         getNewText(info);
 
@@ -142,7 +142,7 @@ void FloatText::setChar(char ch, int pos){
 
     text[pos] = ch;
 
-    *_variable = std::atof(text.c_str());
+    *_variable = float(std::atof(text.c_str()));
 
     changed = true;
 }
@@ -167,7 +167,7 @@ float FloatText::getVariableNum(){
 
 float FloatText::calculateAddition(char*& ch){
 
-    int pointNum = 0;
+    unsigned int pointNum = 0;
     bool point = false;
     float divider = 10.0f;
 
@@ -193,7 +193,7 @@ float FloatText::calculateAddition(char*& ch){
         return (getCharNum(ch) / divider);
     } else {
 
-        return (((std::atof(text.c_str())*10) + getCharNum(ch)) - std::atof(text.c_str()));
+        return (((float(std::atof(text.c_str())*10)) + getCharNum(ch)) - float(std::atof(text.c_str())));
     }
 }
 

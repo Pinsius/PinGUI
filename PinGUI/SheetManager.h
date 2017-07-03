@@ -212,6 +212,8 @@ enum lineType{
 
 #define PINGUI_WINDOW_TAB_LINE_X 14
 #define PINGUI_WINDOW_TAB_LINE_Y 200
+#define PINGUI_WINDOW_TAB_LINE_W 10
+#define PINGUI_WINDOW_TAB_LINE_H 1
 
 #define PINGUI_WINDOW_TAB_X 14
 #define PINGUI_WINDOW_TAB_Y 201
@@ -291,7 +293,7 @@ class SheetManager
 
         static void addToVector(SDL_Surface*);
 
-        static void manageCroppedRect(SDL_Rect* rect,surfaceType* type);
+        static SDL_Rect manageCroppedRect(surfaceType* type);
 
         static void addClipboard(SDL_Surface*& target);
 

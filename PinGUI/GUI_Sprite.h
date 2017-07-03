@@ -75,7 +75,6 @@ class GUI_Sprite
         /** Constructors for normal sprites **/
         GUI_Sprite(PinGUI::Rect rect,SDL_Surface* source);
         GUI_Sprite(PinGUI::Vector2<GUIPos> pos, SDL_Surface* source);
-        GUI_Sprite(SDL_Surface* source);
         GUI_Sprite(PinGUI::Rect rect,SDL_Surface* source,SDL_Color color);
 
         /** Constructors for Text sprites - initialized using SDL_TTF **/
@@ -116,7 +115,7 @@ class GUI_Sprite
 
         void addDimensions(int w, int h);
 
-        void setColor(float R, float G, float B);
+        void setColor(Uint8 R, Uint8 G, Uint8 B);
 
         void setPos(PinGUI::Vector2<GUIPos> pos);
 

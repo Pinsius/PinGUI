@@ -25,8 +25,8 @@
 #include "ComboBox.h"
 
 
-ComboBox::ComboBox(int x,
-                   int y,
+ComboBox::ComboBox(GUIPos x,
+				   GUIPos y,
                    std::vector<std::string> itemList,
                    clipboardData data,
                    std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
@@ -57,8 +57,8 @@ ComboBox::ComboBox(int x,
     initScroller();
 }
 
-ComboBox::ComboBox(int x,
-                   int y,
+ComboBox::ComboBox(GUIPos x,
+			   	   GUIPos y,
                    std::vector<std::string> itemList,
                    clipboardData data,
                    std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
@@ -94,7 +94,7 @@ ComboBox::~ComboBox()
     _ITEMS.clear();
 }
 
-void ComboBox::initMainSprites(int& x, int& y, clipboardData& data){
+void ComboBox::initMainSprites(const GUIPos& x, const GUIPos& y, clipboardData& data){
 
     SDL_Surface* tmpSurface;
     int tmp_width, tmp_height;
@@ -198,8 +198,7 @@ void ComboBox::addItem(std::string name){
 
     PinGUI::Vector2<GUIPos> tmpPos (_position.x, getPosOfNextItem());
 
-    PinGUI::basicPointer f;
-    f._function = boost::bind(&ComboBox::uploadContent,this);
+    PinGUI::basicPointer f(boost::bind(&ComboBox::uploadContent,this));
 
     auto ptr = std::make_shared<ComboBoxItem>(tmpPos,name,&_mainItem,f,_maxSize,_data);
     _ITEMS.push_back(ptr);
@@ -238,7 +237,7 @@ void ComboBox::clearComboBox(){
 
 void ComboBox::reMoveTabs(){
 
-    PinGUI::Vector2<GUIPos> tmp(0,_offsetCollider.h-BORDER_LINE);
+    PinGUI::Vector2<GUIPos> tmp(0.0f,float(_offsetCollider.h-BORDER_LINE));
 
     for (std::size_t i = 0; i < _ITEMS.size(); i++){
 

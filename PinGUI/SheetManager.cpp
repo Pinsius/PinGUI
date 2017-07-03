@@ -76,7 +76,7 @@ void SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface){
     SDL_Surface* tmpSurface;
 
     //Here i set the position of the cropped area
-    manageCroppedRect(&tmp,&type);
+    tmp = manageCroppedRect(&type);
 
     //Setting the new surface
     tmpSurface = SDL_CreateRGBSurface(wholeSurface->flags,tmp.w, tmp.h,
@@ -93,121 +93,62 @@ void SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface){
     addToVector(tmpSurface);
 }
 
-void SheetManager::manageCroppedRect(SDL_Rect* rect,surfaceType* type){
+SDL_Rect SheetManager::manageCroppedRect(surfaceType* type){
 
     switch(*type){
+
         case BOARD : {
-            rect->x = clipboardFx;
-            rect->y = clipboardFy;
-            rect->w = clipboardw;
-            rect->h = clipboardh;
-            break;
+			return SDL_Rect{ clipboardFx , clipboardFy , clipboardw , clipboardh };
         }
         case BORDER_LINE : {
-            rect->x = line_X;
-            rect->y = line_Y;
-            rect->w = 1;
-            rect->h = 1;
-            break;
+			return SDL_Rect{ line_X , line_Y , 1 , 1 };
         }
         case BORDER_TL : {
-            rect->x = TL_X;
-            rect->y = TL_Y;
-            rect->w = LINE_W;
-            rect->h = LINE_H;
-            break;
+			return SDL_Rect{ TL_X , TL_Y , LINE_W , LINE_H };
         }
         case BORDER_TR : {
-            rect->x = TR_X;
-            rect->y = TR_Y;
-            rect->w = LINE_W;
-            rect->h = LINE_H;
-            break;
+			return SDL_Rect{ TR_X , TR_Y , LINE_W , LINE_H };
         }
         case BORDER_BL : {
-            rect->x = BL_X;
-            rect->y = BL_Y;
-            rect->w = LINE_W;
-            rect->h = LINE_H;
-            break;
+			return SDL_Rect{ BL_X , BL_Y , LINE_W , LINE_H };
         }
         case BORDER_BR : {
-            rect->x = BR_X;
-            rect->y = BR_Y;
-            rect->w = LINE_W;
-            rect->h = LINE_H;
-            break;
+			return SDL_Rect{ BR_X , BR_Y , LINE_W , LINE_H };
         }
         case ARROW_PLUS : {
-            rect->x = ARROW_PLUS_X;
-            rect->y = ARROW_PLUS_Y;
-            rect->w = ARROW_W;
-            rect->h = ARROW_H;
-            break;
+			return SDL_Rect{ ARROW_PLUS_X , ARROW_PLUS_Y , ARROW_W , ARROW_H };
         }
         case ARROW_MINUS : {
-            rect->x = ARROW_MINUS_X;
-            rect->y = ARROW_MINUS_Y;
-            rect->w = ARROW_W;
-            rect->h = ARROW_H;
-            break;
+			return SDL_Rect{ ARROW_MINUS_X , ARROW_MINUS_Y , ARROW_W , ARROW_H };
         }
         case VOLUME_BACK : {
-            rect->x = VOLUME_BACKGROUND_X;
-            rect->y = VOLUME_BACKGROUND_Y;
-            rect->w = VOLUME_BACKGROUND_W;
-            rect->h = VOLUME_BACKGROUND_H;
-            break;
+			return SDL_Rect{ VOLUME_BACKGROUND_X , VOLUME_BACKGROUND_Y , VOLUME_BACKGROUND_W , VOLUME_BACKGROUND_H };
         }
         case VOLUME_MOVER : {
-            rect->x = VOLUME_MOVER_X;
-            rect->y = VOLUME_MOVER_Y;
-            rect->w = VOLUME_MOVER_W;
-            rect->h = VOLUME_MOVER_H;
-            break;
+			return SDL_Rect{ VOLUME_MOVER_X , VOLUME_MOVER_Y , VOLUME_MOVER_W , VOLUME_MOVER_H };
         }
         case VOLUME_FILL : {
-            rect->x = VOLUME_FILL_X;
-            rect->y = VOLUME_FILL_Y;
-            rect->w = VOLUME_FILL_W;
-            rect->h = VOLUME_FILL_H;
-            break;
+			return SDL_Rect{ VOLUME_FILL_X , VOLUME_FILL_Y , VOLUME_FILL_W , VOLUME_FILL_H };
         }
         case CHECKBOX : {
-            rect->x = CHECKBOX_X;
-            rect->y = CHECKBOX_Y;
-            rect->w = CHECKBOX_W;
-            rect->h = CHECKBOX_H;
-            break;
+			return SDL_Rect{ CHECKBOX_X , CHECKBOX_Y , CHECKBOX_W , CHECKBOX_H };
         }
         case NON_CHECKBOX : {
-            rect->x = CHECKBOX_NON_X;
-            rect->y = CHECKBOX_NON_Y;
-            rect->w = CHECKBOX_W;
-            rect->h = CHECKBOX_H;
-            break;
+			return SDL_Rect{ CHECKBOX_NON_X , CHECKBOX_NON_Y , CHECKBOX_W , CHECKBOX_H };
         }
         case WINDOW_TAB : {
-            rect->x = PINGUI_WINDOW_TAB_X;
-            rect->y = PINGUI_WINDOW_TAB_Y;
-            rect->w = PINGUI_WINDOW_TAB_W;
-            rect->h = PINGUI_WINDOW_TAB_H;
-            break;
+			return SDL_Rect{ PINGUI_WINDOW_TAB_X , PINGUI_WINDOW_TAB_Y , PINGUI_WINDOW_TAB_W , PINGUI_WINDOW_TAB_H };
         }
     }
+	return SDL_Rect{};
 }
 
 void SheetManager::loadComboBoxArrow(SDL_Surface*& sourceSurface){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = PINGUI_COMBO_BOX_ARROW_X;
-    tmpRect.y = PINGUI_COMBO_BOX_ARROW_Y;
-    tmpRect.w = PINGUI_COMBO_BOX_ARROW_W;
-    tmpRect.h = PINGUI_COMBO_BOX_ARROW_H;
+	SDL_Rect tmpRect{ PINGUI_COMBO_BOX_ARROW_X , PINGUI_COMBO_BOX_ARROW_Y, PINGUI_COMBO_BOX_ARROW_W, PINGUI_COMBO_BOX_ARROW_H };
 
     uploadSurface(tmpRect,sourceSurface);
 }
-
 
 void SheetManager::addToVector(SDL_Surface* newSurface){
     _SURFACES.push_back(newSurface);
@@ -221,11 +162,7 @@ SDL_Surface* SheetManager::cloneSurface(enum surfaceType type){
 
     SDL_Surface* tmpSurface = createCloneSurface(_SURFACES[type]->w,_SURFACES[type]->h,type);
 
-    SDL_Rect tmpRect;
-    tmpRect.x = 0;
-    tmpRect.y = 0;
-    tmpRect.w = tmpSurface->w;
-    tmpRect.h = tmpSurface->h;
+	SDL_Rect tmpRect{0, 0, tmpSurface->w, tmpSurface->h};
 
     SDL_BlitScaled(_SURFACES[type],NULL,tmpSurface,&tmpRect);
 
@@ -270,11 +207,7 @@ SDL_Surface* SheetManager::createClipBoard(int w, int h){
 
 void SheetManager::addClipboard(SDL_Surface*& target){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = 1;
-    tmpRect.y = 1;
-    tmpRect.w = target->w-2;
-    tmpRect.h = target->h-2;
+	SDL_Rect tmpRect{1, 1, target->w - 2, target->h - 2};
 
     //"Add" clipboard(background stuff) to my surface
     SDL_BlitScaled(_SURFACES[BOARD],NULL,target,&tmpRect);
@@ -284,13 +217,17 @@ void SheetManager::addLineBorders(SDL_Surface*& target, lineType type){
 
     surfaceType mainType;
     surfaceType lineType;
+
     switch(type){
+
         case PINGUI_WINDOW:{
+
             mainType = WINDOW_BACKGROUND;
             lineType = WINDOW_LINE;
             break;
         }
         case PINGUI_CLIPBOARD:{
+
             mainType = BOARD;
             lineType = BORDER_LINE;
             break;
@@ -305,26 +242,22 @@ void SheetManager::addLineBorders(SDL_Surface*& target, lineType type){
     int line_length = target->w-4;
     SDL_Surface* upDownLine = createCloneSurface(line_length,1,mainType);
 
-    SDL_Rect tmpRect;
-    tmpRect.x = 0;
-    tmpRect.y = 0;
-    tmpRect.w = line_length;
-    tmpRect.h = 1;
+	SDL_Rect upDownLineRect{0, 0, line_length, 1};
 
     //Now i create "the right" line surface
-    SDL_BlitScaled(_SURFACES[lineType],NULL,upDownLine,&tmpRect);
+    SDL_BlitScaled(_SURFACES[lineType],NULL,upDownLine,&upDownLineRect);
 
 
-    tmpRect.x = 2;
+	upDownLineRect.x = 2;
 
     //Now i need to add the lines to target surface
     //First the upper line
-    SDL_BlitSurface(upDownLine,NULL,target,&tmpRect);
+    SDL_BlitSurface(upDownLine,NULL,target,&upDownLineRect);
 
 
     //And now the down line
-    tmpRect.y = target->h-1;
-    SDL_BlitSurface(upDownLine,NULL,target,&tmpRect);
+	upDownLineRect.y = target->h-1;
+    SDL_BlitSurface(upDownLine,NULL,target,&upDownLineRect);
 
     //Clean the memory
     SDL_FreeSurface(upDownLine);
@@ -337,20 +270,17 @@ void SheetManager::addLineBorders(SDL_Surface*& target, lineType type){
     SDL_Surface* bottomLine = createCloneSurface(1,line_height,mainType);
 
     //Remake the rect
-    tmpRect.x = 0;
-    tmpRect.y = 0;
-    tmpRect.w = 1;
-    tmpRect.h = line_height;
+	SDL_Rect leftRightLine{ 0, 0, 1, line_height };
 
     //Now i create "the right" line surface
-    SDL_BlitScaled(_SURFACES[lineType],NULL,bottomLine,&tmpRect);
+    SDL_BlitScaled(_SURFACES[lineType],NULL,bottomLine,&leftRightLine);
 
     //Blit them to surface
-    tmpRect.y = 2;
-    SDL_BlitSurface(bottomLine,NULL,target,&tmpRect);
+	leftRightLine.y = 2;
+    SDL_BlitSurface(bottomLine,NULL,target,&leftRightLine);
 
-    tmpRect.x = target->w-1;
-    SDL_BlitSurface(bottomLine,NULL,target,&tmpRect);
+	leftRightLine.x = target->w-1;
+    SDL_BlitSurface(bottomLine,NULL,target,&leftRightLine);
 
     //Free the memory
     SDL_FreeSurface(bottomLine);
@@ -383,8 +313,6 @@ void SheetManager::addVertexBorders(SDL_Surface*& target, lineType type){
     //First TL
     tmpRect.x = 0;
     tmpRect.y = 0;
-    tmpRect.w = LINE_W;
-    tmpRect.h = LINE_H;
 
     SDL_SetSurfaceBlendMode(_SURFACES[mainType],SDL_BLENDMODE_BLEND);
     SDL_SetSurfaceBlendMode(_SURFACES[mainType+1],SDL_BLENDMODE_BLEND);
@@ -412,29 +340,20 @@ void SheetManager::addVertexBorders(SDL_Surface*& target, lineType type){
 void SheetManager::loadWindowTab(SDL_Surface*& sourceSurface){
 
     //At first i load tab texture
-    SDL_Rect tmpRect;
-    tmpRect.x = PINGUI_WINDOW_TAB_X;
-    tmpRect.y = PINGUI_WINDOW_TAB_Y;
-    tmpRect.w = PINGUI_WINDOW_TAB_W;
-    tmpRect.h = PINGUI_WINDOW_TAB_H;
-    uploadSurface(tmpRect,sourceSurface);
+	SDL_Rect tabRect{ PINGUI_WINDOW_TAB_X , PINGUI_WINDOW_TAB_Y , PINGUI_WINDOW_TAB_W , PINGUI_WINDOW_TAB_H };
 
+    uploadSurface(tabRect,sourceSurface);
 
     //Now the line
-    tmpRect.x = PINGUI_WINDOW_TAB_LINE_X;
-    tmpRect.y = PINGUI_WINDOW_TAB_LINE_Y;
-    tmpRect.w = 10;
-    tmpRect.h = 1;
-    uploadSurface(tmpRect,sourceSurface);
+	SDL_Rect tabLine{ PINGUI_WINDOW_TAB_LINE_X , PINGUI_WINDOW_TAB_LINE_X , PINGUI_WINDOW_TAB_LINE_W, PINGUI_WINDOW_TAB_LINE_H };
+
+    uploadSurface(tabLine,sourceSurface);
 }
 
 void SheetManager::loadWindowExitButton(SDL_Surface*& sourceSurface){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = PINGUI_WINDOW_EXITBUTTON_X;
-    tmpRect.y = PINGUI_WINDOW_EXITBUTTON_Y;
-    tmpRect.w = PINGUI_WINDOW_EXITBUTTON_W;
-    tmpRect.h = PINGUI_WINDOW_EXITBUTTON_H;
+	SDL_Rect tmpRect{ PINGUI_WINDOW_EXITBUTTON_X, PINGUI_WINDOW_EXITBUTTON_Y , PINGUI_WINDOW_EXITBUTTON_W , PINGUI_WINDOW_EXITBUTTON_H };
+
     uploadSurface(tmpRect,sourceSurface);
 }
 
@@ -470,11 +389,7 @@ SDL_Surface* SheetManager::createWindowTab(int w, int h){
 
 void SheetManager::addTabBackGround(SDL_Surface*& target){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = 0;
-    tmpRect.y = 1;
-    tmpRect.w = target->w;
-    tmpRect.h = target->h;
+	SDL_Rect tmpRect{0, 1, target->w, target->h};
 
     //"Add" background stuff to my surface
     SDL_BlitScaled(_SURFACES[WINDOW_TAB],NULL,target,&tmpRect);
@@ -482,11 +397,7 @@ void SheetManager::addTabBackGround(SDL_Surface*& target){
 
 void SheetManager::addTabLines(SDL_Surface*& target){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = 0;
-    tmpRect.y = 0;
-    tmpRect.w = target->w;
-    tmpRect.h = 1;
+	SDL_Rect tmpRect{0, 0, target->w, 1};
 
     //Now blit it to target Surface
     SDL_BlitScaled(_SURFACES[WINDOW_TAB_LINE],NULL,target,&tmpRect);
@@ -496,25 +407,17 @@ void SheetManager::addTabLines(SDL_Surface*& target){
 
 void SheetManager::loadWindow(SDL_Surface*& sourceSurface){
 
-    SDL_Rect tmpRect;
+	SDL_Rect tmpRect{ PINGUI_WINDOW_X, PINGUI_WINDOW_Y , PINGUI_WINDOW_W , PINGUI_WINDOW_H };
 
-    tmpRect.x = PINGUI_WINDOW_X;
-    tmpRect.y = PINGUI_WINDOW_Y;
-    tmpRect.w = PINGUI_WINDOW_W;
-    tmpRect.h = PINGUI_WINDOW_H;
     uploadSurface(tmpRect,sourceSurface);
 
     loadWindowBorders(sourceSurface);
-
 }
 
 void SheetManager::loadWindowBorders(SDL_Surface*& sourceSurface){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = PINGUI_WINDOW_LINE_X;
-    tmpRect.y = PINGUI_WINDOW_LINE_Y;
-    tmpRect.w = PINGUI_WINDOW_LINE_W;
-    tmpRect.h = PINGUI_WINDOW_LINE_H;
+	SDL_Rect tmpRect{ PINGUI_WINDOW_LINE_X, PINGUI_WINDOW_LINE_Y, PINGUI_WINDOW_LINE_W, PINGUI_WINDOW_LINE_H };
+
     uploadSurface(tmpRect,sourceSurface);
 
     tmpRect.w = 3;
@@ -535,16 +438,11 @@ void SheetManager::loadWindowBorders(SDL_Surface*& sourceSurface){
     tmpRect.x = PINGUI_WINDOW_BR_X;
     tmpRect.y = PINGUI_WINDOW_BR_Y;
     uploadSurface(tmpRect,sourceSurface);
-
 }
 
 void SheetManager::addBackground(SDL_Surface*& target){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = 1;
-    tmpRect.y = 1;
-    tmpRect.w = target->w-2;
-    tmpRect.h = target->h-2;
+    SDL_Rect tmpRect{ 1, 1, target->w - 2, target->h - 2 };
 
     //"Add" clipboard(background stuff) to my surface
     SDL_SetSurfaceAlphaMod(_SURFACES[WINDOW_BACKGROUND],240);
@@ -599,6 +497,7 @@ SDL_Surface* SheetManager::createWindowScroller(int value, PinGUI::manipulationS
         ErrorManager::systemError("Sheetmanager::createWindowScroller received a bad manip state");
     }
 
+	return nullptr;
 }
 
 SDL_Surface* SheetManager::createVerticalScroller(const int& h){
@@ -638,11 +537,7 @@ SDL_Surface* SheetManager::createCloneSurface(int w, int h, surfaceType source){
 
 void SheetManager::blitSurface(int x, int y, int w, int h, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode){
 
-    SDL_Rect tmpRect;
-    tmpRect.x = x;
-    tmpRect.y = y;
-    tmpRect.w = w;
-    tmpRect.h = h;
+    SDL_Rect tmpRect{ x,y,w,h };
 
     if (mode!=SDL_BLENDMODE_NONE) SDL_SetSurfaceBlendMode(_SURFACES[source],mode);
 
@@ -651,11 +546,7 @@ void SheetManager::blitSurface(int x, int y, int w, int h, surfaceType source, S
 
 void SheetManager::blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode){
 
-    SDL_Rect TmpRect;
-    TmpRect.x = tmpRect.x;
-    TmpRect.y = tmpRect.y;
-    TmpRect.w = tmpRect.w;
-    TmpRect.h = tmpRect.h;
+	SDL_Rect TmpRect{ int(tmpRect.x),int(tmpRect.y),tmpRect.w,tmpRect.h };
 
     if (mode!=SDL_BLENDMODE_NONE) SDL_SetSurfaceBlendMode(_SURFACES[source],mode);
 
@@ -664,12 +555,11 @@ void SheetManager::blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Sur
 
 void SheetManager::loadWindowScrollerArrows(SDL_Surface*& sourceSurface){
 
-    SDL_Rect tmpRect;
-    tmpRect.w = PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_W;
-    tmpRect.h = PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_H;
+	SDL_Rect tmpRect{ PINGUI_WINDOW_SCROLLER_ARROW_UP_X ,
+					  PINGUI_WINDOW_SCROLLER_ARROW_UP_Y ,
+					  PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_W ,
+					  PINGUI_WINDOW_SCROLLER_ARROW_UPDOWN_H };
 
-    tmpRect.x = PINGUI_WINDOW_SCROLLER_ARROW_UP_X;
-    tmpRect.y = PINGUI_WINDOW_SCROLLER_ARROW_UP_Y;
     uploadSurface(tmpRect,sourceSurface);
 
     tmpRect.x = PINGUI_WINDOW_SCROLLER_ARROW_DOWN_X;
@@ -690,12 +580,7 @@ void SheetManager::loadWindowScrollerArrows(SDL_Surface*& sourceSurface){
 
 void SheetManager::loadWindowScrollerFill(SDL_Surface*& sourceSurface){
 
-    SDL_Rect tmpRect;
-
-    tmpRect.x = PINGUI_WINDOW_SCROLLER_FILL_X;
-    tmpRect.y = PINGUI_WINDOW_SCROLLER_FILL_Y;
-    tmpRect.w = 1;
-    tmpRect.h = 1;
+	SDL_Rect tmpRect{ PINGUI_WINDOW_SCROLLER_FILL_X , PINGUI_WINDOW_SCROLLER_FILL_Y , 1, 1};
 
     uploadSurface(tmpRect,sourceSurface);
 }
@@ -710,7 +595,6 @@ void SheetManager::addRectangleBorders(SDL_Surface*& target, surfaceType line){
     //Bottom line
     blitSurface(0,target->h-1,target->w,1,WINDOW_SCROLLER_LINE,target);
 
-
     /** RIGHT&LEFT LINES **/
 
     //Left
@@ -724,7 +608,6 @@ SDL_Surface* SheetManager::createRectangle(int w, int h, surfaceType background,
 
     SDL_Surface* final_Surface = createCloneSurface(w,h,background);
 
-
     //Background
     if (background != BLANK_SURFACE)
         blitSurface(1,1,w-1,h-1,background,final_Surface);
@@ -737,6 +620,5 @@ SDL_Surface* SheetManager::createRectangle(int w, int h, surfaceType background,
 }
 
 void SheetManager::putOnSurface(SDL_Surface* src, surfaceType target, int x, int y){
-
     blitSurface(x,y,_SURFACES[target]->w,_SURFACES[target]->h,target,src,SDL_BLENDMODE_BLEND);
 }

@@ -53,7 +53,7 @@ class CrossBox: public GUI_Element
 
         void change();
     public:
-        CrossBox(int x, int y, bool* var);
+        CrossBox(GUIPos x, GUIPos y, bool* var);
         ~CrossBox();
 
         void info() override;

@@ -37,7 +37,7 @@ class StringText: public Text
         /**
             Private methods
         **/
-        void reloadString();
+        void reloadString(); 
 
     public:
         StringText(PinGUI::Vector2<GUIPos> pos, textInfo* info, std::string* Variable);

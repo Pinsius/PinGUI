@@ -102,9 +102,9 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
 
         void addSprite(PinGUI::Rect rect,SDL_Surface* source,SDL_Color color);
         void addSprite(PinGUI::Rect rect,SDL_Surface* source);
-        void addSprite(int x, int y, SDL_Surface* source);
+        void addSprite(GUIPos x, GUIPos y, SDL_Surface* source);
 
-        void addCollider(float x, float y, int w, int h);
+        void addCollider(GUIPos x, GUIPos y, int w, int h);
         void addCollider(PinGUI::Rect tmpRect);
 
         void deleteSprite(int pos);
@@ -177,7 +177,7 @@ class GUI_Element: public std::enable_shared_from_this<GUI_Element>
         bool getCollidable();
 
         /// By default it returns first sprite, if you put -1 here, it will return the back of the container
-        std::shared_ptr<GUI_Sprite> getSprite(int pos = 0);
+        std::shared_ptr<GUI_Sprite> getSprite(unsigned int pos = 0);
 
         void loadData(std::vector<vboData>* vboData);
 

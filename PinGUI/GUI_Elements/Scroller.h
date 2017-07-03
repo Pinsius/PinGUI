@@ -59,7 +59,7 @@ class Scroller: public GUI_Element
         PinGUI::scrollFuncPointer _cameraRoll;
 
         //Keep track of addition/dec of var
-        int _oldPos;
+        float _oldPos;
 
         int _oldDiff;
 

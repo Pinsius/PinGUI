@@ -88,6 +88,8 @@ float VolumeBoard::getVar(){
             return _dataStorage->getFloat()->getVar();
         }
     }
+
+	return 0.0f;
 }
 
 void VolumeBoard::addMover(PinGUI::Rect& tmpRect){
@@ -141,6 +143,8 @@ bool VolumeBoard::needMove(){
             return _dataStorage->getFloat()->changed();
         }
     }
+
+	return false;
 }
 
 void VolumeBoard::moveMover(){
@@ -154,7 +158,7 @@ void VolumeBoard::moveMover(){
 
     *_needUpdate = true;
 
-    int distance = getDistance();
+    float distance = getDistance();
 
     calculateFill(distance);
     checkMover();
@@ -174,7 +178,7 @@ void VolumeBoard::moveMover(int distance){
     _COLLIDERS[0].realRect.x = _COLLIDERS[0].rect.x;
 }
 
-int VolumeBoard::calculatePosition(){
+GUIPos VolumeBoard::calculatePosition(){
     return _SPRITES[VOL_BACKGROUND]->getGUIRect_P()->realRect.x + VOLUMEBOARD_MOVER_OFFSET+(getVar() * _ratio);
 }
 
@@ -226,7 +230,7 @@ void VolumeBoard::manipulatingMod(manip_Element manipulatingElement){
 
 void VolumeBoard::modifyVar(){
 
-    int distance = getDistance();
+    float distance = getDistance();
 
 
     switch(_storageType){
@@ -235,7 +239,7 @@ void VolumeBoard::modifyVar(){
 
             auto _var = _dataStorage->getInt()->getVar_P();
 
-            *_var = distance/_ratio;
+            *_var = int(distance/_ratio);
 
             //Checking the min and max
             if (*_var<=0)
@@ -257,7 +261,7 @@ void VolumeBoard::modifyVar(){
             if (*_var<=0)
                 *_var = 0;
             else if (*_var>_max)
-                *_var = _max;
+                *_var = float(_max);
 
             _dataStorage->getFloat()->equalVar();
 
@@ -268,17 +272,17 @@ void VolumeBoard::modifyVar(){
     moveMover();
 }
 
-void VolumeBoard::calculateFill(int& distance){
+void VolumeBoard::calculateFill(const float& distance){
 
     if (distance>=0 && distance< _SPRITES[VOL_BACKGROUND]->getGUIRect_P()->realRect.w)
-        _SPRITES[VOL_FILL]->setW(distance);
+        _SPRITES[VOL_FILL]->setW(int(distance));
     else if (distance<=0){
 
         _SPRITES[VOL_FILL]->setW(0);
         _COLLIDERS[0] = _SPRITES[VOL_MOVER]->getGUIRect();
     } else{
 
-        _SPRITES[VOL_FILL]->setW(_max*_ratio);
+        _SPRITES[VOL_FILL]->setW(int(_max*_ratio));
         _COLLIDERS[0] = _SPRITES[VOL_MOVER]->getGUIRect();
     }
 
@@ -295,7 +299,7 @@ void VolumeBoard::calculateFill(int& distance){
 
 void VolumeBoard::checkMover(){
 
-    int distance = getDistance();
+    float distance = getDistance();
 
     if (distance<0){
 

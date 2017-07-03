@@ -89,9 +89,9 @@ class VolumeBoard: public GUI_Element
 
         void checkMover();
 
-        void calculateFill(int& distance);
+        void calculateFill(const float& distance);
 
-        int calculatePosition();
+        GUIPos calculatePosition();
 
         bool listenForClick(manip_Element manipulatingElement) override;
 

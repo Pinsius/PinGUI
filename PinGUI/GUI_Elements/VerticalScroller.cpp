@@ -43,17 +43,14 @@ VerticalScroller::~VerticalScroller()
 
 void VerticalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _ELEMENTS){
 
-    PinGUI::basicPointer f1;
-    f1._function = boost::bind(&VerticalScroller::incScroller,this);
+    PinGUI::basicPointer f1(boost::bind(&VerticalScroller::incScroller, this));
 
-    PinGUI::basicPointer f2;
-    f2._function = boost::bind(&VerticalScroller::decScroller,this);
+    PinGUI::basicPointer f2(boost::bind(&VerticalScroller::decScroller, this));
 
-    PinGUI::Rect tmpRect;
-    tmpRect.w = WINDOW_ARROW_W;
-    tmpRect.h = WINDOW_ARROW_H;
-    tmpRect.x = getSprite()->getX()+PINGUI_WINDOW_LINE_W;
-    tmpRect.y = getSprite()->getY()+PINGUI_WINDOW_LINE_H;
+    PinGUI::Rect tmpRect(getSprite()->getX() + PINGUI_WINDOW_LINE_W,
+						 getSprite()->getY() + PINGUI_WINDOW_LINE_H,
+						 WINDOW_ARROW_WIDTH,
+						 WINDOW_ARROW_HEIGHT);
 
     //Down arrow
     auto tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),DOWN);
@@ -62,7 +59,7 @@ void VerticalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _
     _ARROWS.push_back(tmpArrow);
 
     //Up arrow
-    tmpRect.y = (getSprite()->getY()+getSprite()->getH())-WINDOW_ARROW_H;
+    tmpRect.y = (getSprite()->getY()+getSprite()->getH())-WINDOW_ARROW_HEIGHT;
 
     tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),UP);
     tmpArrow->setClickFunction(f2);
@@ -75,9 +72,9 @@ void VerticalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _
 
 void VerticalScroller::calculateRatio(const int& totalValue){
 
-    int numOfManipulationPixels = getSprite(1)->getY() - (_ARROWS[0]->getSprite()->getY() + _ARROWS[0]->getSprite()->getH());
+    int numOfManipulationPixels = int(getSprite(1)->getY() - (_ARROWS[0]->getSprite()->getY() + _ARROWS[0]->getSprite()->getH()));
 
-    _ratio = static_cast<float>(totalValue)/numOfManipulationPixels;
+    _ratio = int(static_cast<float>(totalValue)/numOfManipulationPixels);
 
     initNormalizer(totalValue,numOfManipulationPixels);
 }
@@ -97,11 +94,11 @@ int VerticalScroller::calculateScrollerSize(const int& value, int& totalValue){
     float windowPercentage = static_cast<float>(value)/static_cast<float>(totalValue);
 
     //Now need the possible length of scroller fill
-    int tmpLength = 0;
+	float tmpLength = 0.0f;
 
-    tmpLength = _ARROWS[1]->getSprite()->getY()-(_ARROWS[0]->getSprite()->getY()+WINDOW_ARROW_H);
+    tmpLength = _ARROWS[1]->getSprite()->getY()-(_ARROWS[0]->getSprite()->getY()+WINDOW_ARROW_HEIGHT);
 
-    return tmpLength*windowPercentage;
+    return int(tmpLength*windowPercentage);
 }
 
 void VerticalScroller::reloadScroller(int value, int totalValue){
@@ -153,7 +150,7 @@ void VerticalScroller::decide(){
         else
             diff += useNormalizer(MINUS,diff);
 
-        PinGUI::Vector2<GUIPos> tmpVec(0,diff);
+        PinGUI::Vector2<GUIPos> tmpVec(0.0f,float(diff));
 
         _cameraRoll.exec(tmpVec);
 
@@ -192,7 +189,7 @@ void VerticalScroller::decScroller(){
 
 int VerticalScroller::getDiff(){
 
-    return (_ARROWS[1]->getSprite()->getY() - (getSprite(1)->getY() + getSprite(1)->getH()));
+    return int(_ARROWS[1]->getSprite()->getY() - (getSprite(1)->getY() + getSprite(1)->getH()));
 }
 
 int VerticalScroller::useNormalizer(CHANGER change, int diff){

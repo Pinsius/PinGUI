@@ -41,8 +41,8 @@ void GUI_Cursor::updateCursor(){
     int x,y;
 
     SDL_GetMouseState(&x,&y);
-    _collisionRect.x = x;
-    _collisionRect.y = y;
+    _collisionRect.x = float(x);
+    _collisionRect.y = float(y);
 
     _collisionRect.y = PinGUI::Input_Manager::_screenHeight - _collisionRect.y;
 }
@@ -52,10 +52,10 @@ PinGUI::Rect GUI_Cursor::getCollider(){
     return _collisionRect;
 }
 
-int GUI_Cursor::getX(){
+GUIPos GUI_Cursor::getX(){
     return _collisionRect.x;
 }
 
-int GUI_Cursor::getY(){
+GUIPos GUI_Cursor::getY(){
     return _collisionRect.y;
 }

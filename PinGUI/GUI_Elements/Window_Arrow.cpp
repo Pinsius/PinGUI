@@ -86,6 +86,8 @@ SDL_Surface* Window_Arrow::chooseRightDirect(orientation& orient){
         case LEFT : return SheetManager::getSurface(WINDOW_ARROW_LEFT);
         case RIGHT : return SheetManager::getSurface(WINDOW_ARROW_RIGHT);
    }
+
+   return nullptr;
 }
 
 void Window_Arrow::setUpBackgroundSprite(const PinGUI::Rect& tmpRect){

@@ -319,9 +319,9 @@ namespace PinGUI{
 
     void Input_Manager::moveHorizontal(const int& tmpX, const int& tmpY){
 
-        int diff = tmpX - GUI_Cursor::getX();
+        int diff = tmpX - int(GUI_Cursor::getX());
 
-        _lastVector.x = diff;
+        _lastVector.x = float(diff);
 
         if (_manipulatingModInfo.manipState != WINDOW_MOVING)
             _manipulatedSprite->setX(_manipulatedSprite->getX()+diff);
@@ -329,10 +329,9 @@ namespace PinGUI{
 
     void Input_Manager::moveVertical(const int& tmpX, const int& tmpY){
 
-        int diff = tmpY - GUI_Cursor::getY();
+        int diff = tmpY - int(GUI_Cursor::getY());
 
-        _lastVector.y = diff;
-
+        _lastVector.y = float(diff);
 
         if (_manipulatingModInfo.manipState!=WINDOW_MOVING)
             _manipulatedSprite->setY(_manipulatedSprite->getY()+diff);
@@ -382,10 +381,10 @@ namespace PinGUI{
         _needUpdate = needUpdate;
     }
 
-    void Input_Manager::createManipulatingModInfo(int x, int y, manipulationState state){
+    void Input_Manager::createManipulatingModInfo(GUIPos x, GUIPos y, manipulationState state){
 
-        _manipulatingModInfo.lastX = x;
-        _manipulatingModInfo.lastY = y;
+        _manipulatingModInfo.lastX = int(x);
+        _manipulatingModInfo.lastY = int(y);
         _manipulatingModInfo.manipState = state;
     }
 

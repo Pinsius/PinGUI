@@ -37,13 +37,15 @@
     The main singleton for whole library
 **/
 
+typedef std::vector<std::shared_ptr<Window>> windowVector;
+
 class PINGUI
 {
     private:
 
-         static std::vector<std::shared_ptr<Window>> _ACTIVE_WINDOWS;
+         static windowVector _ACTIVE_WINDOWS;
 
-         static std::vector<std::shared_ptr<Window>> _NON_ACTIVE_WINDOWS;
+         static windowVector _NON_ACTIVE_WINDOWS;
 
          static std::shared_ptr<Window> _mainWindow;
 
@@ -57,11 +59,23 @@ class PINGUI
 
          static bool collide(std::shared_ptr<Window> win);
 
+		 static std::shared_ptr<Window> findWindow(const windowVector& vector, const std::string& winName);
+
     public:
 
-        static std::shared_ptr<Window> lastWindow;
+        static std::shared_ptr<Window> window;
+
+		static std::shared_ptr<WindowTab> winTab;
+
+		static std::shared_ptr<GUIManager> GUI;
+
+		static std::shared_ptr<TextManager> TEXT;
+
+		//Functions
 
         static void initLibrary(int screenWidth, int screenHeight);
+
+		static void normalize();
 
         static void processInput(SDL_Event* event = nullptr);
 
@@ -69,7 +83,7 @@ class PINGUI
 
         static void addWindow(std::shared_ptr<Window> win);
 
-        static void createWindow(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape = ROUNDED);
+        static void createWindow(windowDef* winDef);
 
         static void render();
 
@@ -84,6 +98,23 @@ class PINGUI
         static std::shared_ptr<GUIManager> getGUI();
 
         static PinGUI::basicPointer getFunctionPointer();
+
+		//Setting the tab target
+		static void bindTab(std::shared_ptr<WindowTab> tab);
+
+		//Setting the tab target via its name
+		static void bindTab(const std::string& tabName);
+
+		//Binding the window via its name tag
+		static void bindWindow(const std::string& windowName);
+		
+		//Initializing the GUI and TEXT
+		static void bindGUI(std::shared_ptr<Window> win);
+		static void bindGUI(std::shared_ptr<WindowTab> tab);
+		static void bindGUI(std::shared_ptr<GUIManager> gui);
+
+		//Set the GUIManager and TextManager to the default
+		static void resetGUI();
 };
 
 #endif // PINGUI_H

@@ -157,7 +157,7 @@ class GUIManager
 
         std::size_t getGUISize();
 
-        std::shared_ptr<GUI_Element> getGuiElement(int position = 0);
+        std::shared_ptr<GUI_Element> getGuiElement(unsigned int position = 0);
 
         std::shared_ptr<GUI_Element> getLastGuiElement();
 

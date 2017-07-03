@@ -24,7 +24,7 @@
 
 #include "CrossBox.h"
 
-CrossBox::CrossBox(int x, int y, bool* var):
+CrossBox::CrossBox(GUIPos x, GUIPos y, bool* var):
     _var(var),
     _last_var(*_var)
 {

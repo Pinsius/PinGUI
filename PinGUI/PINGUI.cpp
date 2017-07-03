@@ -24,15 +24,21 @@
 
 #include "PINGUI.h"
 
-std::vector<std::shared_ptr<Window>> PINGUI::_ACTIVE_WINDOWS;
+windowVector PINGUI::_ACTIVE_WINDOWS;
 
-std::vector<std::shared_ptr<Window>> PINGUI::_NON_ACTIVE_WINDOWS;
+windowVector PINGUI::_NON_ACTIVE_WINDOWS;
 
 std::shared_ptr<Window> PINGUI::_mainWindow = nullptr;
 
 std::shared_ptr<GUIManager> PINGUI::_mainGUIManager = nullptr;
 
-std::shared_ptr<Window> PINGUI::lastWindow = nullptr;
+std::shared_ptr<Window> PINGUI::window = nullptr;	
+
+std::shared_ptr<WindowTab> PINGUI::winTab = nullptr;
+
+std::shared_ptr<GUIManager> PINGUI::GUI = nullptr;
+
+std::shared_ptr<TextManager> PINGUI::TEXT = nullptr;
 
 void PINGUI::destroy(){
 
@@ -47,23 +53,32 @@ void PINGUI::addWindow(std::shared_ptr<Window> win){
 
     _ACTIVE_WINDOWS.push_back(win);
 
-    lastWindow = win;
+    window = win;
 
     if (!_mainWindow)
         _mainWindow = win;
 }
 
-void PINGUI::createWindow(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape){
+void PINGUI::createWindow(windowDef* winDef){
 
-    auto win = std::make_shared<Window>(mainFrame,tabs,type,shape);
+    auto win = std::make_shared<Window>(winDef);
     win->addElementsToManager();
 
     _ACTIVE_WINDOWS.push_back(win);
 
-    lastWindow = win;
+	window = win;
 
     if (!_mainWindow)
         _mainWindow = win;
+}
+
+void PINGUI::normalize() {
+
+	for (const auto& w : _ACTIVE_WINDOWS)
+		w->normalize();
+
+	for (const auto& w : _NON_ACTIVE_WINDOWS)
+		w->normalize();
 }
 
 void PINGUI::render(){
@@ -96,9 +111,6 @@ void PINGUI::update(){
 
     checkActiveWindows();
 
-    if (_mainGUIManager)
-        _mainGUIManager->update(allowUpdate);
-
     for (std::size_t i = _ACTIVE_WINDOWS.size(); i > 0; i--){
 
         _ACTIVE_WINDOWS[i-1]->update(allowUpdate);
@@ -107,6 +119,9 @@ void PINGUI::update(){
             allowUpdate = false;
         }
     }
+
+    if (_mainGUIManager)
+        _mainGUIManager->update(allowUpdate);
 }
 
 void PINGUI::setMainWindow(std::shared_ptr<Window> win){
@@ -208,4 +223,64 @@ void PINGUI::initStorage(){
 
     _ACTIVE_WINDOWS.reserve(WINDOW_STORAGE_SIZE);
     _NON_ACTIVE_WINDOWS.reserve(WINDOW_STORAGE_SIZE);
+}
+
+void PINGUI::bindTab(std::shared_ptr<WindowTab> tab) {
+	winTab = tab;
+	bindGUI(tab);
+}
+
+void PINGUI::bindTab(const std::string& tabName) {
+	winTab = window->getTab(tabName);
+	bindGUI(winTab);
+}
+
+void PINGUI::bindWindow(const std::string& windowName) {
+
+	//Check active windows first
+	std::shared_ptr<Window> resultWin = findWindow(_ACTIVE_WINDOWS,windowName);
+
+	//If it didn´t succeed loop through the non active windows
+	if (!resultWin)
+		resultWin = findWindow(_NON_ACTIVE_WINDOWS, windowName);
+
+	//Says the error log in case that u asked for window that doesn´t have entered name tag
+	if (!resultWin)
+		ErrorManager::errorLog("PINGUI::bindWindow", "Failed to bind window with following name: " + windowName);
+
+	window = resultWin;
+}
+
+void PINGUI::bindGUI(std::shared_ptr<Window> win) {
+	PINGUI::GUI = win->getGUI();
+	PINGUI::TEXT = PINGUI::GUI->getTextManager();
+}
+
+void PINGUI::bindGUI(std::shared_ptr<WindowTab> tab) {
+	PINGUI::GUI = tab->getGUI();
+	PINGUI::TEXT = PINGUI::GUI->getTextManager();
+}
+
+void PINGUI::bindGUI(std::shared_ptr<GUIManager> gui) {
+	PINGUI::GUI = gui;
+	PINGUI::TEXT = PINGUI::GUI->getTextManager();
+}
+
+void PINGUI::resetGUI() {
+	PINGUI::GUI = _mainGUIManager;
+	PINGUI::TEXT = PINGUI::GUI->getTextManager();
+}
+
+std::shared_ptr<Window> PINGUI::findWindow(const windowVector& vector, const std::string& winName) {
+	
+	std::shared_ptr<Window> tmpWin = nullptr;
+
+	for (const auto& w : vector) {
+
+		if (w->getNameTag() == winName)
+			tmpWin = w;
+
+		break;
+	}
+	return tmpWin;
 }

@@ -245,8 +245,11 @@ std::shared_ptr<Text> TextManager::getLastText(){
 
     if (_TEXTS.size()>0)
         return _TEXTS.back();
-    else
+	else 
         ErrorManager::errorLog("TextManager::getLastText()", "Tried to get a lastText with nullptr");
+
+	//Just for shutting the compiler warning down
+	return nullptr;
 }
 
 void TextManager::moveTextManager(const PinGUI::Vector2<GUIPos>& vect, bool croppedMovement){

@@ -137,7 +137,7 @@ void IntegerText::removeChar(){
 }
 
 float IntegerText::getVariableNum(){
-    return _tmpInteger;
+    return float(_tmpInteger);
 }
 
 bool IntegerText::checkCharAddition(char* ch, int& maxValue, int& minValue){

@@ -44,8 +44,20 @@
 
 #define CLIPBOARD_FLOAT_SIZE 7
 
-struct clipboardData{
+class clipboardData{
+public:
     std::shared_ptr<TextManager> texter;
+
+	clipboardData()
+	{
+
+	}
+
+	clipboardData(std::shared_ptr<TextManager> Texter) :
+		texter(Texter)
+	{
+
+	}
 };
 
 class ClipBoard: public GUI_Element
@@ -62,7 +74,7 @@ class ClipBoard: public GUI_Element
         int _minValue;
 
         //Max size of chars (or ints if its INT only clipboard)
-        int _maxSize;
+        unsigned int _maxSize;
 
         int _widthPerChar;
 
@@ -86,7 +98,7 @@ class ClipBoard: public GUI_Element
         void setMaxSize(int& maxSize);
         void calculateMaxSize();
 
-        PinGUI::Rect getSpriteRect(const GUIPos& tmp_width, const GUIPos& tmp_height, const PinGUI::Vector2<GUIPos> position);
+        PinGUI::Rect getSpriteRect(const int& tmp_width, const int& tmp_height, const PinGUI::Vector2<GUIPos> position);
 
         //Changing the sprite color to see if i have collision or not
         void manipulatingMod(manip_Element manipulatingElement) override;

@@ -244,7 +244,7 @@ void ClipBoard::setMaxSize(int& maxSize){
     }
 }
 
-PinGUI::Rect ClipBoard::getSpriteRect(const GUIPos& tmp_width, const GUIPos& tmp_height, const PinGUI::Vector2<GUIPos> position){
+PinGUI::Rect ClipBoard::getSpriteRect(const int& tmp_width, const int& tmp_height, const PinGUI::Vector2<GUIPos> position){
 
     PinGUI::Rect tmp;
 
@@ -252,6 +252,7 @@ PinGUI::Rect ClipBoard::getSpriteRect(const GUIPos& tmp_width, const GUIPos& tmp
     tmp.x = position.x+CLIPBOARD_COLLIDER_X;
     tmp.y = position.y+CLIPBOARD_COLLIDER_Y;
     tmp.w = tmp_width;
+
 
     if (_shape==ROUNDED)
         tmp.w += CLIPBOARD_COLLIDER_W;
@@ -367,7 +368,7 @@ void ClipBoard::fakeInputText(int& width, int& height, const clipboardData& data
 
     std::string tmpString;
 
-    for (int i = 0; i < _maxSize; i++)
+    for (unsigned int i = 0; i < _maxSize; i++)
         tmpString+='O';
 
     std::shared_ptr<GUI_Sprite> tmpSprite = std::make_shared<GUI_Sprite>(tmpString,data.texter->getTextInfo());

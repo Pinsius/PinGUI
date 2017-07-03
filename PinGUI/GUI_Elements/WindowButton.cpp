@@ -24,19 +24,19 @@
 
 #include "WindowButton.h"
 
-WindowButton::WindowButton(int x, int y, std::string name, clipboardData data):
+WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data):
     Button(x,y,name,data)
 {
 
 }
 
-WindowButton::WindowButton(int x, int y, std::string name, clipboardData data, PinGUI::basicPointer f):
+WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, PinGUI::basicPointer f):
     Button(x,y,name,f,data)
 {
     //ctor
 }
 
-WindowButton::WindowButton(int x, int y, std::string name, clipboardData data, PinGUI::basicPointer f, int maxSize):
+WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, PinGUI::basicPointer f, int maxSize):
     Button(x,y,name,f,data,maxSize)
 {
 

@@ -146,10 +146,10 @@ void Text::setPos(PinGUI::Vector2<GUIPos> setPos){
 
 void Text::calculateTextPosition(){
 
-    int tmpX = _offsetRect.x + (_offsetRect.w/2);
-    int tmpY = _offsetRect.y + (_offsetRect.h/2);
+    GUIPos tmpX = _offsetRect.x + (_offsetRect.w)/2;
+	GUIPos tmpY = _offsetRect.y + (_offsetRect.h)/2;
 
-    PinGUI::Vector2<GUIPos> pos(tmpX - (_sprite->getW()/2),tmpY - (_sprite->getH()/2));
+    PinGUI::Vector2<GUIPos> pos(tmpX - (_sprite->getW())/2,tmpY - (_sprite->getH())/2);
 
     setPos(pos);
 }

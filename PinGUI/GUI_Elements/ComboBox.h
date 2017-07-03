@@ -52,7 +52,7 @@ class ComboBox: public ClipBoard
         std::vector<std::shared_ptr<ComboBoxItem>> _ITEMS;
 
         //Maximum number of Items(that are allowed without scrolling)
-        int _maxNumberOfItems;
+        unsigned int _maxNumberOfItems;
 
         //The main collider for offseting the chosen text
         PinGUI::Rect _offsetCollider;
@@ -74,7 +74,7 @@ class ComboBox: public ClipBoard
         /**
             Private methods
         **/
-        void initMainSprites(int& x, int& y, clipboardData& data);
+        void initMainSprites(const GUIPos& x, const GUIPos& y, clipboardData& data);
 
         void loadCropArea(PinGUI::Vector2<GUIPos> vect);
 
@@ -93,16 +93,16 @@ class ComboBox: public ClipBoard
         void reMoveTabs();
 
     public:
-        ComboBox(int x,
-                 int y,
+        ComboBox(GUIPos x,
+			GUIPos y,
                  std::vector<std::string> itemList,
                  clipboardData data,
                  std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,
                  int maxNumOfItems,
                  bool* update);
 
-        ComboBox(int x,
-                 int y,
+        ComboBox(GUIPos x,
+				 GUIPos y,
                  std::vector<std::string> itemList,
                  clipboardData data,
                  std::vector<std::shared_ptr<GUI_Element>>* ELEMENTS,

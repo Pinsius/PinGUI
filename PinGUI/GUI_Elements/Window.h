@@ -69,10 +69,35 @@ inline void moverWidthCalculator(int& width, int& frameWidth){
     width = frameWidth - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_W - WINDOW_MOVER_WIDTH_MINUS;
 }
 
+//Better encapsulation of data
+class windowDef {
+	public:
+		PinGUI::Rect windowFrame;
+		std::vector<std::string> tabs;
+		windowElementType type;
+		element_shape shape;
+		std::string windowName;
+
+		windowDef(PinGUI::Rect WindowFrame, std::vector<std::string> Tabs, windowElementType Type, element_shape Shape = ROUNDED) :
+			windowFrame(WindowFrame),
+			tabs(Tabs),
+			type(Type),
+			shape(Shape),
+			windowName(BLANK)
+		{
+		}
+
+		//Default constr
+		windowDef() :
+			type(BOTH),
+			shape(ROUNDED)
+		{
+		}
+};
+
 /**
     tabName for easily controling the tab choose with just typping the name of the window tab
 **/
-
 class tabInfo{
 public:
     std::string tabName;
@@ -90,14 +115,6 @@ public:
         }
 };
 
-enum windowElementType
-{
-    NONE,
-    MOVER_ONLY,
-    EXIT_ONLY,
-    BOTH
-};
-
 class Window: public GUI_Element
 {
     private:
@@ -112,6 +129,9 @@ class Window: public GUI_Element
 
         //Shape (it can behave differently on different shapes)
         element_shape _shape;
+
+		//"Name tag" for window so it will be able to bind it at the later stage
+		std::string _windowName;
 
         //Elements important for every window - they need to be unique and saved via those pointers
         std::shared_ptr<WindowMover> _windowMover;
@@ -190,7 +210,7 @@ class Window: public GUI_Element
 
     public:
         Window(){};
-        Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape = ROUNDED);
+        Window(windowDef* winDef);
         ~Window();
 
         void addElementsToManager();
@@ -260,6 +280,8 @@ class Window: public GUI_Element
         PinGUI::Rect* getCropRect_P();
 
         PinGUI::Vector2<GUIPos> getRollbackVector();
+
+		const std::string& getNameTag() const;
 };
 
 #endif // WINDOW_H

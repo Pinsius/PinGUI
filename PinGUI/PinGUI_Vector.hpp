@@ -39,8 +39,8 @@ namespace PinGUI{
             //Default constructor and destructor
             // 0.0 default positions to avoid some problems with random allocations
             Vector2(){
-                this->x = 0.0f;
-                this->y = 0.0f;
+                this->x = 0;
+                this->y = 0;
             };
             ~Vector2(){};
 

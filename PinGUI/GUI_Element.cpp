@@ -130,9 +130,9 @@ bool GUI_Element::listenForClick(manip_Element manipulatingElement){
         return false;
     }
     return false;
-}
+} 
 
-void GUI_Element::addCollider(float x, float y, int w, int h){
+void GUI_Element::addCollider(GUIPos x, GUIPos y, int w, int h){
     _COLLIDERS.emplace_back(x,y,w,h);
 }
 
@@ -152,7 +152,7 @@ void GUI_Element::addSprite(PinGUI::Rect rect,SDL_Surface* source){
     _SPRITES.push_back(ptr);
 }
 
-void GUI_Element::addSprite(int x, int y, SDL_Surface* source){
+void GUI_Element::addSprite(GUIPos x, GUIPos y, SDL_Surface* source){
 
     PinGUI::Vector2<GUIPos> vect(x,y);
 
@@ -204,7 +204,7 @@ void GUI_Element::loadData(std::vector<vboData>* vboData){
     }
 }
 
-std::shared_ptr<GUI_Sprite> GUI_Element::getSprite(int pos){
+std::shared_ptr<GUI_Sprite> GUI_Element::getSprite(unsigned int pos){
 
     if (pos!=-1 && (pos>=0 && pos<_SPRITES.size()))
         return _SPRITES[pos];

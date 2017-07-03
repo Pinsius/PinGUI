@@ -25,7 +25,7 @@
 #include "Button.h"
 
 
-Button::Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboardData data)
+Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data)
 {
     _position.x = x;
     _position.y = y;
@@ -37,7 +37,7 @@ Button::Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboard
     initSprites(name,data);
 }
 
-Button::Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize)
+Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize)
 {
     _maxSize = maxSize;
 
@@ -49,7 +49,7 @@ Button::Button(int x, int y, std::string name, PinGUI::basicPointer f, clipboard
     initSprites(name,data);
 }
 
-Button::Button(int x, int y, std::string name, clipboardData data)
+Button::Button(GUIPos x, GUIPos y, std::string name, clipboardData data)
 {
     _maxSize = name.size();
 

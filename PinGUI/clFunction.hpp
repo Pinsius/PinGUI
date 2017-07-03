@@ -36,6 +36,17 @@ namespace PinGUI{
         public :
             std::function<void()> _function;
 
+			basicPointer()
+			{
+
+			}
+
+			basicPointer(std::function<void()> f) :
+				_function(f)
+			{
+
+			}
+
             void exec(){
 
                 if (_function){

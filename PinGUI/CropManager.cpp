@@ -104,7 +104,7 @@ void CropManager::cropHorizontally(PinGUI::Rect& cropRect, GUIRect& dstRect){
     //First need to know how to crop the rect
     if (collideFromLeft(cropRect,dstRect.realRect)){
 
-        _cropVar += cropRect.x - dstRect.realRect.getLeftPoint() + NORMALIZE_CONSTANT;
+        _cropVar += int(cropRect.x - dstRect.realRect.getLeftPoint() + NORMALIZE_CONSTANT);
 
         //In this case i have to move the rect X position
         dstRect.rect.x = cropRect.x - NORMALIZE_CONSTANT;
@@ -121,7 +121,7 @@ void CropManager::cropHorizontally(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
     if (collideFromRight(cropRect,dstRect.realRect)){
 
-        _cropVar +=  dstRect.realRect.getRightPoint() - cropRect.getRightPoint() - NORMALIZE_CONSTANT ;
+        _cropVar +=  int(dstRect.realRect.getRightPoint() - cropRect.getRightPoint() - NORMALIZE_CONSTANT) ;
 
         alreadyCropped = true;
     }
@@ -138,7 +138,7 @@ void CropManager::cropVertically(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
     if (collideFromBottom(cropRect,dstRect.realRect)){
 
-        _cropVar += cropRect.y - dstRect.realRect.y;
+        _cropVar += int(cropRect.y - dstRect.realRect.y);
 
         //In this case i have to move the rect Y position
         dstRect.rect.y = cropRect.y;
@@ -148,7 +148,7 @@ void CropManager::cropVertically(PinGUI::Rect& cropRect, GUIRect& dstRect){
 
     if (collideFromTop(cropRect,dstRect.realRect)){
 
-        _cropVar += dstRect.realRect.getTopPoint() - cropRect.getTopPoint();
+        _cropVar += int(dstRect.realRect.getTopPoint() - cropRect.getTopPoint());
 
         alreadyCropped = true;
     }
@@ -200,9 +200,9 @@ void CropManager::cropSpriteVertically(GUI_Sprite*& sprite, PinGUI::Rect& cropRe
 
     if (collideFromBottom(cropRect,rect.realRect) ){
 
-        _cropVar =  rect.realRect.getTopPoint() - cropRect.y;
+        _cropVar =  int(rect.realRect.getTopPoint() - cropRect.y);
 
-        cropSize -= cropRect.y - rect.realRect.getDownPoint();
+        cropSize -= int(cropRect.y - rect.realRect.getDownPoint());
 
         percentage.x = 1.0f - (static_cast<float>(_cropVar) / static_cast<float>(rect.realRect.h));
 
@@ -220,7 +220,7 @@ void CropManager::cropSpriteVertically(GUI_Sprite*& sprite, PinGUI::Rect& cropRe
 
     if (collideFromTop(cropRect,rect.realRect) ){
 
-        _cropVar = (rect.realRect.getTopPoint() - cropRect.getTopPoint()) ;
+        _cropVar = int(rect.realRect.getTopPoint() - cropRect.getTopPoint()) ;
 
         percentage.x = 1.0f - (static_cast<float>(_cropVar) / static_cast<float>(rect.realRect.h));
 
@@ -250,7 +250,7 @@ void CropManager::cropSpriteHorizontally(GUI_Sprite*& sprite, PinGUI::Rect& crop
 
     if (collideFromLeft(cropRect,rect.realRect)){
 
-        _cropVar = (cropRect.getLeftPoint() - rect.realRect.getLeftPoint()) + NORMALIZE_CONSTANT;
+        _cropVar = int((cropRect.getLeftPoint() - rect.realRect.getLeftPoint()) + NORMALIZE_CONSTANT);
 
         percentage.x = static_cast<float>(_cropVar) / static_cast<float>(rect.realRect.w);
 

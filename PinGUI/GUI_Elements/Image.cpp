@@ -24,7 +24,7 @@
 
 #include "Image.h"
 
-Image::Image(std::string filePath, int x, int y)
+Image::Image(std::string filePath, GUIPos x, GUIPos y)
 {
     _position.x = x;
     _position.y = y;
@@ -41,7 +41,7 @@ Image::Image(std::string filePath, int x, int y)
     _collidable = false;
 }
 
-Image::Image(std::string filePath, int x, int y, int width, int height){
+Image::Image(std::string filePath, GUIPos x, GUIPos y, int width, int height){
 
     _position.x = x;
     _position.y = y;

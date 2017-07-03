@@ -29,8 +29,8 @@
 
 #define BASIC_ARROW_Y_OFFSET 2
 
-#define WINDOW_ARROW_W 11
-#define WINDOW_ARROW_H 11
+#define WINDOW_ARROW_WIDTH 11
+#define WINDOW_ARROW_HEIGHT 11
 
 enum arrowCollider{
     WHOLE_RECT,

@@ -24,10 +24,11 @@
 
 #include "Window.h"
 
-Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElementType type, element_shape shape):
-    _mainFrame(mainFrame),
+Window::Window(windowDef* winDef):
+    _mainFrame(winDef->windowFrame),
     _tabMovementChecker(0,0),
-    _type(type),
+    _type(winDef->type),
+	_windowName(winDef->windowName),
     _windowUpdate(false),
     _tabChange(true),
     _needCrop(true),
@@ -37,9 +38,9 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
     _horizontalScroller(nullptr),
     _windowMover(nullptr),
     _windowExit(nullptr),
-    _shape(shape)
+    _shape(winDef->shape)
 {
-    initPosition(mainFrame);
+    initPosition(_mainFrame);
 
     //Creation of GUI manager
     _mainGUIManager = std::make_shared<GUIManager>();
@@ -52,15 +53,15 @@ Window::Window(PinGUI::Rect mainFrame, std::vector<std::string> tabs, windowElem
 
         //Create sprite of the whole window
 
-        if (shape==ROUNDED)
+        if (_shape ==ROUNDED)
             addSprite(tmpPositionRect,SheetManager::createWindow(tmpPositionRect.w,tmpPositionRect.h));
-        else if (shape==RECTANGLED)
+        else if (_shape ==RECTANGLED)
             addSprite(tmpPositionRect,SheetManager::createRectangle(tmpPositionRect.w,tmpPositionRect.h,WINDOW_BACKGROUND,WINDOW_LINE));
 
         addCollider(tmpPositionRect);
 
         //Now need to create the tabs
-        createTabs(tabs,tmpPositionRect);
+        createTabs(winDef->tabs,tmpPositionRect);
     }
 
     _mainWindowTab = _TABS[0]->windowTab;
@@ -231,18 +232,14 @@ void Window::addElementsToManager(){
 void Window::offsetTab(std::shared_ptr<WindowTab> tab){
 
     //Offset the windowTab
-    int tmpY = (getSprite()->getY()+getSprite()->getH())-WINDOW_TAB_OFFSET;
+    float tmpY = (getSprite()->getY()+getSprite()->getH())-WINDOW_TAB_OFFSET;
+
     tab->getSprite()->setY(tmpY-tab->getSprite()->getH());
 
     tmpY = getSprite()->getY()+getSprite()->getH()-(tab->getSprite()->getY()+tab->getSprite()->getH())-PINGUI_WINDOW_LINE_H;
 
     //Now the text
-    PinGUI::Rect tmp;
-
-    tmp.w = tab->getSprite()->getW();
-    tmp.x = tab->getSprite()->getX();
-    tmp.y = tab->getSprite()->getY();
-    tmp.h = tab->getSprite()->getH();
+    PinGUI::Rect tmp(tab->getSprite()->getX(), tab->getSprite()->getY(), tab->getSprite()->getW(), tab->getSprite()->getH());
 
     //Also manage the collider
     tab->setCollider(tmp);
@@ -260,7 +257,7 @@ void Window::createWindowMoverArea(){
 
     positionRect.x = _mainFrame.x + PINGUI_WINDOW_LINE_W+WINDOW_MOVER_X_OFFSET;
 
-    int tmpY = (getSprite()->getY()+getSprite()->getH())+WINDOW_MOVER_Y_OFFSET-PINGUI_WINDOW_LINE_H;
+    float tmpY = (getSprite()->getY()+getSprite()->getH())+WINDOW_MOVER_Y_OFFSET-PINGUI_WINDOW_LINE_H;
     positionRect.y = tmpY-positionRect.h;
 
     _windowMover = std::make_shared<WindowMover>(positionRect,&_windowUpdate);
@@ -520,7 +517,7 @@ int Window::calculateScrollerSize(PinGUI::manipulationState state){
 
         case PinGUI::VERTICAL : {
 
-            return _mainWindowTab->getSprite()->getY() - getSprite()->getY();
+            return int(_mainWindowTab->getSprite()->getY() - getSprite()->getY());
         }
         case PinGUI::HORIZONTAL : {
 
@@ -628,8 +625,7 @@ void Window::updateTabCamera(PinGUI::Vector2<GUIPos> vect){
 
 void Window::rollbackTabCamera(){
 
-    _tabMovementChecker.x *= -1;
-    _tabMovementChecker.y *= -1;
+    _tabMovementChecker = _tabMovementChecker * -1;
 
     _mainWindowTab->getGUI()->moveGUI(_tabMovementChecker);
 
@@ -661,7 +657,7 @@ void Window::setWindowCamRect(){
         _cameraRect.y = _COLLIDERS[0].rect.y+1;
     }
 
-    _cameraRect.h = _TABS[0]->windowTab->getSprite()->getY() - _cameraRect.y;
+    _cameraRect.h = int(_TABS[0]->windowTab->getSprite()->getY() - _cameraRect.y);
 
     //Same with width - because of vertical scroller
     if (isScrollerActive(_verticalScroller)){
@@ -695,6 +691,8 @@ std::shared_ptr<Scroller> Window::getScroller(PinGUI::manipulationState state){
             return _verticalScroller;
         }
     }
+
+	return nullptr;
 }
 
 void Window::setScrollerManagement(bool state){
@@ -728,4 +726,8 @@ void Window::reloadScroller(GUIPos diff,PinGUI::manipulationState state){
 
 PinGUI::Vector2<GUIPos> Window::getRollbackVector(){
     return _tabMovementChecker;
+}
+
+const std::string& Window::getNameTag() const {
+	return _windowName;
 }

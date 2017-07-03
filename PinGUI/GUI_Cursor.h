@@ -29,6 +29,7 @@
 
 #include "PinGUI_Rect.hpp"
 #include "Input_Manager.h"
+#include "stuff.h"
 
 #define CURSOR_WIDTH 1
 #define CURSOR_HEIGHT 1
@@ -45,9 +46,9 @@ class GUI_Cursor
 
         static PinGUI::Rect getCollider();
 
-        static int getX();
+        static GUIPos getX();
 
-        static int getY();
+        static GUIPos getY();
 };
 
 #endif // GUI_CURSOR_H

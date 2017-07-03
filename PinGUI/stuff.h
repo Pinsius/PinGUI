@@ -38,15 +38,15 @@ public:
         font(Font),
         color(Color)
         {
-        };
+        }; 
 
     textInfo(){};
 
     ~textInfo(){
-        delete font;
+		TTF_CloseFont(font);
     }
 
-    TTF_Font* font;
+    TTF_Font* font;  
     SDL_Color color;
 };
 
@@ -75,10 +75,19 @@ enum clipboard_type{
 
 enum element_shape{
     ROUNDED,
-    RECTANGLED
+    RECTANGLED 
+};
+
+enum windowElementType
+{
+	NONE,
+	MOVER_ONLY,
+	EXIT_ONLY,
+	BOTH
 };
 
 namespace PinGUI{
+
     enum gameState{
         GAME,
         GUI
@@ -105,8 +114,8 @@ namespace PinGUI{
     };
 
     struct manipulatingModInfo{
-        int lastX;
-        int lastY;
+		int lastX;
+		int lastY;
         manipulationState manipState;
     };
 }
