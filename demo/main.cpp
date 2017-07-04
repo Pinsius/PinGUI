@@ -46,7 +46,7 @@ void createGUI() {
 	windowDefinition.windowName = "Main window"; // This is the name tag of the window - via this you can access the window later
 
 	/*
-	* To acces the window with name tag use PINGUI::bindTab("Main window"); for window with name "Main window"
+	* To acces the window with name tag use PINGUI::bindWindow("Main window"); for window with name "Main window"
 	*/
 
 	//Create the window with a pointer to window definition
@@ -95,7 +95,7 @@ void createGUI() {
 
 	PINGUI::GUI->createImage("dog.png",0,0,400,400);
 
-	//Reset the GUI and TEXT so we doesn´t put it to any binded window/tab
+	//Reset the GUI and TEXT so we doesnÂ´t put it to any binded window/tab
 	PINGUI::resetGUI();
 
 	std::shared_ptr<WindowButton> ptr = std::make_shared<WindowButton>(15,350,"Start",PINGUI::GUI->getClipboardData());
