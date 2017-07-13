@@ -22,7 +22,6 @@ misrepresented as being the original software.
 #include <GL/glew.h>
 
 #include "PinGUI/PINGUI.h"
-#include "PinGUI/GUI_Elements/WindowButton.h"
 #include "FPS_Timer.h"
 
 SDL_Window* _mainWindow = nullptr;
@@ -45,11 +44,11 @@ void createGUI() {
 	windowDefinition.shape = ROUNDED; // Shape of the window
 	windowDefinition.windowName = "Main window"; // This is the name tag of the window - via this you can access the window later
 
-	/*
-	* To acces the window with name tag use PINGUI::bindWindow("Main window"); for window with name "Main window"
-	*/
+												 /*
+												 * To acces the window with name tag use PINGUI::bindTab("Main window"); for window with name "Main window"
+												 */
 
-	//Create the window with a pointer to window definition
+												 //Create the window with a pointer to window definition
 	PINGUI::createWindow(&windowDefinition);
 
 	//Setting Dimensions of window tabs we created before
@@ -66,7 +65,7 @@ void createGUI() {
 	**/
 
 	/*Bind the tab with the name "Normal" - it is binded from the actually binded window!
-	* It actually binds a GUI and TEXT so you can access them easier 
+	* It actually binds a GUI and TEXT so you can access them easier
 	*/
 	PINGUI::bindTab("Normal");
 
@@ -79,7 +78,7 @@ void createGUI() {
 
 	//Textbox - text functions accessible with TEXT
 	PINGUI::TEXT->writeText("Write some text here", 105, 25);
-	PINGUI::GUI->createClipBoard(55,55,NORMAL,28,ROUNDED);
+	PINGUI::GUI->createClipBoard(55, 55, NORMAL, 28, ROUNDED);
 
 	PINGUI::TEXT->writeText("These two elements have same variable", 20, 140);
 
@@ -87,22 +86,19 @@ void createGUI() {
 	PINGUI::GUI->createArrowBoard(65, 175, &sliderInteger, 1000, true, 0, PinGUI::HORIZONTAL);
 
 	//Checkbox
-	PINGUI::GUI->createCheckBox(10,	50,	&a);
+	PINGUI::GUI->createCheckBox(10, 50, &a);
 
 	/********** SECOND TAB *************/
 	//Binding another tab from our window
 	PINGUI::bindTab("Scrollable");
 
-	PINGUI::GUI->createImage("dog.png",0,0,400,400);
+	PINGUI::GUI->createImage("dog.png", 0, 0, 400, 400);
 
-	//Reset the GUI and TEXT so we doesnÂ´t put it to any binded window/tab
+	//Reset the GUI and TEXT so we doesn´t put it to any binded window/tab
 	PINGUI::resetGUI();
 
-	std::shared_ptr<WindowButton> ptr = std::make_shared<WindowButton>(15,350,"Start",PINGUI::GUI->getClipboardData());
-
-	ptr->setWindowTarget(PINGUI::window);
-
-	PINGUI::GUI->putElement(ptr);
+	//Creating window button
+	PINGUI::GUI->createWindowButton(15, 350, "Start", PINGUI::window);
 
 	//Instead of calling this function for every window, call it only one time after you create the GUI
 	PINGUI::normalize();
@@ -152,7 +148,6 @@ void update() {
 
 	SDL_Event e;
 
-
 	SDL_PollEvent(&e);
 
 	PINGUI::processInput(&e);
@@ -160,9 +155,7 @@ void update() {
 	if (e.type == SDL_QUIT) {
 		isRunning = false;
 	}
-
 	PINGUI::update();
-
 }
 
 void render() {

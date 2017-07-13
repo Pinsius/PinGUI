@@ -24,39 +24,53 @@
 
 #include "Button.h"
 
-
-Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data)
+Button::Button()
 {
-    _position.x = x;
-    _position.y = y;
 
-    _func = f;
+}
+
+Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data):
+	_func(f)
+{
+	initPosition(x, y);
 
     _maxSize = name.size();
 
     initSprites(name,data);
 }
 
-Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize)
+Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, clipboardData data, int maxSize):
+	_func(f)
 {
     _maxSize = maxSize;
 
-    _position.x = x;
-    _position.y = y;
-
-    _func = f;
+	initPosition(x, y);
 
     initSprites(name,data);
+}
+
+Button::Button(GUIPos x, GUIPos y, std::string name, clipboardData data, int maxSize) 
+{
+	_maxSize = maxSize;
+
+	initPosition(x, y);
+
+	initSprites(name, data);
 }
 
 Button::Button(GUIPos x, GUIPos y, std::string name, clipboardData data)
 {
     _maxSize = name.size();
 
-    _position.x = x;
-    _position.y = y;
+	initPosition(x, y);
 
     initSprites(name,data);
+}
+
+Button::Button(GUIPos x, GUIPos y, PinGUI::basicPointer f):
+	_func(f)
+{
+	initPosition(x, y);
 }
 
 Button::~Button()

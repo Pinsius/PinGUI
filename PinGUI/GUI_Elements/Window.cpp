@@ -60,8 +60,7 @@ Window::Window(windowDef* winDef):
 
         addCollider(tmpPositionRect);
 
-		std::cout << "ide create tabs" << std::endl;
-        //Now need to create the tabs
+		//Now need to create the tabs
         createTabs(winDef->tabs,tmpPositionRect);
 
     }

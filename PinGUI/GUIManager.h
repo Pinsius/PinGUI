@@ -52,6 +52,7 @@
 //For allocation of new VBO´s
 #define VBO_ALLOCATION_LIMIT 1000
 
+class Window;
 
 class GUIManager
 {
@@ -126,6 +127,12 @@ class GUIManager
 
         void createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f);
         void createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, int maxSize);
+
+		void createWindowButton(GUIPos x, GUIPos y, std::string name, std::shared_ptr<Window> window);
+		void createWindowButton(GUIPos x, GUIPos y, std::string name, std::shared_ptr<Window> window, int maxSize);
+
+		void createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::basicPointer f);
+		void createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float width, float height, PinGUI::basicPointer f);
 
         void moveGUI(PinGUI::Vector2<GUIPos> vect, bool croppedMovement = false);
         void moveGUITo(PinGUI::Vector2<GUIPos> vect);

@@ -66,32 +66,34 @@ enum CHANGER{
     PLUS
 };
 
-class GUI_Element: public std::enable_shared_from_this<GUI_Element>
+class GUI_Element : public std::enable_shared_from_this<GUI_Element>
 {
-    protected:
-        PinGUI::Vector2<GUIPos> _position;
+	protected:
+		PinGUI::Vector2<GUIPos> _position;
 
-        std::vector<std::shared_ptr<GUI_Sprite>> _SPRITES;
+		std::vector<std::shared_ptr<GUI_Sprite>> _SPRITES;
 
-        std::vector<GUIRect> _COLLIDERS;
+		std::vector<GUIRect> _COLLIDERS;
 
-        bool _aimON;
+		bool _aimON;
 
-        bool _collidable;
+		bool _collidable;
 
-        bool _show;
+		bool _show;
 
-        bool _exist;
+		bool _exist;
 
-        //It means element is a subElement to another element
-        bool _networkedElement;
+		//It means element is a subElement to another element
+		bool _networkedElement;
 
-        bool _allowCropp;
+		bool _allowCropp;
 
-        /**
-            Private methods
-        **/
-        void initPosition(const PinGUI::Rect& rect);
+		/**
+			Private methods
+		**/
+		void initPosition(const PinGUI::Rect& rect);
+
+		void initPosition(GUIPos x, GUIPos y);
 
     public:
 

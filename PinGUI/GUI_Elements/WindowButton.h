@@ -36,8 +36,8 @@ class WindowButton: public Button
 
     public:
         WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data);
-        WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, PinGUI::basicPointer f);
-        WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, PinGUI::basicPointer f, int maxSize);
+        WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, std::shared_ptr<Window> target);
+        WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, std::shared_ptr<Window> target, int maxSize);
         ~WindowButton();
 
         void onClick() override;

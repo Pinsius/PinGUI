@@ -622,3 +622,14 @@ SDL_Surface* SheetManager::createRectangle(int w, int h, surfaceType background,
 void SheetManager::putOnSurface(SDL_Surface* src, surfaceType target, int x, int y){
     blitSurface(x,y,_SURFACES[target]->w,_SURFACES[target]->h,target,src,SDL_BLENDMODE_BLEND);
 }
+
+SDL_Surface* SheetManager::loadCustomSurface(const std::string& filePath) {
+
+	SDL_Surface* result = nullptr;
+	result = IMG_Load(filePath.c_str());
+
+	if (!result)
+		ErrorManager::fileError("Failed to load custom surface from : " + filePath);
+	
+	return result;
+}

@@ -24,6 +24,9 @@
 
 #include "GUIManager.h"
 
+#include "GUI_Elements\WindowButton.h"
+#include "GUI_Elements\IconButton.h"
+
 GUIManager::GUIManager():
     _needUpdate(false),
     _manipulatingMod(false),
@@ -267,6 +270,42 @@ void GUIManager::createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basi
     _needUpdate = true;
 }
 
+void GUIManager::createWindowButton(GUIPos x, GUIPos y, std::string name, std::shared_ptr<Window> window) {
+
+	clipboardData tmp(getTextManager());
+
+	auto ptr = std::make_shared<WindowButton>(x, y, name, tmp, window);
+	_ELEMENTS.push_back(ptr);
+
+	_needUpdate = true;
+}
+
+void GUIManager::createWindowButton(GUIPos x, GUIPos y, std::string name, std::shared_ptr<Window> window, int maxSize) {
+
+	clipboardData tmp(getTextManager());
+
+	auto ptr = std::make_shared<WindowButton>(x, y, name, tmp, window, maxSize);
+	_ELEMENTS.push_back(ptr);
+
+	_needUpdate = true;
+}
+
+void GUIManager::createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::basicPointer f) {
+
+	auto ptr = std::make_shared<IconButton>(x, y, iconPicturePath,f);
+	_ELEMENTS.push_back(ptr);
+
+	_needUpdate = true;
+}
+
+void GUIManager::createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float width, float height, PinGUI::basicPointer f) {
+
+	auto ptr = std::make_shared<IconButton>(x, y, iconPicturePath, width, height, f);
+	_ELEMENTS.push_back(ptr);
+
+	_needUpdate = true;
+}
+
 void GUIManager::createCheckBox(GUIPos x, GUIPos y, bool* var){
 
     auto ptr = std::make_shared<CrossBox>(x,y,var);
@@ -414,7 +453,6 @@ void GUIManager::checkCollisions(){
 
             if (!_collidingElement->collide(_needUpdate,_manipulatingElement)){
 
-                _collidingElement->setWritingAvailability(false);
                 _collidingElement = nullptr;
 
                 _needUpdate = true;

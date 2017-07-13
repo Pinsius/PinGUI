@@ -47,6 +47,12 @@ namespace PinGUI{
 
 			}
 
+			basicPointer(const basicPointer& p2) :
+				_function(p2._function)
+			{
+
+			}
+
             void exec(){
 
                 if (_function){

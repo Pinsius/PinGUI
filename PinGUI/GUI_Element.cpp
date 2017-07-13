@@ -91,8 +91,12 @@ void GUI_Element::turnOnAim(){
 
 void GUI_Element::turnOffAim(){
 
-    _aimON = false;
-    setWritingAvailability(_aimON);
+	if (_aimON != false) {
+		_aimON = false;
+
+
+		setWritingAvailability(_aimON);
+	}
 
     if (!PinGUI::Input_Manager::isOnWindow()){
         PinGUI::Input_Manager::setState(PinGUI::GAME);
@@ -328,8 +332,13 @@ float GUI_Element::getTopPoint(int pos){
 }
 
 void GUI_Element::initPosition(const PinGUI::Rect& rect){
-    _position.x = rect.x;
-    _position.y = rect.y;
+
+	_position = PinGUI::Vector2<GUIPos>(rect.x, rect.y);
+}
+
+void GUI_Element::initPosition(GUIPos x, GUIPos y)
+{
+	_position = PinGUI::Vector2<GUIPos>(x, y);
 }
 
 PinGUI::Vector2<GUIPos> GUI_Element::getPositionVector(){

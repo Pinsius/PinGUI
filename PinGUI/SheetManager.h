@@ -285,6 +285,8 @@ class SheetManager
         /**
             Public Methods
         **/
+		static SDL_Surface* loadCustomSurface(const std::string& filePath);
+
         static void loadSurface(enum surfaceType,SDL_Surface* wholeSurface);
 
         static void loadAllTextures();
@@ -328,7 +330,6 @@ class SheetManager
         static void addTabLines(SDL_Surface*& target);
 
         static void uploadSurface(SDL_Rect& cropRect, SDL_Surface* sourceSurface);
-        static void uploadSurface(PinGUI::Rect& cropRect, SDL_Surface* sourceSurface);
 
         static SDL_Surface* getSurface(enum surfaceType);
 

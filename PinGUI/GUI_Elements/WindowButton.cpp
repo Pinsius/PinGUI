@@ -30,14 +30,16 @@ WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData d
 
 }
 
-WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, PinGUI::basicPointer f):
-    Button(x,y,name,f,data)
+WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, std::shared_ptr<Window> target):
+    Button(x,y,name,data),
+	_target(target)
 {
     //ctor
 }
 
-WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, PinGUI::basicPointer f, int maxSize):
-    Button(x,y,name,f,data,maxSize)
+WindowButton::WindowButton(GUIPos x, GUIPos y, std::string name, clipboardData data, std::shared_ptr<Window> target, int maxSize):
+    Button(x,y,name,data,maxSize),
+	_target(target)
 {
 
 }
