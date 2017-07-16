@@ -98,7 +98,7 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
 
     for (std::size_t i = 0; i < tabs.size(); i++){
 
-        auto winTab = std::make_shared<WindowTab>(calculateSize(tabs.size(),positionRect,i),
+        auto winTab = std::make_shared<WindowTab>(calculateSize(int(tabs.size()),positionRect,i),
                                                   &_mainWindowTab,
                                                   &_tabChange);
 
@@ -390,11 +390,7 @@ void Window::createVerticalScroller(int height){
 
     PinGUI::Vector2<GUIPos> position;
 
-    position.x = _TABS.back()->windowTab->getSprite()->getX() + _TABS.back()->windowTab->getSprite()->getW() - PINGUI_WINDOW_DEFAULT_SCROLLER_W + PINGUI_WINDOW_LINE_W;
-
-    if (_shape==RECTANGLED)
-        position.x -= RECTANGLE_VERTICAL_SCROLLER_OFFSET;
-
+    position.x = getSprite()->getX() + getSprite()->getW() - PINGUI_WINDOW_DEFAULT_SCROLLER_W;
 
     position.y = _TABS.back()->windowTab->getSprite()->getY() - height + PINGUI_WINDOW_LINE_H;
 
@@ -413,11 +409,10 @@ void Window::createHorizontalScroller(int width){
 
     //First need to create a scroller
     //Multiplying it by 2 because i count the line from left and right side
-    width += PINGUI_WINDOW_LINE_W*2;
 
     PinGUI::Vector2<GUIPos> position;
 
-    position.x = _TABS[0]->windowTab->getSprite()->getX();
+    position.x = getSprite()->getX();
     position.y = getSprite()->getY();
 
     _horizontalScroller = std::make_shared<HorizontalScroller>(position,
@@ -591,7 +586,7 @@ void Window::adjustHorizontalScrollerWidth(){
         _horizontalScroller->getSprite()->setW(getSprite()->getW() - _verticalScroller->getSprite()->getW());
     } else {
 
-        _horizontalScroller->getSprite()->setW(_mainFrame.w + (PINGUI_WINDOW_LINE_W*2));
+        _horizontalScroller->getSprite()->setW(_mainFrame.w);
     }
     _horizontalScroller->modifyArrowPos();
 }
@@ -671,8 +666,7 @@ void Window::setWindowCamRect(){
 
     _cameraRect.x++;
 
-    if (_shape==RECTANGLED)
-        _cameraRect.w -= RECTANGLE_VERTICAL_SCROLLER_OFFSET;
+     _cameraRect.w -= RECTANGLE_VERTICAL_SCROLLER_OFFSET;
 
     _cameraRect.w++;
 }
@@ -731,4 +725,25 @@ PinGUI::Vector2<GUIPos> Window::getRollbackVector(){
 
 const std::string& Window::getNameTag() const {
 	return _windowName;
+}
+
+void Window::setAlpha(Uint8 a) {
+
+	//Some additional settings as well
+
+	GUI_Element::setAlpha(a);
+}
+
+void Window::setWindowTitle(const std::string& newTitle){
+
+	if (_mainGUIManager->getTextManager()->getMainTextStorage()->size() > 0)
+	{
+		_mainGUIManager->getTextManager()->getLastText()->replaceText(newTitle);
+		_mainGUIManager->getTextManager()->getLastText()->calculateTextPosition();
+	}
+	else
+	{
+		addTitle(newTitle);
+	}
+
 }

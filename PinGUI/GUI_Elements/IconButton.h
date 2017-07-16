@@ -27,7 +27,7 @@ misrepresented as being the original software.
 
 class IconButton:public Button
 {
-	private:
+	protected:
 
 		//If you binded custom collision sprite
 		bool _customCollisionSprite;

@@ -244,9 +244,13 @@ class Window: public GUI_Element
 
         bool listenForClick(manip_Element manipulatingElement) override;
 
+		void setAlpha(Uint8 a) override;
+
         /** Re-dimensioning the tabs **/
         void setTabDimensions(PinGUI::Vector2<int> dims, std::string tabName);
+
         void setTabHeight(int height, std::string tabName);
+
         void setTabWidth(int width, std::string tabName);
 
         //Scroller functions
@@ -282,6 +286,8 @@ class Window: public GUI_Element
         PinGUI::Vector2<GUIPos> getRollbackVector();
 
 		const std::string& getNameTag() const;
+
+		void setWindowTitle(const std::string& newTitle);
 };
 
 #endif // WINDOW_H

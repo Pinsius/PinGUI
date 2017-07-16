@@ -106,6 +106,8 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
         void addSprite(PinGUI::Rect rect,SDL_Surface* source);
         void addSprite(GUIPos x, GUIPos y, SDL_Surface* source);
 
+		void changeSprite(GUIPos x, GUIPos y, SDL_Surface* source, std::size_t pos);
+
         void addCollider(GUIPos x, GUIPos y, int w, int h);
         void addCollider(PinGUI::Rect tmpRect);
 
@@ -161,6 +163,8 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
 
         virtual void putElementToManager(std::shared_ptr<GUIManager> m);
 
+		virtual void setAlpha(Uint8 a);
+
         bool isAllowedCrop();
 
         //Normal methods
@@ -184,7 +188,9 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
         void loadData(std::vector<vboData>* vboData);
 
         void moveCollider(GUIRect& rect,const PinGUI::Vector2<GUIPos>& vect);
+
         void moveCollider(PinGUI::Rect& rect,const PinGUI::Vector2<GUIPos>& vect);
+
 
         bool getShow();
 
@@ -211,6 +217,7 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
         PinGUI::Vector2<GUIPos>* getPositionVector_P();
 
         bool isAiming();
+
         void setAim(bool state);
 };
 

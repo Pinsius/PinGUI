@@ -275,16 +275,30 @@ class SheetManager
 {
     private:
         static std::vector<SDL_Surface*> _SURFACES;
-
-        static SDL_Surface* createCloneSurface(int w, int h, surfaceType source);
-
-        static void blitSurface(int x, int y, int w, int h, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode = SDL_BLENDMODE_NONE);
-
-        static void blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode = SDL_BLENDMODE_NONE);
     public:
         /**
             Public Methods
         **/
+        static SDL_Surface* createCloneSurface(int w, int h, surfaceType source);
+
+		static SDL_Surface* createFilledCloneSurface(int w, int h, SDL_Surface* surface);
+
+		static SDL_Surface* createFilledCloneSurface(int w, int h, SDL_Surface* surface, SDL_Color color);
+
+		static void setSurfaceColor(SDL_Surface* surface, Uint8 r, Uint8 g, Uint8 b);
+
+		static void setSurfaceAlpha(SDL_Surface* surface, Uint8 a);
+
+        static void blitSurface(int x, int y, int w, int h, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode = SDL_BLENDMODE_NONE);
+
+		static void blitSurface(int x, int y, int w, int h, SDL_Surface*& source, SDL_Surface*& dst, SDL_BlendMode mode = SDL_BLENDMODE_NONE);
+
+        static void blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode = SDL_BLENDMODE_NONE);
+
+		static void putOnSurface(SDL_Surface* src, surfaceType target, int x, int y);
+
+		static void putOnSurface(SDL_Surface* src, SDL_Surface* target, int x, int y);
+
 		static SDL_Surface* loadCustomSurface(const std::string& filePath);
 
         static void loadSurface(enum surfaceType,SDL_Surface* wholeSurface);
@@ -341,7 +355,6 @@ class SheetManager
         static SDL_Surface* createHorizontalScroller(const int& w);
 
         static SDL_Surface* createRectangle(int w, int h, surfaceType background, surfaceType line);
-        static void putOnSurface(SDL_Surface* src, surfaceType target, int x, int y);
 };
 
 #endif // SHEETMANAGER_H

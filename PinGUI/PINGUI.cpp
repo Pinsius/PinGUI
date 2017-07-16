@@ -150,7 +150,7 @@ void PINGUI::checkActiveWindows(){
 }
 
 int PINGUI::getSizeOfActiveWindows(){
-    return _ACTIVE_WINDOWS.size();
+    return int(_ACTIVE_WINDOWS.size());
 }
 
 bool PINGUI::collide(std::shared_ptr<Window> win){

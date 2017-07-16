@@ -39,10 +39,21 @@ IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::
 	_customCollisionSprite(false),
 	_collisionSprite(nullptr)
 {
-	addSprite(x, y, SheetManager::loadCustomSurface(iconPicturePath));
-	addCollider(x, y, _SPRITES.back()->getW(), _SPRITES.back()->getH());
+	//Background sprite
+	addSprite(x,y, SheetManager::getSurface(BOARD));
 
-	//_collidable = false;
+	//Now creating the sprite for icon button
+	addSprite(x, y, SheetManager::loadCustomSurface(iconPicturePath));
+
+	getSprite(0)->setAlpha(0);
+	getSprite(0)->setColor(150, 150, 200);
+
+	getSprite(0)->setW(getSprite(1)->getW());
+	getSprite(0)->setH(getSprite(1)->getH());
+
+	addCollider(getSprite(0)->getCollider());
+
+	getSprite(1)->offsetToRect(*getCollider());
 }
 
 //With this constructor its possible to set the size of the icon collider to the selected width and height 
@@ -51,26 +62,44 @@ IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float wi
 	_customCollisionSprite(false),
 	_collisionSprite(nullptr)
 {
+	//Background sprite
+	addSprite(x,y, SheetManager::getSurface(BOARD));
+
+	//Now creating the sprite for icon button
 	addSprite(x, y, SheetManager::loadCustomSurface(iconPicturePath));
-	addCollider(x, y, width, height);
+
+	getSprite(0)->setAlpha(0);
+	getSprite(0)->setColor(150, 150, 200);
+
+	getSprite(0)->setW(int(width));
+	getSprite(0)->setH(int(height));
+
+	addCollider(getSprite(0)->getCollider());
+
+	getSprite(1)->offsetToRect(*getCollider());
 }
 
 //This functions sets the image of the icon to the selected image
 void IconButton::setCollisionSprite(std::string iconPicturePath)
 {
-
 	if (_collisionSprite)
 		_collisionSprite.reset();
 
 	_collisionSprite =  std::make_shared<GUI_Sprite>(_position,SheetManager::loadCustomSurface(iconPicturePath));
+
+	_collisionSprite->offsetToRect(*getCollider());
+
 	_customCollisionSprite = true;
 }
 
 void IconButton::setWritingAvailability(bool state) {
 
-	if (!_customCollisionSprite)
-		ClipBoard::setWritingAvailability(state);
-
+	if (state) {
+		getSprite()->setAlpha(255);
+	}
+	else {
+		getSprite()->setAlpha(0);
+	}
 }
 
 void IconButton::turnOffAim() {
@@ -91,8 +120,8 @@ void IconButton::turnOnAim() {
 
 void IconButton::rotateSprites() {
 
-	std::shared_ptr<GUI_Sprite> tmpSprite = _SPRITES[0];
+	std::shared_ptr<GUI_Sprite> tmpSprite = _SPRITES[1];
 
-	_SPRITES[0] = _collisionSprite;
+	_SPRITES[1] = _collisionSprite;
 	_collisionSprite = tmpSprite;
 }

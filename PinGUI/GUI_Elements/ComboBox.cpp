@@ -140,7 +140,7 @@ void ComboBox::initScroller(){
     if (_ITEMS.size()>=_maxNumberOfItems)
         num = _maxNumberOfItems;
     else
-        num = _ITEMS.size();
+        num = int(_ITEMS.size());
 
     _cropRect.rect.w = _offsetCollider.w;
     _cropRect.rect.h = num * _offsetCollider.h;
@@ -190,7 +190,7 @@ void ComboBox::findLongestWord(std::vector<std::string>& itemList){
     for (std::size_t i = 0; i < itemList.size(); i++){
 
         if (itemList[i].size() > _maxSize)
-            _maxSize = itemList[i].size();
+            _maxSize = int(itemList[i].size());
     }
 }
 
@@ -204,7 +204,7 @@ void ComboBox::addItem(std::string name){
     _ITEMS.push_back(ptr);
 
     _ELEMENTS->push_back(_ITEMS.back());
-    _ITEMS.back()->setOption(_ITEMS.size());
+    _ITEMS.back()->setOption(int(_ITEMS.size()));
 
     if (!_clickable)
         _ITEMS.back()->setCollidable(false);
@@ -291,7 +291,7 @@ void ComboBox::onClick(){
         _cropRect.rect.w += PINGUI_WINDOW_DEFAULT_SCROLLER_W-BORDER_LINE;
         _cropRect.rect.h = _maxNumberOfItems * (_offsetCollider.h-BORDER_LINE);
     } else {
-        _cropRect.rect.h = _ITEMS.size() * (_offsetCollider.h-BORDER_LINE);
+        _cropRect.rect.h = int(_ITEMS.size()) * (_offsetCollider.h-BORDER_LINE);
     }
 
     _cropRect.rect.y = _offsetCollider.y - _cropRect.rect.h;
@@ -316,7 +316,7 @@ void ComboBox::onClick(){
 
 void ComboBox::loadScroller(){
 
-    _scroller->loadScrollMover(_cropRect.rect.h,(_ITEMS.size() * (_offsetCollider.h-1)));
+    _scroller->loadScrollMover(_cropRect.rect.h,(int(_ITEMS.size()) * (_offsetCollider.h-1)));
 }
 
 bool ComboBox::listenForClick(manip_Element manipulatingElement){

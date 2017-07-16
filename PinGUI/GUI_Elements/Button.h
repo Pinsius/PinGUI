@@ -57,6 +57,8 @@ class Button: public ClipBoard
 
         bool listenForClick(manip_Element manipulatingElement) override;
 
+		void setFunction(PinGUI::basicPointer func);
+
 };
 
 #endif // BUTTON_H

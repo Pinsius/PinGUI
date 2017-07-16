@@ -60,7 +60,7 @@ void HorizontalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>*
     _ARROWS.push_back(tmpArrow);
 
     //Left arrow
-    tmpRect.x +=  getSprite()->getW() - WINDOW_ARROW_WIDTH;
+    tmpRect.x +=  getSprite()->getW() - WINDOW_ARROW_WIDTH - PINGUI_WINDOW_LINE_W;
 
     tmpArrow = std::make_shared<Window_Arrow>(tmpRect,SheetManager::getSurface(BOARD),RIGHT);
 

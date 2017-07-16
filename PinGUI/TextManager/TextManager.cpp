@@ -121,7 +121,7 @@ void TextManager::renderText(){
 
     updateText();
 
-    for (std::size_t i=0; i < _TEXTS.size();i++){
+    for (GLuint i=0; i < _TEXTS.size();i++){
 
         if (_TEXTS[i]->getShow()){
 

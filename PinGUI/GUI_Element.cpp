@@ -164,6 +164,16 @@ void GUI_Element::addSprite(GUIPos x, GUIPos y, SDL_Surface* source){
     _SPRITES.push_back(ptr);
 }
 
+void GUI_Element::changeSprite(GUIPos x, GUIPos y, SDL_Surface* source, std::size_t pos)
+{
+	PinGUI::Vector2<GUIPos> vect(x, y);
+
+	auto ptr = std::make_shared<GUI_Sprite>(vect, source);
+
+	_SPRITES.at(pos).reset();
+	_SPRITES.at(pos) = ptr;
+}
+
 
 PinGUI::Rect* GUI_Element::getCollider(int pos){
     return &_COLLIDERS[pos].rect;
@@ -181,7 +191,7 @@ void GUI_Element::draw(int& pos){
 
         for (std::size_t i = 0; i < _SPRITES.size(); i++){
 
-            glBindTexture(GL_TEXTURE_2D,getTexture(i));
+            glBindTexture(GL_TEXTURE_2D,getTexture(int(i)));
             glDrawArrays(GL_TRIANGLES,pos*6,6);
             pos++;
         }
@@ -189,7 +199,7 @@ void GUI_Element::draw(int& pos){
         glBindTexture(GL_TEXTURE_2D,0);
     } else {
 
-        pos += _SPRITES.size();
+        pos += int(_SPRITES.size());
         return;
     }
 }
@@ -204,7 +214,7 @@ vboData* GUI_Element::getVBOData(int pos){
 
 void GUI_Element::loadData(std::vector<vboData>* vboData){
     for (std::size_t i = 0; i < _SPRITES.size(); i++){
-        vboData->push_back(*getVBOData(i));
+        vboData->push_back(*getVBOData(int(i)));
     }
 }
 
@@ -392,4 +402,11 @@ void GUI_Element::setAim(bool state){
 
 void GUI_Element::putElementToManager(std::shared_ptr<GUIManager> m){
     m->putElement(shared_from_this());
+}
+
+void GUI_Element::setAlpha(Uint8 a) {
+	for (std::size_t i = 0; i < _SPRITES.size(); i++)
+	{
+		_SPRITES[i]->setAlpha(a);
+	}
 }

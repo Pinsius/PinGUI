@@ -34,7 +34,7 @@ Button::Button(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, cli
 {
 	initPosition(x, y);
 
-    _maxSize = name.size();
+    _maxSize = int(name.size());
 
     initSprites(name,data);
 }
@@ -60,7 +60,7 @@ Button::Button(GUIPos x, GUIPos y, std::string name, clipboardData data, int max
 
 Button::Button(GUIPos x, GUIPos y, std::string name, clipboardData data)
 {
-    _maxSize = name.size();
+    _maxSize = int(name.size());
 
 	initPosition(x, y);
 
@@ -129,4 +129,8 @@ void Button::setWritingAvailability(bool state){
 bool Button::listenForClick(manip_Element manipulatingElement){
 
     return GUI_Element::listenForClick(manipulatingElement);
+}
+
+void Button::setFunction(PinGUI::basicPointer func) {
+	_func = func;
 }

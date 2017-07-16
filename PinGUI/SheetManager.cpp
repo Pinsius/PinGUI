@@ -452,7 +452,7 @@ void SheetManager::addBackground(SDL_Surface*& target){
 
 SDL_Surface* SheetManager::createWindow(int w, int h){
 
-    SDL_Surface* final_Surface = createCloneSurface(w+2,h,WINDOW_BACKGROUND);
+    SDL_Surface* final_Surface = createCloneSurface(w,h,WINDOW_BACKGROUND);
 
     addBackground(final_Surface);
     addLineBorders(final_Surface,PINGUI_WINDOW);
@@ -535,13 +535,52 @@ SDL_Surface* SheetManager::createCloneSurface(int w, int h, surfaceType source){
     return final_Surface;
 }
 
+SDL_Surface* SheetManager::createFilledCloneSurface(int w, int h, SDL_Surface* surface) {
+
+	SDL_Surface* final_Surface = SDL_CreateRGBSurface(0, w, h,
+													  surface->format->BitsPerPixel,
+													  surface->format->Rmask,
+													  surface->format->Gmask,
+													  surface->format->Bmask,
+													  surface->format->Amask);
+
+	blitSurface(0, 0, w, h, surface, final_Surface);
+
+	return final_Surface;
+}
+
+SDL_Surface* SheetManager::createFilledCloneSurface(int w, int h, SDL_Surface* surface, SDL_Color color) {
+
+	SDL_Surface* final_Surface = SDL_CreateRGBSurface(0, w, h,
+													  surface->format->BitsPerPixel,
+													  color.r,
+													  color.g,
+													  color.b,
+													  color.a);
+
+	blitSurface(0, 0, w, h, surface, final_Surface);
+
+	return final_Surface;
+}
+
 void SheetManager::blitSurface(int x, int y, int w, int h, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode){
 
     SDL_Rect tmpRect{ x,y,w,h };
 
-    if (mode!=SDL_BLENDMODE_NONE) SDL_SetSurfaceBlendMode(_SURFACES[source],mode);
+    if (mode!=SDL_BLENDMODE_NONE) 
+		SDL_SetSurfaceBlendMode(_SURFACES[source],mode);
 
     SDL_BlitScaled(_SURFACES[source],NULL,dst,&tmpRect);
+}
+
+void SheetManager::blitSurface(int x, int y, int w, int h, SDL_Surface*& source, SDL_Surface*& dst, SDL_BlendMode mode) {
+
+	SDL_Rect tmpRect{ x,y,w,h };
+
+	if (mode != SDL_BLENDMODE_NONE) 
+		SDL_SetSurfaceBlendMode(source, mode);
+
+	SDL_BlitScaled(source, NULL, dst, &tmpRect);
 }
 
 void SheetManager::blitSurface(PinGUI::Rect tmpRect, surfaceType source, SDL_Surface*& dst,SDL_BlendMode mode){
@@ -590,18 +629,18 @@ void SheetManager::addRectangleBorders(SDL_Surface*& target, surfaceType line){
     /**UP DOWN lines**/
 
     //Upper line
-    blitSurface(0,0,target->w,1,WINDOW_SCROLLER_LINE,target);
+    blitSurface(0,0,target->w,1,line,target);
 
     //Bottom line
-    blitSurface(0,target->h-1,target->w,1,WINDOW_SCROLLER_LINE,target);
+    blitSurface(0,target->h-1,target->w,1, line,target);
 
     /** RIGHT&LEFT LINES **/
 
     //Left
-    blitSurface(0,1,1,target->h-2,WINDOW_SCROLLER_LINE,target);
+    blitSurface(0,1,1,target->h-2, line,target);
 
     //Right
-    blitSurface(target->w-1,1,1,target->h-2,WINDOW_SCROLLER_LINE,target);
+    blitSurface(target->w-1,1,1,target->h-2, line,target);
 }
 
 SDL_Surface* SheetManager::createRectangle(int w, int h, surfaceType background, surfaceType line){
@@ -623,6 +662,10 @@ void SheetManager::putOnSurface(SDL_Surface* src, surfaceType target, int x, int
     blitSurface(x,y,_SURFACES[target]->w,_SURFACES[target]->h,target,src,SDL_BLENDMODE_BLEND);
 }
 
+void SheetManager::putOnSurface(SDL_Surface* src, SDL_Surface* target, int x, int y) {
+	blitSurface(x, y, src->w, src->h, target, src, SDL_BLENDMODE_BLEND);
+}
+
 SDL_Surface* SheetManager::loadCustomSurface(const std::string& filePath) {
 
 	SDL_Surface* result = nullptr;
@@ -632,4 +675,14 @@ SDL_Surface* SheetManager::loadCustomSurface(const std::string& filePath) {
 		ErrorManager::fileError("Failed to load custom surface from : " + filePath);
 	
 	return result;
+}
+
+void SheetManager::setSurfaceColor(SDL_Surface* surface, Uint8 r, Uint8 g, Uint8 b)
+{
+	SDL_SetSurfaceColorMod(surface, r, g, b);
+}
+
+void SheetManager::setSurfaceAlpha(SDL_Surface* surface, Uint8 a)
+{
+	SDL_SetSurfaceAlphaMod(surface, a);
 }

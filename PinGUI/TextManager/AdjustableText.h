@@ -41,7 +41,7 @@ private:
 		Private methods
 	*/
 	inline unsigned int calculateAfterLength() {
-		return _realText.size() - _realTextSize;
+		return unsigned int(_realText.size() - _realTextSize);
 	}
 
 	void performAdjust(bool remove);
