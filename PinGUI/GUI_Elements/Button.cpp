@@ -103,6 +103,7 @@ void Button::initSprites(std::string name, clipboardData& data){
 void Button::onClick(){
 
     _func.exec();
+	PinGUI::Input_Manager::turnOnTMPState();
 }
 
 void Button::onAim(){

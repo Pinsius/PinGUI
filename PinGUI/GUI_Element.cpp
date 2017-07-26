@@ -187,7 +187,7 @@ void GUI_Element::draw(int& pos){
 
     if (_show){
 
-        update();
+       update();
 
         for (std::size_t i = 0; i < _SPRITES.size(); i++){
 

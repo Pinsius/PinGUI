@@ -55,11 +55,6 @@ void WindowTab::render(){
     _guiManager->render();
 }
 
-void WindowTab::update(){
-
-    _guiManager->update();
-}
-
 void WindowTab::setWritingAvailability(bool state){
 
     if (*_mainTab != shared_from_this() ){

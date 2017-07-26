@@ -119,8 +119,6 @@ void TextManager::renderText(){
 
     glBindVertexArray(_textVBOManager->getVAO());
 
-    updateText();
-
     for (GLuint i=0; i < _TEXTS.size();i++){
 
         if (_TEXTS[i]->getShow()){

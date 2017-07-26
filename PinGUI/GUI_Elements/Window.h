@@ -142,6 +142,8 @@ class Window: public GUI_Element
 
         std::shared_ptr<HorizontalScroller> _horizontalScroller;
 
+		std::shared_ptr<Window>* _mainWindowPtr;
+
         //Here is my renderer for GUI
         std::shared_ptr<GUIManager> _mainGUIManager;
 
@@ -246,6 +248,12 @@ class Window: public GUI_Element
 
 		void setAlpha(Uint8 a) override;
 
+		void moveTo(PinGUI::Vector2<GUIPos> vect) override;
+
+		void setShow(bool state) override;
+
+		bool isCursorIn();
+
         /** Re-dimensioning the tabs **/
         void setTabDimensions(PinGUI::Vector2<int> dims, std::string tabName);
 
@@ -287,7 +295,15 @@ class Window: public GUI_Element
 
 		const std::string& getNameTag() const;
 
+		std::string getWindowTitle() const;
+
+		void setNameTag(const std::string& nameTag);
+
 		void setWindowTitle(const std::string& newTitle);
+
+		void setMainWindow(std::shared_ptr<Window>* ptr);
+
+		void setAsMainWindow();
 };
 
 #endif // WINDOW_H

@@ -50,8 +50,10 @@ WindowButton::~WindowButton()
 
 void WindowButton::onClick(){
 
-    if (!_target->getShow())
+	if (!_target->getShow())
+	{
         _target->setShow(true);
+	}
     else
         _target->setShow(false);
 }

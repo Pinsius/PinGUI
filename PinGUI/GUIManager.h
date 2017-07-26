@@ -87,8 +87,6 @@ class GUIManager
             Methods
         **/
 
-        void createVBOStoragePlace();
-
         void loadVBO();
         void updateVBO();
 
@@ -98,6 +96,8 @@ class GUIManager
 
         //Method for checking the collisions
         void checkCollisions();
+
+		void checkAimingElements();
 
     public:
         GUIManager();

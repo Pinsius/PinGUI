@@ -72,8 +72,6 @@ class WindowTab: public GUI_Element
 
         void render();
 
-        void update();
-
         bool listenForClick(manip_Element manipulatingElement) override;
 
         void onClick() override;

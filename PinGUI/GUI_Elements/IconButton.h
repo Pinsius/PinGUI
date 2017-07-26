@@ -57,5 +57,7 @@ class IconButton:public Button
 		void turnOffAim() override;
 
 		void turnOnAim() override;
+
+		void offsetTo(orientation orient, GUIPos distance);
 };
 

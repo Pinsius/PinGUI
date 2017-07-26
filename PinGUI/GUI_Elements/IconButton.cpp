@@ -125,3 +125,23 @@ void IconButton::rotateSprites() {
 	_SPRITES[1] = _collisionSprite;
 	_collisionSprite = tmpSprite;
 }
+
+void IconButton::offsetTo(orientation orient, GUIPos distance) {
+
+	for (std::size_t i = 1; i < _SPRITES.size(); i++)
+	{
+		switch (orient)
+		{
+			case LEFT: {
+				_SPRITES[i]->setX(_COLLIDERS[0].rect.getX() + distance);
+				break;
+			}
+			case RIGHT: {
+				_SPRITES[i]->setX(((_COLLIDERS[0].rect.getX() + _COLLIDERS[0].rect.getW()) - _SPRITES[i]->getW()) - distance);
+				break;
+			}
+			default:break;
+		}
+	}
+
+}

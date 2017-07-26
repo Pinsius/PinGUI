@@ -65,7 +65,7 @@ void Text::needUpdate(textInfo* info, bool& update){
 
     if (changed){
 
-        getNewText(info);
+		getNewText(info);
 
         update = true;
         changed = false;

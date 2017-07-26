@@ -40,6 +40,8 @@ std::shared_ptr<GUIManager> PINGUI::GUI = nullptr;
 
 std::shared_ptr<TextManager> PINGUI::TEXT = nullptr;
 
+std::shared_ptr<Window> _collidingWindow = nullptr;
+
 void PINGUI::destroy(){
 
     _ACTIVE_WINDOWS.clear();
@@ -57,6 +59,8 @@ void PINGUI::addWindow(std::shared_ptr<Window> win){
 
     if (!_mainWindow)
         _mainWindow = win;
+
+	window->setMainWindow(&_mainWindow);
 }
 
 void PINGUI::createWindow(windowDef* winDef){
@@ -70,6 +74,8 @@ void PINGUI::createWindow(windowDef* winDef){
 
     if (!_mainWindow)
         _mainWindow = win;
+
+	window->setMainWindow(&_mainWindow);
 }
 
 void PINGUI::normalize() {
@@ -107,21 +113,21 @@ void PINGUI::render(){
 
 void PINGUI::update(){
 
-    bool allowUpdate = true;
+	bool allowUpdate = true;
 
-    checkActiveWindows();
+	checkActiveWindows();
 
-    for (std::size_t i = _ACTIVE_WINDOWS.size(); i > 0; i--){
+	for (std::size_t i = _ACTIVE_WINDOWS.size(); i > 0; i--) {
 
-        _ACTIVE_WINDOWS[i-1]->update(allowUpdate);
+		_ACTIVE_WINDOWS[i - 1]->update(allowUpdate);
 
-        if (allowUpdate && collide(_ACTIVE_WINDOWS[i-1])){
-            allowUpdate = false;
-        }
-    }
+		if (allowUpdate && collide(_ACTIVE_WINDOWS[i - 1])) {
+			allowUpdate = false;
+		}
+	}
 
-    if (_mainGUIManager)
-        _mainGUIManager->update(allowUpdate);
+	if (_mainGUIManager)
+		_mainGUIManager->update(allowUpdate);
 }
 
 void PINGUI::setMainWindow(std::shared_ptr<Window> win){
@@ -155,10 +161,8 @@ int PINGUI::getSizeOfActiveWindows(){
 
 bool PINGUI::collide(std::shared_ptr<Window> win){
 
-    if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*(win->getCollider())))
-        return true;
-    else
-        return false;
+
+	return (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(), *(win->getCollider())));
 }
 
 void PINGUI::checkMainWindow(){
@@ -249,6 +253,23 @@ void PINGUI::bindWindow(const std::string& windowName) {
 		ErrorManager::errorLog("PINGUI::bindWindow", "Failed to bind window with following name: " + windowName);
 
 	window = resultWin;
+
+}
+
+std::shared_ptr<Window> PINGUI::getWindow(const std::string& windowName) {
+
+	//Check active windows first
+	std::shared_ptr<Window> resultWin = findWindow(_ACTIVE_WINDOWS, windowName);
+
+	//If it didn´t succeed loop through the non active windows
+	if (!resultWin)
+		resultWin = findWindow(_NON_ACTIVE_WINDOWS, windowName);
+
+	//Says the error log in case that u asked for window that doesn´t have entered name tag
+	if (!resultWin)
+		ErrorManager::errorLog("PINGUI::bindWindow", "Failed to find window with following name: " + windowName);
+
+	return resultWin;
 }
 
 void PINGUI::bindGUI(std::shared_ptr<Window> win) {
@@ -278,9 +299,8 @@ std::shared_ptr<Window> PINGUI::findWindow(const windowVector& vector, const std
 	for (const auto& w : vector) {
 
 		if (w->getNameTag() == winName)
-			tmpWin = w;
-
-		break;
+			return w;
 	}
+
 	return tmpWin;
 }

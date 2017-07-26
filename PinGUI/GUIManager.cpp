@@ -389,7 +389,8 @@ void GUIManager::renderText(){
 
 void GUIManager::update(bool allowCollision){
 
-
+	_texter->updateText();
+	
     if (!_manipulatingElement){
 
         if (allowCollision){
@@ -398,20 +399,27 @@ void GUIManager::update(bool allowCollision){
 
         } else {
 
-            for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
-
-                if (_ELEMENTS[i]->isAiming()){
-
-                    _ELEMENTS[i]->turnOffAim();
-                    _needUpdate = true;
-                }
-            }
+			checkAimingElements();
          }
     } else {
 
         _manipulatingElement->manipulatingMod(_manipulatingElement);
     }
+
     checkCrop();
+}
+
+void GUIManager::checkAimingElements() {
+
+    for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
+
+          if (_ELEMENTS[i]->isAiming()){
+
+			  _ELEMENTS[i]->turnOffAim();
+			  _needUpdate = true;
+
+           }
+    }
 }
 
 void GUIManager::checkCrop(){
@@ -445,6 +453,8 @@ void GUIManager::checkCollisions(){
 
                         _collidingElement = _ELEMENTS[i];
 
+						checkAimingElements();
+
                         return;
                     }
                 }
@@ -452,7 +462,7 @@ void GUIManager::checkCollisions(){
         } else {
 
             if (!_collidingElement->collide(_needUpdate,_manipulatingElement)){
-
+				
                 _collidingElement = nullptr;
 
                 _needUpdate = true;
@@ -543,7 +553,6 @@ void GUIManager::normalizeElements(float x, float y){
     }
 
     _texter->normalizeText(normalizedVector);
-
 }
 
 void GUIManager::moveGUITo(PinGUI::Vector2<GUIPos> vect){

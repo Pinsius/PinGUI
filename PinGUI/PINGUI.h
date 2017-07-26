@@ -49,6 +49,8 @@ class PINGUI
 
          static std::shared_ptr<Window> _mainWindow;
 
+		 static std::shared_ptr<Window> _collidingWindow;
+
          static std::shared_ptr<GUIManager> _mainGUIManager;
 
          /** Private methods **/
@@ -107,6 +109,9 @@ class PINGUI
 
 		//Binding the window via its name tag
 		static void bindWindow(const std::string& windowName);
+
+		//Getting just the window ptr
+		static std::shared_ptr<Window> getWindow(const std::string& windowName);
 		
 		//Initializing the GUI and TEXT
 		static void bindGUI(std::shared_ptr<Window> win);

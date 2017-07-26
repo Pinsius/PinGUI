@@ -38,6 +38,7 @@ Window::Window(windowDef* winDef):
     _horizontalScroller(nullptr),
     _windowMover(nullptr),
     _windowExit(nullptr),
+	_mainWindowPtr(nullptr),
     _shape(winDef->shape)
 {
     initPosition(_mainFrame);
@@ -197,7 +198,6 @@ void Window::render(){
 }
 
 void Window::update(bool allowCollision){
-
 
     if (_windowUpdate)
         moveWindow(PinGUI::Input_Manager::getLastVector());
@@ -599,6 +599,7 @@ void Window::normalize(){
     for (std::size_t i = 0; i < _TABS.size(); i++){
 
       normalizeTab(_TABS[i]->windowTab,x,y);
+
       _TABS[i]->windowTab->getGUI()->getTextManager()->setUpdate(true);
     }
 
@@ -746,4 +747,48 @@ void Window::setWindowTitle(const std::string& newTitle){
 		addTitle(newTitle);
 	}
 
+}
+
+bool Window::isCursorIn() {
+
+	if (_show) {
+		return (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(), getSprite()->getCollider()));
+	}
+	return false;
+}
+
+void Window::setNameTag(const std::string& nameTag) {
+	_windowName = nameTag;
+}
+
+std::string Window::getWindowTitle() const{
+	return _mainGUIManager->getTextManager()->getLastText()->getString();
+}
+
+void Window::moveTo(PinGUI::Vector2<GUIPos> vect) {
+
+
+	_mainGUIManager->moveGUITo(vect);
+
+	for (const auto& tab : _TABS)
+		tab->windowTab->getGUI()->moveGUITo(vect);
+}
+
+void Window::setMainWindow(std::shared_ptr<Window>* ptr)
+{
+	_mainWindowPtr = ptr;
+}
+
+void Window::setAsMainWindow() {
+	*_mainWindowPtr = std::dynamic_pointer_cast<Window>(shared_from_this());
+}
+
+void Window::setShow(bool state)
+{
+	GUI_Element::setShow(state);
+
+	if (_mainWindowPtr)
+	{
+		setAsMainWindow();
+	}
 }

@@ -404,7 +404,8 @@ void ClipBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 
     _position += vect;
 
-    _textStorage->getText()->moveText(vect);
+	if (_textStorage)
+	  _textStorage->getText()->moveText(vect);
 }
 
 bool ClipBoard::listenForClick(manip_Element manipulatingElement){
