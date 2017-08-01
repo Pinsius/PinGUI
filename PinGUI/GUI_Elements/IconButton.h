@@ -44,13 +44,13 @@ class IconButton:public Button
 		~IconButton();
 
 		//Creating the icon with its positions, filePath to its icon picture and a pointer to a void function
-		IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::basicPointer f);
+		IconButton(GUIPos x, GUIPos y, SDL_Surface* iconPictureSurface, PinGUI::basicPointer f);
 
 		//With this constructor its possible to set the size of the icon collider to the selected width and height 
-		IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float width, float height, PinGUI::basicPointer f);
+		IconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, float width, float height, PinGUI::basicPointer f);
 
 		//This functions sets the image of the icon to the selected image
-		void setCollisionSprite(std::string iconPicturePath);
+		void setCollisionSprite(SDL_Surface* iconSurface);
 
 		void setWritingAvailability(bool state) override;
 

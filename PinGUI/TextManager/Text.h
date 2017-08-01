@@ -74,6 +74,8 @@ public:
 
     virtual void needUpdate(textInfo* info, bool& update);
 
+	virtual void immediateChange(textInfo* info, bool& update);
+
     //For creating a new copy
     virtual void getNewText(textInfo*& info);
 

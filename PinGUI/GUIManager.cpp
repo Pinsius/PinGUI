@@ -290,17 +290,17 @@ void GUIManager::createWindowButton(GUIPos x, GUIPos y, std::string name, std::s
 	_needUpdate = true;
 }
 
-void GUIManager::createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::basicPointer f) {
+void GUIManager::createIconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, PinGUI::basicPointer f) {
 
-	auto ptr = std::make_shared<IconButton>(x, y, iconPicturePath,f);
+	auto ptr = std::make_shared<IconButton>(x, y, iconSurface,f);
 	_ELEMENTS.push_back(ptr);
 
 	_needUpdate = true;
 }
 
-void GUIManager::createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float width, float height, PinGUI::basicPointer f) {
+void GUIManager::createIconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, float width, float height, PinGUI::basicPointer f) {
 
-	auto ptr = std::make_shared<IconButton>(x, y, iconPicturePath, width, height, f);
+	auto ptr = std::make_shared<IconButton>(x, y, iconSurface, width, height, f);
 	_ELEMENTS.push_back(ptr);
 
 	_needUpdate = true;

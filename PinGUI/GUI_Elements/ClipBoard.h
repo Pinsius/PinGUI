@@ -120,6 +120,8 @@ class ClipBoard: public GUI_Element
 
         bool pressedESC();
 
+		bool containsText();
+
     public:
 
         ClipBoard();

@@ -246,6 +246,7 @@ void GUI_Element::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 }
 
 void GUI_Element::moveTo(PinGUI::Vector2<GUIPos> vect){
+
     vect -= _position;
 
     moveElement(vect);
@@ -409,4 +410,13 @@ void GUI_Element::setAlpha(Uint8 a) {
 	{
 		_SPRITES[i]->setAlpha(a);
 	}
+}
+
+bool GUI_Element::cursorOn() {
+
+	for (std::size_t i = 0; i < _COLLIDERS.size(); i++) {
+		if (GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),_COLLIDERS[i]))
+			return true;
+	}
+	return false;
 }

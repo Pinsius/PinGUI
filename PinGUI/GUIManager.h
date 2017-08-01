@@ -131,8 +131,8 @@ class GUIManager
 		void createWindowButton(GUIPos x, GUIPos y, std::string name, std::shared_ptr<Window> window);
 		void createWindowButton(GUIPos x, GUIPos y, std::string name, std::shared_ptr<Window> window, int maxSize);
 
-		void createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::basicPointer f);
-		void createIconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float width, float height, PinGUI::basicPointer f);
+		void createIconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, PinGUI::basicPointer f);
+		void createIconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, float width, float height, PinGUI::basicPointer f);
 
         void moveGUI(PinGUI::Vector2<GUIPos> vect, bool croppedMovement = false);
         void moveGUITo(PinGUI::Vector2<GUIPos> vect);

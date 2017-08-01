@@ -33,17 +33,16 @@ IconButton::~IconButton()
 {
 }
 
-//Creating the icon with its positions, filePath to its icon picture and a pointer to a void function
-IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::basicPointer f):
-	Button(x,y,f),
+IconButton::IconButton(GUIPos x, GUIPos y, SDL_Surface* iconPictureSurface, PinGUI::basicPointer f):
+	Button(x, y, f),
 	_customCollisionSprite(false),
 	_collisionSprite(nullptr)
 {
 	//Background sprite
-	addSprite(x,y, SheetManager::getSurface(BOARD));
+	addSprite(x, y, SheetManager::getSurface(BOARD));
 
 	//Now creating the sprite for icon button
-	addSprite(x, y, SheetManager::loadCustomSurface(iconPicturePath));
+	addSprite(x, y, iconPictureSurface);
 
 	getSprite(0)->setAlpha(0);
 	getSprite(0)->setColor(150, 150, 200);
@@ -57,7 +56,7 @@ IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, PinGUI::
 }
 
 //With this constructor its possible to set the size of the icon collider to the selected width and height 
-IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float width, float height, PinGUI::basicPointer f) :
+IconButton::IconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, float width, float height, PinGUI::basicPointer f) :
 	Button(x, y, f),
 	_customCollisionSprite(false),
 	_collisionSprite(nullptr)
@@ -66,7 +65,7 @@ IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float wi
 	addSprite(x,y, SheetManager::getSurface(BOARD));
 
 	//Now creating the sprite for icon button
-	addSprite(x, y, SheetManager::loadCustomSurface(iconPicturePath));
+	addSprite(x, y, iconSurface);
 
 	getSprite(0)->setAlpha(0);
 	getSprite(0)->setColor(150, 150, 200);
@@ -80,12 +79,12 @@ IconButton::IconButton(GUIPos x, GUIPos y, std::string iconPicturePath, float wi
 }
 
 //This functions sets the image of the icon to the selected image
-void IconButton::setCollisionSprite(std::string iconPicturePath)
+void IconButton::setCollisionSprite(SDL_Surface* iconSurface)
 {
 	if (_collisionSprite)
 		_collisionSprite.reset();
 
-	_collisionSprite =  std::make_shared<GUI_Sprite>(_position,SheetManager::loadCustomSurface(iconPicturePath));
+	_collisionSprite =  std::make_shared<GUI_Sprite>(_position,iconSurface);
 
 	_collisionSprite->offsetToRect(*getCollider());
 

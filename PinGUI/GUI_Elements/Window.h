@@ -117,7 +117,7 @@ public:
 
 class Window: public GUI_Element
 {
-    private:
+    protected:
         //Informations about position, window frame etc.
         PinGUI::Rect _mainFrame;
 
@@ -133,6 +133,11 @@ class Window: public GUI_Element
 		//"Name tag" for window so it will be able to bind it at the later stage
 		std::string _windowName;
 
+		//Title
+		std::string _windowTitle;
+
+		std::shared_ptr<Text> _windowTitleText;
+
         //Elements important for every window - they need to be unique and saved via those pointers
         std::shared_ptr<WindowMover> _windowMover;
 
@@ -143,6 +148,8 @@ class Window: public GUI_Element
         std::shared_ptr<HorizontalScroller> _horizontalScroller;
 
 		std::shared_ptr<Window>* _mainWindowPtr;
+
+		std::vector<std::shared_ptr<Window>> _attachedWindows;
 
         //Here is my renderer for GUI
         std::shared_ptr<GUIManager> _mainGUIManager;
@@ -165,6 +172,8 @@ class Window: public GUI_Element
         bool _tabChange;
 
         bool _enabledScrollerManagement;
+
+		bool _alreadyMovedTo;
 
         //Moving vector
         PinGUI::Vector2<GUIPos> _movingVect;
@@ -210,12 +219,20 @@ class Window: public GUI_Element
 
        bool isScrollerActive(std::shared_ptr<VerticalScroller>& scroller);
 
+	   void normalizeAttachedWindows(const GUIPos& x, const GUIPos& y);
+
+	   PinGUI::Rect getOffsetRectForTitle();
+
+	   bool checkWindowRect();
+
     public:
         Window(){};
         Window(windowDef* winDef);
         ~Window();
 
         void addElementsToManager();
+
+		void addElementsToManager(std::shared_ptr<GUIManager> gui);
 
         int calculateScrollerSize(PinGUI::manipulationState state);
 
@@ -237,6 +254,10 @@ class Window: public GUI_Element
         void update(bool allowCollision = true);
 
         void moveWindow(PinGUI::Vector2<GUIPos> vect);
+
+		void moveBaseWindow(PinGUI::Vector2<GUIPos> vect);
+
+		void normalizeElement(const PinGUI::Vector2<GUIPos>& vect) override;
 
         void info() override;
 
@@ -261,6 +282,8 @@ class Window: public GUI_Element
 
         void setTabWidth(int width, std::string tabName);
 
+		void enableVerticalScroller();
+
         //Scroller functions
         void loadScroller();
 
@@ -271,6 +294,7 @@ class Window: public GUI_Element
         void manageScroller(PinGUI::manipulationState state, bool show);
 
         void rollbackTabCamera();
+
 
         /**
             [0,0] is for this function the left corner of window, so [10,5] means windowPosX+10,windowPosY+5
@@ -299,11 +323,19 @@ class Window: public GUI_Element
 
 		void setNameTag(const std::string& nameTag);
 
+		//This function changes the title immediately
 		void setWindowTitle(const std::string& newTitle);
+
+		//This waits for the next update cycle
+		void changeWindowTitle(const std::string& newTitle);
 
 		void setMainWindow(std::shared_ptr<Window>* ptr);
 
 		void setAsMainWindow();
+
+		void attachWindow(std::shared_ptr<Window> winPtr);
+
+		float getPotentionalCropHeight();
 };
 
 #endif // WINDOW_H

@@ -101,6 +101,8 @@ class TextManager
         std::shared_ptr<Text> writeText(GUIPos x, GUIPos y, std::string* var);
 		std::shared_ptr<Text> writeAdjustableText(const std::string& text, GUIPos x, GUIPos y, unsigned int size, unsigned int maxSize);
 
+		void immediateChangeText(std::shared_ptr<Text> text);
+
         TTF_Font* loadFont(const std::string& fontPath, int size);
 
         void setColor(GLubyte R, GLubyte G, GLubyte B, GLubyte A);

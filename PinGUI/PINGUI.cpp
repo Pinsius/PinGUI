@@ -78,6 +78,14 @@ void PINGUI::createWindow(windowDef* winDef){
 	window->setMainWindow(&_mainWindow);
 }
 
+std::shared_ptr<Window> PINGUI::createSubWindow(windowDef* def)
+{
+	std::shared_ptr<Window> win = std::make_shared<Window>(def);
+	win->setShow(false);
+
+	return win;
+}
+
 void PINGUI::normalize() {
 
 	for (const auto& w : _ACTIVE_WINDOWS)

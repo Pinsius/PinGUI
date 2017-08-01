@@ -290,3 +290,7 @@ void TextManager::setFunction(PinGUI::basicPointer f){
 int TextManager::getFontSize(){
     return _fontSize;
 }
+
+void TextManager::immediateChangeText(std::shared_ptr<Text> text) {
+	text->immediateChange(&_mainTextInfo, _needUpdate);
+}

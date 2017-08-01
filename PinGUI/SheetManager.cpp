@@ -526,6 +526,9 @@ SDL_Surface* SheetManager::createHorizontalScroller(const int& w){
 
 SDL_Surface* SheetManager::createCloneSurface(int w, int h, surfaceType source){
 
+	if (source == BLANK_SURFACE)
+		source = BOARD;
+
     SDL_Surface* final_Surface = SDL_CreateRGBSurface(0,w, h,
                                     _SURFACES[source]->format->BitsPerPixel,
                                     _SURFACES[source]->format->Rmask,

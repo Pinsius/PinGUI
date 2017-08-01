@@ -76,6 +76,16 @@ void Text::needUpdate(textInfo* info, bool& update){
     checkPositioned(update);
 }
 
+void Text::immediateChange(textInfo* info, bool& update) {
+
+	getNewText(info);
+
+	update = true;
+	changed = false;
+
+	checkPositioned(update);
+}
+
 void Text::checkPositioned(bool& update){
 
     if (positioned){

@@ -394,17 +394,9 @@ void ClipBoard::normalizeElement(const PinGUI::Vector2<GUIPos>& vect){
 
 void ClipBoard::moveElement(const PinGUI::Vector2<GUIPos>& vect){
 
-    for (std::size_t i = 0; i < _SPRITES.size(); i++){
-        _SPRITES[i]->moveSprite(vect);
-    }
+	GUI_Element::moveElement(vect);
 
-    for (std::size_t i = 0; i < _COLLIDERS.size(); i++){
-        moveCollider(_COLLIDERS[i],vect);
-    }
-
-    _position += vect;
-
-	if (_textStorage)
+	if (_textStorage && containsText())
 	  _textStorage->getText()->moveText(vect);
 }
 
@@ -448,15 +440,20 @@ void ClipBoard::setClipboardText(std::string text, PinGUI::Rect collider){
 }
 
 void ClipBoard::setShow(bool state){
-    _show = state;
-    _textStorage->getText(0)->setShow(state);
+
+	if (_textStorage && containsText())
+	{
+		_textStorage->getText(0)->setShow(state);
+	}
+	_show = state;
 }
 
 void ClipBoard::cropElement(PinGUI::Rect& rect){
 
     GUI_Element::cropElement(rect);
 
-    CropManager::cropSprite(_textStorage->getText()->getSprite().get(),rect);
+	if (_textStorage)
+		CropManager::cropSprite(_textStorage->getText()->getSprite().get(),rect);
 }
 
 void ClipBoard::setMinValue(int minV){
@@ -473,4 +470,8 @@ void ClipBoard::clearClipBoard(){
 
 void ClipBoard::setExitAtEnter(bool state){
     _exitAtEnter = state;
+}
+
+bool ClipBoard::containsText() {
+	return (_textStorage->getVector()->size() > 0);
 }
