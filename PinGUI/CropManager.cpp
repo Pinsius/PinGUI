@@ -231,6 +231,7 @@ void CropManager::cropSpriteVertically(GUI_Sprite*& sprite, PinGUI::Rect& cropRe
     } else if (sprite->getGUIRect().rect.h != rect.realRect.h){
 
         sprite->setH(rect.realRect.h);
+
         percentage.x = 1.0f;
         changeUV(UP, sprite->getVBOData(), percentage);
         sprite->updatePositions();

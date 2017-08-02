@@ -744,7 +744,7 @@ void Window::setWindowCamRect() {
 
 	_cameraRect.x++;
 
-	_cameraRect.w -= RECTANGLE_VERTICAL_SCROLLER_OFFSET+1;
+	_cameraRect.w -= RECTANGLE_VERTICAL_SCROLLER_OFFSET;
 }
 
 std::shared_ptr<GUIManager> Window::getGUI() {
@@ -789,7 +789,8 @@ void Window::reloadScroller(GUIPos diff, PinGUI::manipulationState state) {
 
 		_verticalScroller->reloadScroller(_mainFrame.h, _mainWindowTab->getTabDimensions().y);
 
-		updateTabCamera(PinGUI::Vector2<GUIPos>(0, diff));
+		/*This is disabled for now*/
+		//updateTabCamera(PinGUI::Vector2<GUIPos>(0, diff));
 		break;
 	}
 	}

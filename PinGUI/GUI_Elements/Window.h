@@ -63,7 +63,7 @@
 
 //This is just temporary solution for flow movement with timestep
 #define MOVEMENT_MULTIPLIER 1.45
-#define RECTANGLE_VERTICAL_SCROLLER_OFFSET 2
+#define RECTANGLE_VERTICAL_SCROLLER_OFFSET 1
 
 inline void moverWidthCalculator(int& width, int& frameWidth){
     width = frameWidth - PINGUI_WINDOW_EXITBUTTON_W - PINGUI_WINDOW_LINE_W - WINDOW_MOVER_WIDTH_MINUS;

@@ -86,6 +86,8 @@ class TextStorage
 
         void destroyText(int position = 0);
 
+		void destroyStorage();
+
         void addChar(char* ch, int position, PinGUI::writingModInfo& info);
 
         void removeChar(int position);

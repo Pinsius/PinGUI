@@ -70,8 +70,8 @@ IconButton::IconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, float width
 	getSprite(0)->setAlpha(0);
 	getSprite(0)->setColor(150, 150, 200);
 
-	getSprite(0)->setW(int(width));
-	getSprite(0)->setH(int(height));
+	getSprite(0)->setRW(int(width));
+	getSprite(0)->setRH(int(height));
 
 	addCollider(getSprite(0)->getCollider());
 

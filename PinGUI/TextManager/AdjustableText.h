@@ -48,6 +48,8 @@ private:
 
 	void adjustRealText(unsigned int afterLength);
 
+	void addDots();
+
 public:
 	AdjustableText(std::string Text, PinGUI::Vector2<GUIPos> pos, textInfo* info, unsigned int Size, unsigned int maxSize);
 	~AdjustableText();

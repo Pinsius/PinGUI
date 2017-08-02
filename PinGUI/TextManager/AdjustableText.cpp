@@ -91,8 +91,16 @@ void AdjustableText::endInputManipulation() {
 
 		text = _realText.substr(0, _realTextSize);
 
+		addDots();
+
 		changed = true;
 	}
+}
+
+void AdjustableText::addDots()
+{
+	for (std::size_t i = 0; i < 3; i++)
+		text[text.size() - 1 - i] = '.';
 }
 
 void AdjustableText::startInputManipulation() {

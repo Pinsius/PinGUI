@@ -42,6 +42,15 @@ TextStorage::~TextStorage()
     _TEXTS.clear();
 }
 
+void TextStorage::destroyStorage()
+{
+	for (std::size_t i = 0; i < _TEXTS.size(); i++)
+	{
+		_TEXTS[i]->setActive(false);
+	}
+	_TEXTS.clear();
+}
+
 void TextStorage::addAdjustableText(const std::string& text, GUIPos x, GUIPos y, unsigned int size, unsigned int maxSize) {
 	_TEXTS.push_back(_texter->writeAdjustableText(text, x, y, size, maxSize));
 }

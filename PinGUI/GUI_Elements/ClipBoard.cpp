@@ -109,7 +109,8 @@ void ClipBoard::init(PinGUI::Vector2<GUIPos> position, int maxSize, clipboardDat
 
 ClipBoard::~ClipBoard()
 {
-
+	if (containsText())
+		_textStorage->destroyStorage();
 }
 
 void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2<GUIPos>& position, int width){
@@ -452,7 +453,7 @@ void ClipBoard::cropElement(PinGUI::Rect& rect){
 
     GUI_Element::cropElement(rect);
 
-	if (_textStorage)
+	if (containsText())
 		CropManager::cropSprite(_textStorage->getText()->getSprite().get(),rect);
 }
 
@@ -473,5 +474,5 @@ void ClipBoard::setExitAtEnter(bool state){
 }
 
 bool ClipBoard::containsText() {
-	return (_textStorage->getVector()->size() > 0);
+	return (_textStorage && _textStorage->getVector()->size() > 0);
 }
