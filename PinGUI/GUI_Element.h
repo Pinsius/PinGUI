@@ -116,6 +116,8 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
 
         std::size_t getCollidersCount();
 
+		virtual void atWithdraw() {};
+
 		virtual bool cursorOn();
 
         //Virtual methods - every element can modify its own behavior via these functions

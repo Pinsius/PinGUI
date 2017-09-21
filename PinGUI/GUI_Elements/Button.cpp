@@ -90,7 +90,7 @@ void Button::initSprites(std::string name, clipboardData& data){
     _textStorage = std::make_shared<TextStorage>(data.texter);
     initText();
 
-    tmpSurface = SheetManager::createClipBoard(tmp_width,tmp_height);
+    tmpSurface = SheetManager::createClipboard(tmp_width,tmp_height);
 
     addSprite(_position.x,_position.y,tmpSurface);
 

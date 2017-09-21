@@ -72,7 +72,7 @@ void VerticalScroller::createArrows(std::vector<std::shared_ptr<GUI_Element>>* _
 
 void VerticalScroller::calculateRatio(const int& totalValue){
 
-    int numOfManipulationPixels = int(getSprite(1)->getY() - (_ARROWS[0]->getSprite()->getY() + _ARROWS[0]->getSprite()->getH()));
+	int numOfManipulationPixels = int(getSprite(1)->getY() - (_ARROWS[0]->getSprite()->getY() + _ARROWS[0]->getSprite()->getH()));
 
     _ratio = int(static_cast<float>(totalValue)/numOfManipulationPixels);
 
@@ -105,9 +105,15 @@ void VerticalScroller::reloadScroller(int value, int totalValue){
 
     GUIPos oldPos = getSprite(1)->getY() + getSprite(1)->getH();
 
+	deleteSprite(1);
+
     loadScrollMover(value,totalValue);
 
     getSprite(1)->setY(oldPos - (getSprite(1)->getH()));
+	_oldDiff = 0.0f;
+
+	decide();
+	checkLimits();
 }
 
 void VerticalScroller::onClick(){

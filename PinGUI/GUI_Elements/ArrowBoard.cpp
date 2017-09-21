@@ -106,7 +106,7 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_E
             rect.x = (_clipBoard->getSprite()->getX()+_clipBoard->getSprite()->getW()) +  ARROW_OFFSET;
 
             float tmpY = rect.y;
-            rect.y = calculateY(rect.y,_clipBoard->getSprite()->getH()) + HORIZONTAL_ARROWS_OFFSET;
+			rect.y = calculateY(rect.y, _clipBoard->getSprite()->getH()) + HORIZONTAL_ARROWS_OFFSET/2;
 
             auto tmpArrow = std::make_shared<Window_Arrow>(rect,SheetManager::getSurface(BOARD),UP,ARROW_ONLY);
             _ARROWS.push_back(tmpArrow);
@@ -114,7 +114,7 @@ void ArrowBoard::addArrows(PinGUI::Rect& rect, std::vector<std::shared_ptr<GUI_E
             tmpArrow->setClickFunction(f1);
 
             //Second one
-            rect.y = calculateY(tmpY,_clipBoard->getSprite()->getH()) - HORIZONTAL_ARROWS_OFFSET;
+            rect.y = calculateY(tmpY,_clipBoard->getSprite()->getH()) - ((HORIZONTAL_ARROWS_OFFSET*2) / 2);
 
             tmpArrow = std::make_shared<Window_Arrow>(rect,SheetManager::getSurface(BOARD),DOWN,ARROW_ONLY);
             _ARROWS.push_back(tmpArrow);

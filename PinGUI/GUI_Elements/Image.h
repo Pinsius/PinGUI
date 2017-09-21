@@ -33,11 +33,13 @@ class Image: public GUI_Element
 
 
     public:
-        Image(std::string filePath, GUIPos x, GUIPos y);
-        Image(std::string filePath, GUIPos x, GUIPos y, int width, int height);
+        Image(SDL_Surface* imageSurface, GUIPos x, GUIPos y);
+        Image(SDL_Surface* imageSurface, GUIPos x, GUIPos y, int width, int height);
         ~Image();
 
         void normalizeElement(const PinGUI::Vector2<GUIPos>& vect) override;
+
+		void changeImage(SDL_Surface* imageSurface);
 };
 
 #endif // IMAGE_H

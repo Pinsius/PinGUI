@@ -34,7 +34,7 @@ WindowExit::WindowExit(PinGUI::Rect positionRect, GUI_Element* windowElement):
     positionRect.y -= WINDOW_EXIT_Y_OFFSET;
 
     //Background sprite
-    addSprite(positionRect,SheetManager::getSurface(BOARD));
+    addSprite(positionRect,SheetManager::getSurface(BACKGROUND));
 
     getSprite()->setW(WINDOW_EXIT_W_AREA);
     getSprite()->setH(WINDOW_EXIT_H_AREA);

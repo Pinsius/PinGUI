@@ -107,7 +107,7 @@ void Text::getNewText(textInfo*& info){
     }
 }
 
-void Text::replaceText(std::string newText){
+void Text::replaceText(const std::string& newText){
 
     text = newText;
 

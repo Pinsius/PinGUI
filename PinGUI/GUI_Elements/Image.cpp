@@ -24,40 +24,32 @@
 
 #include "Image.h"
 
-Image::Image(std::string filePath, GUIPos x, GUIPos y)
+Image::Image(SDL_Surface* imageSurface , GUIPos x, GUIPos y)
 {
     _position.x = x;
     _position.y = y;
 
-    SDL_Surface* tmpSurface = nullptr;
-
-    tmpSurface = IMG_Load(filePath.c_str());
-
-    if (!tmpSurface)
-        ErrorManager::fileError("File " + filePath + " not found");
-
-    addSprite(x, y, tmpSurface);
+    addSprite(x, y, imageSurface);
 
     _collidable = false;
 }
 
-Image::Image(std::string filePath, GUIPos x, GUIPos y, int width, int height){
+Image::Image(SDL_Surface* imageSurface, GUIPos x, GUIPos y, int width, int height){
 
     _position.x = x;
     _position.y = y;
 
-    SDL_Surface* tmpSurface = nullptr;
-
-    tmpSurface = IMG_Load(filePath.c_str());
-
-    if (!tmpSurface)
-        ErrorManager::fileError("File " + filePath + " not found");
-
-    addSprite(x, y, tmpSurface);
+    addSprite(x, y, imageSurface);
     getSprite()->setRH(height);
     getSprite()->setRW(width);
 
     _collidable = false;
+}
+
+void Image::changeImage(SDL_Surface* imageSurface)
+{
+	deleteSprite(0);
+	addSprite(_position.x, _position.y, imageSurface);
 }
 
 Image::~Image()

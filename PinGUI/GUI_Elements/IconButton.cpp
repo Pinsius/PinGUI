@@ -62,7 +62,7 @@ IconButton::IconButton(GUIPos x, GUIPos y, SDL_Surface* iconSurface, float width
 	_collisionSprite(nullptr)
 {
 	//Background sprite
-	addSprite(x,y, SheetManager::getSurface(BOARD));
+	addSprite(x,y, SheetManager::getSurface(BACKGROUND));
 
 	//Now creating the sprite for icon button
 	addSprite(x, y, iconSurface);

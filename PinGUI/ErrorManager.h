@@ -39,6 +39,7 @@ namespace ErrorManager{
     **/
     //For closing program from error logs (only fatal errors)
     static void closeProgram(){
+		system("pause");
         exit(1);
     }
 

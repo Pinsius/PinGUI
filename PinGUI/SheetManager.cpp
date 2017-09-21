@@ -43,6 +43,7 @@ void SheetManager::loadAllTextures(){
     }
 
     //I load all surfaces i need only once(at startup) so i have them loaded all the time prepared for use
+	loadSurface(BACKGROUND, wholeSurface);
     loadSurface(BOARD,wholeSurface);
     loadSurface(BORDER_LINE,wholeSurface);
     loadSurface(BORDER_TL,wholeSurface);
@@ -96,7 +97,9 @@ void SheetManager::loadSurface(enum surfaceType type,SDL_Surface* wholeSurface){
 SDL_Rect SheetManager::manageCroppedRect(surfaceType* type){
 
     switch(*type){
-
+		case BACKGROUND: {
+			return SDL_Rect{ BACKGROUND_X , BACKGROUND_Y , clipboardw , clipboardh };
+		}
         case BOARD : {
 			return SDL_Rect{ clipboardFx , clipboardFy , clipboardw , clipboardh };
         }
@@ -187,22 +190,22 @@ void SheetManager::loadWindowTextures(){
     SDL_FreeSurface(wholeSurface);
 }
 
-SDL_Surface* SheetManager::createClipBoard(int w, int h){
+SDL_Surface* SheetManager::createClipboard(int w, int h, surfaceType type, lineType line)
+{
+	SDL_Surface* final_Surface = createCloneSurface(w + 2, h + 2, type);
 
-    SDL_Surface* final_Surface = createCloneSurface(w+2,h+2,BOARD);
+	//First i link the clipboard surface
+	addClipboard(final_Surface);
 
-    //First i link the clipboard surface
-    addClipboard(final_Surface);
+	//Now im going to create the borders
+	//Lines
+	addLineBorders(final_Surface, line);
 
-    //Now im going to create the borders
-    //Lines
-    addLineBorders(final_Surface,PINGUI_CLIPBOARD);
+	//Vertex borders
+	addVertexBorders(final_Surface, line);
 
-    //Vertex borders
-    addVertexBorders(final_Surface,PINGUI_CLIPBOARD);
-
-    //Return it
-    return final_Surface;
+	//Return it
+	return final_Surface;
 }
 
 void SheetManager::addClipboard(SDL_Surface*& target){
@@ -669,14 +672,17 @@ void SheetManager::putOnSurface(SDL_Surface* src, SDL_Surface* target, int x, in
 	blitSurface(x, y, src->w, src->h, target, src, SDL_BLENDMODE_BLEND);
 }
 
-SDL_Surface* SheetManager::loadCustomSurface(const std::string& filePath) {
+SDL_Surface* SheetManager::loadCustomSurface(const std::string& filePath, bool checkResult) {
 
 	SDL_Surface* result = nullptr;
 	result = IMG_Load(filePath.c_str());
 
-	if (!result)
-		ErrorManager::fileError("Failed to load custom surface from : " + filePath);
-	
+	if (checkResult)
+	{
+		if (!result)
+			ErrorManager::fileError("Failed to load custom surface from : " + filePath);
+	}
+
 	return result;
 }
 

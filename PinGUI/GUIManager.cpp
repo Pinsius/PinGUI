@@ -233,17 +233,17 @@ void GUIManager::createArrowBoard(GUIPos x, GUIPos y, float* var, int maxSize, b
     _needUpdate = true;
 }
 
-void GUIManager::createImage(std::string filePath, GUIPos x, GUIPos y){
+void GUIManager::createImage(SDL_Surface* imageSurface, GUIPos x, GUIPos y){
 
-    auto ptr = std::make_shared<Image>(filePath,x,y);
+    auto ptr = std::make_shared<Image>(imageSurface,x,y);
     _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
 }
 
-void GUIManager::createImage(std::string filePath, GUIPos x, GUIPos y, int width, int height){
+void GUIManager::createImage(SDL_Surface* imageSurface, GUIPos x, GUIPos y, int width, int height){
 
-    auto ptr = std::make_shared<Image>(filePath,x,y,width,height);
+    auto ptr = std::make_shared<Image>(imageSurface,x,y,width,height);
     _ELEMENTS.push_back(ptr);
 
     _needUpdate = true;
@@ -333,7 +333,14 @@ void GUIManager::withdrawElement(std::shared_ptr<GUI_Element> object){
         }
     }
 
-    if (found) _ELEMENTS.erase(_ELEMENTS.begin()+i);
+	if (found)
+	{
+		object->atWithdraw();
+		_ELEMENTS.erase(_ELEMENTS.begin()+i);
+	}
+
+
+
     _needUpdate = true;
 }
 
@@ -565,6 +572,7 @@ void GUIManager::moveGUITo(PinGUI::Vector2<GUIPos> vect){
 }
 
 void GUIManager::cropGUI(PinGUI::Rect& rect){
+
 
     for (std::size_t i = 0; i < _ELEMENTS.size(); i++){
 

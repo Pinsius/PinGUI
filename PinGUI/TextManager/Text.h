@@ -103,7 +103,7 @@ public:
 
     void moveTo(PinGUI::Vector2<GUIPos> vect);
 
-    void replaceText(std::string newText);
+    void replaceText(const std::string& newText);
 
     std::shared_ptr<GUI_Sprite> getSprite();
 

@@ -162,30 +162,43 @@ void HorizontalScroller::initOldPos(){
 }
 
 void HorizontalScroller::incScroller(){
-    getSprite(1)->setX(getSprite(1)->getX() + WINDOW_SCROLLER_ARROW_MOVEMENT);
 
-    manageFunctionality();
+	if (_SPRITES.size()>1) {
+
+		getSprite(1)->setX(getSprite(1)->getX() + WINDOW_SCROLLER_ARROW_MOVEMENT);
+
+		manageFunctionality();
+	}
 }
 
 void HorizontalScroller::reloadScroller(int value, int totalValue){
 
-    GUIPos oldPos = getSprite(1)->getX();
+	GUIPos oldPos = getSprite(1)->getX();
 
-    loadScrollMover(value,totalValue);
+	deleteSprite(1);
 
-    getSprite(1)->setX(oldPos);
+	loadScrollMover(value, totalValue);
+
+	getSprite(1)->setX(oldPos);
+	_oldDiff = 0.0f;
+
+	decide();
+	checkLimits();
 }
 
 void HorizontalScroller::decScroller(){
-    getSprite(1)->setX(getSprite(1)->getX() - WINDOW_SCROLLER_ARROW_MOVEMENT);
 
-    manageFunctionality();
+	if (_SPRITES.size()>1) {
+
+		getSprite(1)->setX(getSprite(1)->getX() - WINDOW_SCROLLER_ARROW_MOVEMENT);
+
+		manageFunctionality();
+	}
 }
 
 void HorizontalScroller::moveOldPos(const PinGUI::Vector2<GUIPos>& vect){
     _oldPos += vect.x;
 }
-
 
 int HorizontalScroller::useNormalizer(CHANGER change, int diff){
 

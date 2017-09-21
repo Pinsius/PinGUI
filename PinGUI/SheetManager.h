@@ -37,6 +37,7 @@
 **/
 
 enum surfaceType{
+	BACKGROUND,
     BOARD,
     BORDER_LINE,
     BORDER_TL,
@@ -87,6 +88,12 @@ enum lineType{
     PINGUI_WINDOW,
     PINGUI_CLIPBOARD
 };
+
+/***
+	BACKGROUND - used for collision boxes etc.
+***/
+#define BACKGROUND_X 95
+#define BACKGROUND_Y 0
 
 /**
     CLIPBOARDS
@@ -299,7 +306,7 @@ class SheetManager
 
 		static void putOnSurface(SDL_Surface* src, SDL_Surface* target, int x, int y);
 
-		static SDL_Surface* loadCustomSurface(const std::string& filePath);
+		static SDL_Surface* loadCustomSurface(const std::string& filePath, bool checkResult = true);
 
         static void loadSurface(enum surfaceType,SDL_Surface* wholeSurface);
 
@@ -347,7 +354,7 @@ class SheetManager
 
         static SDL_Surface* getSurface(enum surfaceType);
 
-        static SDL_Surface* createClipBoard(int w, int h);
+		static SDL_Surface* createClipboard(int w, int h, surfaceType type = BOARD, lineType line = PINGUI_CLIPBOARD);
         static SDL_Surface* createWindowTab(int w, int h);
         static SDL_Surface* createWindow(int w, int h);
         static SDL_Surface* createWindowScroller(int value, PinGUI::manipulationState state);

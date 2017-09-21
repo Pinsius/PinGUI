@@ -90,6 +90,7 @@ void GUI_Sprite::loadTextSprite(const std::string& text, textInfo*& info){
     tmpSurface = TTF_RenderText_Blended(info->font,text.c_str(), info->color);
 
     if (tmpSurface==nullptr){
+		std::cout << SDL_GetError() << std::endl;
         ErrorManager::systemError("Cannot make a text texture");
     }
 

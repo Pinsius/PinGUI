@@ -38,6 +38,7 @@ Scroller::~Scroller()
 }
 
 void Scroller::loadScrollMover(int value, int totalValue){
+
     int diff = totalValue - value;
 
     PinGUI::Rect tmpRect;

@@ -139,7 +139,7 @@ void ClipBoard::initClipBoard(int& maxSize, clipboardData& data, PinGUI::Vector2
 
     if (_shape == ROUNDED){
 
-        tmpSurface = SheetManager::createClipBoard(tmp_width,tmp_height);
+        tmpSurface = SheetManager::createClipboard(tmp_width,tmp_height);
     } else if (_shape == RECTANGLED){
 
         tmpSurface = SheetManager::createRectangle(tmp_width,tmp_height,BOARD,BORDER_LINE);
@@ -427,17 +427,13 @@ void ClipBoard::setClipboardText(std::string text){
 
 void ClipBoard::setClipboardText(std::string text, PinGUI::Rect collider){
 
-    //Destroy the text if it exist(ofc it will exist everytime but to be absolute sure)
-    if (_textStorage->getText())
-        _textStorage->destroyText();
-
-    _textStorage->addText(text,_position.x,_position.y);
-
-    _textStorage->getText(0)->setOffsetRect(collider);
-    _textStorage->getText(0)->calculateTextPosition();
-    _textStorage->getText(0)->setNetworked(true);
-
-    _textStorage->setAdditionalInfo(&_type);
+	//Destroy the text if it exist(ofc it will exist everytime but to be absolute sure)
+	if (_textStorage->getText(0))
+	{
+		_textStorage->getText(0)->replaceText(text);
+		_textStorage->getText(0)->setOffsetRect(collider);
+		_textStorage->getText(0)->calculateTextPosition();
+	}
 }
 
 void ClipBoard::setShow(bool state){
@@ -466,7 +462,7 @@ void ClipBoard::setEnterFunc(PinGUI::stringFuncPointer f){
 }
 
 void ClipBoard::clearClipBoard(){
-    setClipboardText("");
+    setClipboardText(" ");
 }
 
 void ClipBoard::setExitAtEnter(bool state){

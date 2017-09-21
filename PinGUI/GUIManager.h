@@ -122,8 +122,8 @@ class GUIManager
 
         void createCheckBox(GUIPos x, GUIPos y, bool* var);
 
-        void createImage(std::string filePath, GUIPos x, GUIPos y);
-        void createImage(std::string filePath, GUIPos x, GUIPos y, int width, int height);
+        void createImage(SDL_Surface* imageSurface, GUIPos x, GUIPos y);
+        void createImage(SDL_Surface* imageSurface, GUIPos x, GUIPos y, int width, int height);
 
         void createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f);
         void createButton(GUIPos x, GUIPos y, std::string name, PinGUI::basicPointer f, int maxSize);

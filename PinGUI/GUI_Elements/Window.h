@@ -77,20 +77,23 @@ class windowDef {
 		windowElementType type;
 		element_shape shape;
 		std::string windowName;
+		unsigned int tabOffset;
 
 		windowDef(PinGUI::Rect WindowFrame, std::vector<std::string> Tabs, windowElementType Type, element_shape Shape = ROUNDED) :
 			windowFrame(WindowFrame),
 			tabs(Tabs),
 			type(Type),
 			shape(Shape),
-			windowName(BLANK)
+			windowName(BLANK),
+			tabOffset(WINDOW_TAB_OFFSET)
 		{
 		}
 
 		//Default constr
 		windowDef() :
 			type(BOTH),
-			shape(ROUNDED)
+			shape(ROUNDED),
+			tabOffset(WINDOW_TAB_OFFSET)
 		{
 		}
 };
@@ -135,6 +138,9 @@ class Window: public GUI_Element
 
 		//Title
 		std::string _windowTitle;
+
+		//This represents the offset of the tabs
+		unsigned int _tabOffset;
 
 		std::shared_ptr<Text> _windowTitleText;
 
@@ -183,11 +189,11 @@ class Window: public GUI_Element
         **/
        void initTab();
 
-       void createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRect);
+       void createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRect, unsigned int tabOffset);
 
        void nameTab(std::shared_ptr<tabInfo> tab);
 
-       void createEmptyTabLine(PinGUI::Rect& positionRect);
+       void createEmptyTabLine(PinGUI::Rect& positionRect, unsigned int tabOffset);
 
        void createWindowMoverArea();
 
@@ -195,7 +201,7 @@ class Window: public GUI_Element
 
        PinGUI::Rect calculateSize(int vecSize,const PinGUI::Rect& positionRect, std::size_t counter, bool nameIt = true);
 
-       void offsetTab(std::shared_ptr<WindowTab> tab);
+       void offsetTab(std::shared_ptr<WindowTab> tab, const unsigned int& tabOffset);
 
        bool haveMover();
 
@@ -218,6 +224,8 @@ class Window: public GUI_Element
        bool isScrollerActive(std::shared_ptr<HorizontalScroller>& scroller);
 
        bool isScrollerActive(std::shared_ptr<VerticalScroller>& scroller);
+
+	   bool isScrollerDeployed(std::shared_ptr<Scroller> scroller);
 
 	   void normalizeAttachedWindows(const GUIPos& x, const GUIPos& y);
 
@@ -275,6 +283,9 @@ class Window: public GUI_Element
 
 		bool isCursorIn();
 
+		//Gets the current X and Y position of the click inside the window tab
+		PinGUI::Vector2<GUIPos> getInsideCursorPosition(PinGUI::Vector2<GUIPos> screenMousePosition);
+
         /** Re-dimensioning the tabs **/
         void setTabDimensions(PinGUI::Vector2<int> dims, std::string tabName);
 
@@ -323,11 +334,15 @@ class Window: public GUI_Element
 
 		void setNameTag(const std::string& nameTag);
 
+		/******** Two functions for changing the window title ***/
+
 		//This function changes the title immediately
 		void setWindowTitle(const std::string& newTitle);
 
 		//This waits for the next update cycle
 		void changeWindowTitle(const std::string& newTitle);
+
+		/***************************************************/
 
 		void setMainWindow(std::shared_ptr<Window>* ptr);
 
@@ -336,6 +351,10 @@ class Window: public GUI_Element
 		void attachWindow(std::shared_ptr<Window> winPtr);
 
 		float getPotentionalCropHeight();
+
+		float getPotentionalCropWidth();
+
+		unsigned int getTabOffset();
 };
 
 #endif // WINDOW_H

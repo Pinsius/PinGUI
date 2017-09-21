@@ -28,6 +28,7 @@ Window::Window(windowDef* winDef) :
 	_mainFrame(winDef->windowFrame),
 	_tabMovementChecker(0, 0),
 	_type(winDef->type),
+	_tabOffset(winDef->tabOffset),
 	_windowName(winDef->windowName),
 	_windowUpdate(false),
 	_tabChange(true),
@@ -65,7 +66,7 @@ Window::Window(windowDef* winDef) :
 		addCollider(tmpPositionRect);
 
 		//Now need to create the tabs
-		createTabs(winDef->tabs, tmpPositionRect);
+		createTabs(winDef->tabs, tmpPositionRect, winDef->tabOffset);
 
 	}
 
@@ -95,10 +96,10 @@ Window::~Window()
 	_TABS.clear();
 }
 
-void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRect) {
+void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRect, unsigned int tabOffset) {
 
 	if (tabs.size() == 0)
-		createEmptyTabLine(positionRect);
+		createEmptyTabLine(positionRect,tabOffset);
 
 	for (std::size_t i = 0; i < tabs.size(); i++) {
 
@@ -110,7 +111,7 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
 
 		_TABS.push_back(ptr);
 
-		offsetTab(_TABS.back()->windowTab);
+		offsetTab(_TABS.back()->windowTab,tabOffset);
 
 		//Creating a name of tab
 		nameTab(_TABS[i]);
@@ -128,7 +129,7 @@ void Window::createTabs(std::vector<std::string>& tabs, PinGUI::Rect& positionRe
 		_TABS[0]->windowTab->setCollidable(false);
 }
 
-void Window::createEmptyTabLine(PinGUI::Rect& positionRect) {
+void Window::createEmptyTabLine(PinGUI::Rect& positionRect, unsigned int tabOffset) {
 
 	auto winTab = std::make_shared<WindowTab>(calculateSize(1, positionRect, 0, false),
 		&_mainWindowTab,
@@ -147,7 +148,7 @@ void Window::createEmptyTabLine(PinGUI::Rect& positionRect) {
 
 	_TABS.back()->windowTab->getGUI()->setFunction(tmpF);
 
-	offsetTab(_TABS.back()->windowTab);
+	offsetTab(_TABS.back()->windowTab,tabOffset);
 }
 
 PinGUI::Rect Window::calculateSize(int vecSize, const PinGUI::Rect& positionRect, std::size_t counter, bool nameIt) {
@@ -249,10 +250,10 @@ void Window::addElementsToManager(std::shared_ptr<GUIManager> gui) {
 	}
 }
 
-void Window::offsetTab(std::shared_ptr<WindowTab> tab) {
+void Window::offsetTab(std::shared_ptr<WindowTab> tab, const unsigned int& tabOffset) {
 
 	//Offset the windowTab
-	float tmpY = (getSprite()->getY() + getSprite()->getH()) - WINDOW_TAB_OFFSET;
+	float tmpY = (getSprite()->getY() + getSprite()->getH()) - tabOffset;
 
 	tab->getSprite()->setY(tmpY - tab->getSprite()->getH());
 
@@ -639,6 +640,10 @@ bool Window::isScrollerActive(std::shared_ptr<VerticalScroller>& scroller) {
 		return false;
 }
 
+bool Window::isScrollerDeployed(std::shared_ptr<Scroller> scroller) {
+	return (scroller && scroller->getShow());
+}
+
 bool Window::listenForClick(manip_Element manipulatingElement) {
 
 	if (PinGUI::Input_Manager::getState() != PinGUI::GUI)
@@ -654,7 +659,7 @@ bool Window::listenForClick(manip_Element manipulatingElement) {
 void Window::adjustHorizontalScrollerWidth() {
 
 	//Checking if I have vertical scroller
-	if (_mainWindowTab->getTabDimensions().y > _mainFrame.h) {
+	if (_verticalScroller && _verticalScroller->getShow()) {
 
 		_horizontalScroller->getSprite()->setW(getSprite()->getW() - _verticalScroller->getSprite()->getW());
 	}
@@ -721,7 +726,7 @@ void Window::setWindowCamRect() {
 	_cameraRect.x = _COLLIDERS[0].rect.x;
 
 	//Y is changing - because of horizontal scroller
-	if (isScrollerActive(_horizontalScroller)) {
+	if (isScrollerDeployed(_horizontalScroller)) {
 
 		_cameraRect.y = _COLLIDERS[0].rect.y + _horizontalScroller->getSprite()->getH();
 	}
@@ -733,7 +738,7 @@ void Window::setWindowCamRect() {
 	_cameraRect.h = int(_TABS[0]->windowTab->getSprite()->getY() - _cameraRect.y);
 
 	//Same with width - because of vertical scroller
-	if (isScrollerActive(_verticalScroller)) {
+	if (isScrollerDeployed(_verticalScroller)) {
 
 		_cameraRect.w = _COLLIDERS[0].rect.w - _verticalScroller->getSprite()->getW();
 	}
@@ -781,18 +786,23 @@ PinGUI::Rect* Window::getCropRect_P() {
 void Window::reloadScroller(GUIPos diff, PinGUI::manipulationState state) {
 
 	switch (state) {
-	case PinGUI::HORIZONTAL: {
+		case PinGUI::HORIZONTAL: {
 
-		break;
-	}
-	case PinGUI::VERTICAL: {
+			rollbackTabCamera();
 
-		_verticalScroller->reloadScroller(_mainFrame.h, _mainWindowTab->getTabDimensions().y);
+			_verticalScroller->reloadScroller(_mainFrame.w, _mainWindowTab->getTabDimensions().x);
+			break;
+		}
+		case PinGUI::VERTICAL: {
 
-		/*This is disabled for now*/
-		//updateTabCamera(PinGUI::Vector2<GUIPos>(0, diff));
-		break;
-	}
+			rollbackTabCamera();
+
+			_verticalScroller->reloadScroller(_mainFrame.h, _mainWindowTab->getTabDimensions().y);
+		
+			if (isCursorIn())
+				_verticalScroller->attachScrollerToInput();
+			break;
+		}
 	}
 }
 
@@ -906,5 +916,31 @@ void Window::attachWindow(std::shared_ptr<Window> winPtr)
 
 float Window::getPotentionalCropHeight()
 {
-	return getSprite()->getH() - WINDOW_TAB_OFFSET - SINGLE_WINDOWTAB_HEIGHT;
+	float result = getSprite()->getH() - _tabOffset - _TABS[0]->windowTab->getSprite()->getH() ;
+
+	if (isScrollerDeployed(_horizontalScroller))
+		result -= _horizontalScroller->getSprite()->getH();
+
+	return result;
+}
+
+float Window::getPotentionalCropWidth()
+{
+	float result = getSprite()->getW() - PINGUI_WINDOW_LINE_W;
+
+	if (isScrollerDeployed(_verticalScroller))
+		result -= _verticalScroller->getSprite()->getW();
+
+	return result;
+}
+
+unsigned int Window::getTabOffset()
+{
+	return _tabOffset;
+}
+
+PinGUI::Vector2<GUIPos> Window::getInsideCursorPosition(PinGUI::Vector2<GUIPos> screenMousePosition)
+{
+	PinGUI::Vector2<GUIPos> position(_TABS[0]->windowTab->getPositionVector());
+	
 }
