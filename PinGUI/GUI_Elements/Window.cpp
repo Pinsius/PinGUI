@@ -891,6 +891,8 @@ void Window::setMainWindow(std::shared_ptr<Window>* ptr)
 }
 
 void Window::setAsMainWindow() {
+
+	(*_mainWindowPtr)->update();
 	*_mainWindowPtr = std::dynamic_pointer_cast<Window>(shared_from_this());
 }
 
@@ -943,4 +945,24 @@ PinGUI::Vector2<GUIPos> Window::getInsideCursorPosition(PinGUI::Vector2<GUIPos> 
 {
 	PinGUI::Vector2<GUIPos> position(_TABS[0]->windowTab->getPositionVector());
 	
+}
+
+void Window::setExist(bool state)
+{
+	GUI_Element::setExist(false);
+
+	/*
+	//Manipulate attached windows
+	for (std::size_t i = 0; i < _attachedWindows.size(); i++)
+		_attachedWindows[i]->setExist(false);
+
+	//Manipulate window tabs
+	for (std::size_t i = 0; i < _TABS.size(); i++)
+		_TABS[i]->windowTab->setExist(false);
+	*/
+}
+
+void Window::deleteWindow()
+{
+	_mainGUIManager.reset();
 }

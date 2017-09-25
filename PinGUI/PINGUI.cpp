@@ -264,6 +264,35 @@ void PINGUI::bindWindow(const std::string& windowName) {
 
 }
 
+void PINGUI::destroyWindow(std::shared_ptr<Window> win)
+{
+	win->deleteWindow();
+
+	if (win == _mainWindow)
+		_mainWindow.reset();
+
+	if (window == win)
+		window.reset();
+
+	for (std::size_t i = 0; i < _ACTIVE_WINDOWS.size(); i++)
+	{
+		if (_ACTIVE_WINDOWS[i] == win)
+		{
+			_ACTIVE_WINDOWS.erase(_ACTIVE_WINDOWS.begin() + i);
+			return;
+		}
+	}
+
+	for (std::size_t i = 0; i < _NON_ACTIVE_WINDOWS.size(); i++)
+	{
+		if (_NON_ACTIVE_WINDOWS[i] == win)
+		{
+			_NON_ACTIVE_WINDOWS.erase(_NON_ACTIVE_WINDOWS.begin() + i);
+			return;
+		}
+	}
+}
+
 std::shared_ptr<Window> PINGUI::getWindow(const std::string& windowName) {
 
 	//Check active windows first

@@ -169,6 +169,8 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
 
 		virtual void setAlpha(Uint8 a);
 
+		virtual void setExist(bool state);
+
         bool isAllowedCrop();
 
         //Normal methods
@@ -209,8 +211,6 @@ class GUI_Element : public std::enable_shared_from_this<GUI_Element>
         void setNetworking(bool state);
 
         bool getNetworking();
-
-        void setExist(bool state);
 
         bool exist();
 

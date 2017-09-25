@@ -238,6 +238,8 @@ class Window: public GUI_Element
         Window(windowDef* winDef);
         ~Window();
 
+		void deleteWindow();
+
         void addElementsToManager();
 
 		void addElementsToManager(std::shared_ptr<GUIManager> gui);
@@ -272,6 +274,8 @@ class Window: public GUI_Element
         void onAim() override;
 
         void onEndAim() override;
+
+		void setExist(bool state) override;
 
         bool listenForClick(manip_Element manipulatingElement) override;
 
