@@ -607,6 +607,7 @@ void Window::onAim() {
 	if (isScrollerActive(_verticalScroller)) _verticalScroller->attachScrollerToInput();
 
 	PinGUI::Input_Manager::setOnWindow(true);
+	PinGUI::Input_Manager::setLastWindow(this);
 }
 
 void Window::onEndAim() {
@@ -892,7 +893,7 @@ void Window::setMainWindow(std::shared_ptr<Window>* ptr)
 
 void Window::setAsMainWindow() {
 
-	(*_mainWindowPtr)->update();
+	//(*_mainWindowPtr)->update();
 	*_mainWindowPtr = std::dynamic_pointer_cast<Window>(shared_from_this());
 }
 

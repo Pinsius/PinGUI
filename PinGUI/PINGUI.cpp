@@ -49,11 +49,17 @@ void PINGUI::destroy(){
     _mainWindow.reset();
 }
 
-void PINGUI::addWindow(std::shared_ptr<Window> win){
+void PINGUI::addWindow(std::shared_ptr<Window> win, bool showAtCreation){
 
     win->addElementsToManager();
 
-    _ACTIVE_WINDOWS.push_back(win);
+	if (showAtCreation)
+		_ACTIVE_WINDOWS.push_back(win);
+	else
+	{
+		win->setShow(false);
+		_NON_ACTIVE_WINDOWS.push_back(win);
+	}
 
     window = win;
 
@@ -63,19 +69,11 @@ void PINGUI::addWindow(std::shared_ptr<Window> win){
 	window->setMainWindow(&_mainWindow);
 }
 
-void PINGUI::createWindow(windowDef* winDef){
+void PINGUI::createWindow(windowDef* winDef, bool showAtCreation){
 
     auto win = std::make_shared<Window>(winDef);
-    win->addElementsToManager();
-
-    _ACTIVE_WINDOWS.push_back(win);
-
-	window = win;
-
-    if (!_mainWindow)
-        _mainWindow = win;
-
-	window->setMainWindow(&_mainWindow);
+    
+	addWindow(win,showAtCreation);
 }
 
 std::shared_ptr<Window> PINGUI::createSubWindow(windowDef* def)

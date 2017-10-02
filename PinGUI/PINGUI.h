@@ -83,14 +83,14 @@ class PINGUI
 
         static void destroy();
 
-        static void addWindow(std::shared_ptr<Window> win);
+        static void addWindow(std::shared_ptr<Window> win, bool showAtCreation = true);
 
 		static void destroyWindow(std::shared_ptr<Window> win);
 
 		//Creating a window that is not manager by PINGUI but by other GUI elements(in case that its a part of a element)
 		static std::shared_ptr<Window> createSubWindow(windowDef* def);
 
-        static void createWindow(windowDef* winDef);
+        static void createWindow(windowDef* winDef, bool showAtCreation = true);
 
         static void render();
 

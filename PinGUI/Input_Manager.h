@@ -39,7 +39,7 @@
 #define WINDOW_CAM_SCROLLING_SPEED 6
 
 
-
+class Window;
 
 namespace PinGUI{
 
@@ -92,6 +92,8 @@ namespace PinGUI{
             static bool _haveTarget;
 
             static bool _isOnWindow;
+
+			static Window* _lastWindow;
 
             static bool _tmpState;
 
@@ -175,7 +177,11 @@ namespace PinGUI{
 
             static void setOnWindow(bool state);
 
+			static void setLastWindow(Window* winPtr);
+
             static bool isOnWindow();
+
+			static void checkLastWindow();
 
             static void turnOnTMPState();
 

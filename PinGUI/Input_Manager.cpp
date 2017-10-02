@@ -23,7 +23,9 @@
 **/
 
 #include "Input_Manager.h"
+#include "GUI_Elements\Window.h"
 #include <iostream>
+
 
 namespace PinGUI{
 
@@ -75,6 +77,8 @@ namespace PinGUI{
 
     bool Input_Manager::_tmpState = false;
 
+	Window* Input_Manager::_lastWindow = nullptr;
+
     /**
         Storage for tmpWheel
     **/
@@ -125,6 +129,11 @@ namespace PinGUI{
     }
 
     void Input_Manager::process(SDL_Event* mainEvent){
+
+		if (_lastWindow)
+		{
+			checkLastWindow();
+		}
 
         if (mainEvent){
 
@@ -523,6 +532,7 @@ namespace PinGUI{
     }
 
     void Input_Manager::setOnWindow(bool state){
+		_currentState = GAME;
         _isOnWindow = state;
     }
 
@@ -538,5 +548,22 @@ namespace PinGUI{
         setKey(SDLK_RETURN,false);
         setKey(SDLK_KP_ENTER,false);
     }
+
+	void Input_Manager::setLastWindow(Window* winPtr)
+	{
+		_lastWindow = winPtr;
+	}
+
+	void Input_Manager::checkLastWindow()
+	{
+		std::cout << "CHECKUJEM " << std::endl;
+
+		if (!GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*_lastWindow->getCollider())) {
+
+			_lastWindow = nullptr;
+			_isOnWindow = false;
+			setState(GAME);
+		}
+	}
 }
 
