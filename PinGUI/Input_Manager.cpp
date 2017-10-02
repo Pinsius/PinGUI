@@ -556,8 +556,6 @@ namespace PinGUI{
 
 	void Input_Manager::checkLastWindow()
 	{
-		std::cout << "CHECKUJEM " << std::endl;
-
 		if (!GUI_CollisionManager::isColliding(GUI_Cursor::getCollider(),*_lastWindow->getCollider())) {
 
 			_lastWindow = nullptr;
