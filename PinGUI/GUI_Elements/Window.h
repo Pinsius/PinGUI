@@ -288,7 +288,7 @@ class Window: public GUI_Element
 		bool isCursorIn();
 
 		//Gets the current X and Y position of the click inside the window tab
-		PinGUI::Vector2<GUIPos> getInsideCursorPosition(PinGUI::Vector2<GUIPos> screenMousePosition);
+		//PinGUI::Vector2<GUIPos> getInsideCursorPosition(PinGUI::Vector2<GUIPos> screenMousePosition);
 
         /** Re-dimensioning the tabs **/
         void setTabDimensions(PinGUI::Vector2<int> dims, std::string tabName);

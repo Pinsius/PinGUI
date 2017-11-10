@@ -942,11 +942,12 @@ unsigned int Window::getTabOffset()
 	return _tabOffset;
 }
 
+/*
 PinGUI::Vector2<GUIPos> Window::getInsideCursorPosition(PinGUI::Vector2<GUIPos> screenMousePosition)
 {
 	PinGUI::Vector2<GUIPos> position(_TABS[0]->windowTab->getPositionVector());
 	
-}
+}*/
 
 void Window::setExist(bool state)
 {
