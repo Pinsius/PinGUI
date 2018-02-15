@@ -296,6 +296,7 @@ void GUI_Sprite::setW(int newW){
 }
 
 void GUI_Sprite::moveSprite(const PinGUI::Vector2<GUIPos>& vect){
+
     PinGUI::Vector2<GUIPos> tmp(vect.x,vect.y);
 
     _rect.rect.addPos(tmp);

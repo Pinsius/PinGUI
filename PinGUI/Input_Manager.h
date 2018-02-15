@@ -185,6 +185,8 @@ namespace PinGUI{
 
             static void turnOnTMPState();
 
+			static void resetLastVector();
+
             /**
                 For writing mod
             **/

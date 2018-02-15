@@ -207,7 +207,10 @@ void Window::render() {
 void Window::update(bool allowCollision) {
 
 	if (_windowUpdate)
+	{
 		moveWindow(PinGUI::Input_Manager::getLastVector());
+		PinGUI::Input_Manager::resetLastVector();
+	}
 
 	_mainGUIManager->update(allowCollision);
 
@@ -327,6 +330,8 @@ void Window::normalizeElement(const PinGUI::Vector2<GUIPos>& vect) {
 }
 
 void Window::moveWindow(PinGUI::Vector2<GUIPos> vect) {
+
+	std::cout << "POSUN OKNA SKURVENEHO O " << vect.x << " a y: " << vect.y << std::endl;
 
 	_mainGUIManager->moveGUI(vect);
 

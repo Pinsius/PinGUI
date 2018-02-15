@@ -330,17 +330,22 @@ namespace PinGUI{
 
         int diff = tmpX - int(GUI_Cursor::getX());
 
-        _lastVector.x = float(diff);
+        _lastVector.x += float(diff);
 
         if (_manipulatingModInfo.manipState != WINDOW_MOVING)
-            _manipulatedSprite->setX(_manipulatedSprite->getX()+diff);
+            _manipulatedSprite->setX(_manipulatedSprite->getX()+diff); 
     }
+
+	void Input_Manager::resetLastVector()
+	{
+		_lastVector = PinGUI::Vector2<float>();
+	}
 
     void Input_Manager::moveVertical(const int& tmpX, const int& tmpY){
 
         int diff = tmpY - int(GUI_Cursor::getY());
 
-        _lastVector.y = float(diff);
+        _lastVector.y += float(diff);
 
         if (_manipulatingModInfo.manipState!=WINDOW_MOVING)
             _manipulatedSprite->setY(_manipulatedSprite->getY()+diff);
