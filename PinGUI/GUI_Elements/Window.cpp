@@ -331,8 +331,6 @@ void Window::normalizeElement(const PinGUI::Vector2<GUIPos>& vect) {
 
 void Window::moveWindow(PinGUI::Vector2<GUIPos> vect) {
 
-	std::cout << "POSUN OKNA SKURVENEHO O " << vect.x << " a y: " << vect.y << std::endl;
-
 	_mainGUIManager->moveGUI(vect);
 
 	_cameraRect.addPos(vect);
