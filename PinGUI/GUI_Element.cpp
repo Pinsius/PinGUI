@@ -112,6 +112,7 @@ void GUI_Element::endManipulatingMod(manip_Element manipulatingElement){
     manipulatingElement = nullptr;
 
     PinGUI::Input_Manager::setInputState(PinGUI::GAMEINPUT);
+	PinGUI::Input_Manager::resetLastVector();
 
     PinGUI::Input_Manager::destroyManipulatingModInfo();
     PinGUI::Input_Manager::setAlreadyClick(false);
