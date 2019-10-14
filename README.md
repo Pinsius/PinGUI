@@ -18,7 +18,7 @@ C++/SDL2/OpenGL created by Lubomir "Pinsius" Barantal
  http://www.boost.org/
  
  
-I stopped to continue the development of this GUI library, as I´ve decided to dedicate my spare time to development of my own game engine. However, I was able to create my first editor prototypes using this library, it server well, but needed much more effort and time for its development. The code doesn´t have best architecture, but its working, and you may use it as you want. Thanks. 
+I stopped to continue the development of this GUI library, as I´ve decided to dedicate my spare time to development of my own game engine. However, I was able to create my first editor prototypes using this library, it served well, but needed much more effort and time for its development. The code doesn´t have best architecture, but its working, and you may use it as you want. Thanks. 
 I won´t delete the description below, so it stays as before.
  
 Some of its features are :
