@@ -18,6 +18,8 @@ C++/SDL2/OpenGL created by Lubomir "Pinsius" Barantal
  http://www.boost.org/
  
  
+I stopped to continue the development of this GUI library, as I´ve decided to dedicate my spare time to development of my own game engine. However, I was able to create my first editor prototypes using this library, it server well, but needed much more effort and time for its development. The code doesn´t have best architecture, but its working, and you may use it as you want. Thanks. 
+I won´t delete the description below, so it stays as before.
  
 Some of its features are :
 - Text creation (using SDL_TTF extension)
@@ -28,8 +30,6 @@ Some of its features are :
 - Scrolling
 - Windows have its own coordinate system ( [0;0] is the left corner of the window)
 - Each tab can have its own settings (for example font)
-
-Note: the library is still in development
 
 Video : https://www.youtube.com/watch?v=YxVG0uQdU_Y
 
