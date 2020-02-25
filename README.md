@@ -36,13 +36,3 @@ Video : https://www.youtube.com/watch?v=YxVG0uQdU_Y
 
 This library was developed primary for learning purposes but now i consider it to be able
 to handle also the GUI in my projects ( even if it still needs lot of improvements).
-
-Things I´m still working on :
-- Documentation/or at least simple manual[x]
-- Update render system (so it will use benefit of matrices) to improve efficiency
-- Implement own allocators (the biggest need is for text - when it changes frequently, because dynamic allocations for sprites are slowing the speed down)
-- Support of multiple resolutions
-- Add new elements and improve old
-- Also add support to define GUI layout via XML
-
-More info will be provided soon 
